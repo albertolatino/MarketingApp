@@ -22,7 +22,7 @@ import java.util.List;
 public class Leaderboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
-	@EJB(name = "it.polimi.db2.mission.services/LeaderboardService")
+	@EJB(name = "it.polimi.db2.marketing.ejb.services/LeaderboardService")
 	private LeaderboardService lService;
 
 	public Leaderboard() {

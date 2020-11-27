@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<div align="right">
+		<a th:href="@{/AdminHome}">Home</a>
+	</div>
+	<div align="right">
+		<a th:href="@{/Logout}">Logout</a>
+	</div>
+	<h1>Welcome to Question Insertion Page</h1>
+
+    <form action="#" th:action="@{/AdminCreateQuestions}" method="POST">
+        <table>
+            <tr th:each="i : ${#numbers.sequence(0, ${number})}">
+                <td>
+                    question name
+                </td>
+                <td>
+                    <input type="text" name="${i}">
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Create">
+    </form>
+</body>
+</html>

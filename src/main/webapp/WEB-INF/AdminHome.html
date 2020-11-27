@@ -10,15 +10,18 @@
 	<div align="right">
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
-	<h1>Welcome to the Mission Management Home Page</h1>
+	<h1>Welcome to Admin Home Page</h1>
 	<p
 		th:text="${'Nice to see you again ' + session.user.name + ' ' + session.user.surname}"></p>
 
-	<form action="#" th:action="@{/Leaderboard}" method="GET">
-		<input type="submit" value="LEADERBOARD">
-	</form>
-	<form action="#" th:action="@{/TodaysQuestionnaire}" method="GET">
-		<input type="submit" value="TODAY'S QUESTIONNAIRE">
-	</form>
+
+	<div>
+		<form action="#" th:action="@{/AdminCreate}" method="GET">
+			<input type="submit" value="CREATION">
+		</form>
+		<form action="#" th:action="@{/AdminOld}" method="GET">
+			<input type="submit" value="SEE OLD">
+		</form>
+	</div>
 </body>
 </html>

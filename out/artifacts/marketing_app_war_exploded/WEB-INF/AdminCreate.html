@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<div align="right">
+		<a th:href="@{/AdminHome}">Home</a>
+	</div>
+	<div align="right">
+		<a th:href="@{/Logout}">Logout</a>
+	</div>
+	<h1>Welcome to Creation Page</h1>
+
+    <form action="#" th:action="@{/AdminCreate}" method="POST">
+        <input type="date" name="date" id="date"><br>
+        Number of questions: <input type="number" name="number">
+        <input type="submit" value="Create">
+    </form>
+
+    <script>
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1)
+        document.getElementById("date").setAttribute('value', tomorrow.toISOString().slice(0, 10))
+    </script>
+</body>
+</html>

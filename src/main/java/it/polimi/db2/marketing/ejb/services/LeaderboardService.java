@@ -1,21 +1,16 @@
 package it.polimi.db2.marketing.ejb.services;
 
-import java.util.List;
-import java.util.Date;
+import it.polimi.db2.marketing.ejb.entities.User;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.NonUniqueResultException;
-
-import it.polimi.db2.marketing.ejb.entities.User;
-import it.polimi.db2.marketing.ejb.exceptions.*;
+import java.util.List;
 
 @Stateless
 public class LeaderboardService {
-	@PersistenceContext(unitName = "MissionExpensesEJB")
+	@PersistenceContext(unitName = "MarketingEJB")
 	private EntityManager em;
 
 	public LeaderboardService() {
