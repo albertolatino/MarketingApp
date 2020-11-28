@@ -1,3 +1,23 @@
 table, th, tr {
   border: 1px solid black;
 }
+
+body {
+  margin: 0 auto;
+  max-width: 768px;
+  line-height: 1.6;
+  font-size: 18px;
+  padding: 20px 50px;
+  background-color: white;
+  min-height: 100%;
+}
+
+h1,h2,h3 {
+  line-height: 1.2;
+}
+
+html {
+  font-family: sans-serif;
+  background-color: lightgray;
+  height: 100%;
+}
