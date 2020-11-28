@@ -16,11 +16,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/AdminHome")
-public class GoToAdminHome extends HttpServlet {
+public class AdminHome extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 
-	public GoToAdminHome() {
+	public AdminHome() {
 		super();
 	}
 
@@ -48,7 +48,7 @@ public class GoToAdminHome extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 		
 		//is user but not admin 
-		if(!user.getIsAdmin()) {
+		if(!user.isAdmin()) {
 			response.sendRedirect(userhomepath);
 			return;
 		}

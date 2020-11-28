@@ -32,22 +32,6 @@ public class User implements Serializable {
 
 	private boolean is_admin;
 
-	// Bidirectional many-to-one association to Mission
-	/*
-	 * Fetch type EAGER allows resorting the relationship list content also in the
-	 * client Web servlet after the creation of a new mission. If you leave the
-	 * default LAZY policy, the relationship is sorted only at the first access but
-	 * then adding a new mission does not trigger the reloading of data from the
-	 * database and thus the sort method in the client does not actually re-sort the
-	 * list of missions. MERGE is not cascaded because we will modify and merge only
-	 * username and surname attributes of the user and do not want to cascade
-	 * detached changes to relationship.
-	 */
-	/*@OneToMany(fetch = FetchType.EAGER, mappedBy = "reporter", cascade = { CascadeType.PERSIST, CascadeType.REMOVE,
-			CascadeType.REFRESH })
-	@OrderBy("date DESC")
-	private List<Mission> missions;*/
-
 	public User() {
 	}
 
@@ -91,30 +75,9 @@ public class User implements Serializable {
 		this.username = username;
 	}
 
-	public boolean getIsAdmin() {
+	public boolean isAdmin() {
 		return is_admin;
 	}
-	public void setIsAdmin(boolean is_admin) {
 
-		this.is_admin = is_admin;
-
-	}
-
-
-	/*
-	public List<Mission> getMissions() {
-		return this.missions;
-	}
-
-	public void addMission(Mission mission) {
-		getMissions().add(mission);
-		mission.setReporter(this);
-		// aligns both sides of the relationship
-		// if mission is new, invoking persist() on user cascades also to mission
-	}
-
-	public void removeMission(Mission mission) {
-		getMissions().remove(mission);
-	}*/
-
+	public void setIsAdmin(boolean is_admin) { this.is_admin = is_admin; }
 }

@@ -15,11 +15,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/Home")
-public class GoToHomePage extends HttpServlet {
+public class Home extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 
-	public GoToHomePage() {
+	public Home() {
 		super();
 	}
 
