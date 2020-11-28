@@ -16,16 +16,17 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.db2.marketing.ejb.services.UserService;
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.exceptions.CredentialsException;
+import it.polimi.db2.marketing.ejb.services.UserService;
+
 import javax.persistence.NonUniqueResultException;
 
 @WebServlet("/CheckLogin")
 public class CheckLogin extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
-    @EJB(name = "it.polimi.db2.marketing.ejb.services/UserService")
+    @EJB(name = "it.polimi.db2.marketing.services/UserService")
     private UserService usrService;
 
     public CheckLogin() {
