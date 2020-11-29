@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>History</title>
-<link rel="stylesheet" type="text/css" media="all"
-	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+    <meta charset="ISO-8859-1">
+    <title>History</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}"/>
 </head>
 <body>
-	<div align="right">
-		<a th:href="@{/AdminHome}">Home</a>
-	</div>
-	<div align="right">
-		<a th:href="@{/Logout}">Logout</a>
-	</div>
-	<h1>Welcome to the Questionnaire History Page</h1>
+<div align="right">
+    <a th:href="@{/AdminHome}">Home</a>
+</div>
+<div align="right">
+    <a th:href="@{/Logout}">Logout</a>
+</div>
+<h1>Welcome to the Questionnaire History Page</h1>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Date</th>
-            <th>Details</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="q : ${questionnaires}">
-            <td th:text="${q.title}"></td>
-            <td th:text="${q.date}"></td>
-            <td><a th:href="@{/GetQuestionnaireDetails(questionnaire=${q.date})}">Show</a></td>
-        </tr>
-        </tbody>
-    </table>
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Details</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="q : ${questionnaires}">
+        <td th:text="${q.title}"></td>
+        <td th:text="${q.date}"></td>
+        <td><a th:href="@{/QuestionDetails(questionnaire=${q.date})}">Show</a></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

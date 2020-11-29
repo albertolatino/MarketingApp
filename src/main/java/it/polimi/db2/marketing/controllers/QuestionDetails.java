@@ -1,7 +1,6 @@
 package it.polimi.db2.marketing.controllers;
-
-import it.polimi.db2.marketing.ejb.entities.Questionnaire;
-import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
+/*
+import it.polimi.db2.marketing.ejb.entities.Question;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -16,17 +15,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
 
-@WebServlet("/AdminHistory")
-public class AdminHistory extends HttpServlet {
+@WebServlet("/QuestionDetails")
+public class QuestionDetails extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
-    @EJB(name = "it.polimi.db2.marketing.ejb.services/QuestionnaireService")
-    private QuestionnaireService qService;
+    @EJB(name = "it.polimi.db2.marketing.ejb.services/QuestionService")
+    private QuestionService qService;
 
-    public AdminHistory() {
+    public QuestionDetails() {
         super();
     }
 
@@ -49,26 +47,27 @@ public class AdminHistory extends HttpServlet {
             response.sendRedirect(loginPath);
             return;
         }
-        //retrieve all questionnaires
-        List<Questionnaire> questionnaires = null;
+
+        //retrieve all question for a given date
+        Question question = null;
 
         try {
-            questionnaires = qService.getAllQuestionnaires();
+            question = qService.getQuestion(date);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
             return;
         }
-
-
-        for(Questionnaire q : questionnaires)
-            System.out.println(q.getTitle());
-
-        //TODO em.create questionnaire, but how to get date and title that are in another servlet?
-
-        String path = "/WEB-INF/history.html";
+*/
+        /* To show in question.html:
+         * List of users who submitted the questionnaire.
+         * List of users who cancelled the questionnaire.
+         * Questionnaire answers of each user.
+         */
+/*
+        String path = "/WEB-INF/question.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        ctx.setVariable("questionnaires", questionnaires);
+        ctx.setVariable("question", question);
         templateEngine.process(path, ctx, response.getWriter());
 
     }
@@ -77,4 +76,4 @@ public class AdminHistory extends HttpServlet {
     public void destroy() {
     }
 
-}
+}*/
