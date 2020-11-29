@@ -30,16 +30,31 @@ public class UserService {
 		else if (uList.size() == 1)
 			return uList.get(0);
 		throw new NonUniqueResultException("More than one user registered with same credentials");
-
 	}
 
-/*	public void updateProfile(User u) throws UpdateProfileException {
+	public boolean checkUnique(String usrn, String mail) throws CredentialsException {
+		List<User> uList = null;
 		try {
-			em.merge(u);
+			uList = em.createNamedQuery("User.checkUnique", User.class).setParameter(1, usrn).setParameter(2, mail)
+					.getResultList();
 		} catch (PersistenceException e) {
-			throw new UpdateProfileException("Could not change profile");
+			throw new CredentialsException("Could not verify credentals");
 		}
-	}*/
+		if (uList.isEmpty())
+			return true;
+		else
+			return false;
+	}
 
+	public List<User> getAllUsers() {
+		List<User> allUsers = null;
+		allUsers = em.createNamedQuery("User.getAll", User.class).getResultList();
 
+		return allUsers;
+	}
+
+	public void addUser(String usrn, String name, String surname, String pwd, String mail) {
+		User user = new User(usrn, name, surname, pwd, mail);
+		em.persist(user);
+	}
 }

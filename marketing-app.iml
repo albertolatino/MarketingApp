@@ -6,7 +6,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="EclipseLink" />
         <datasource-mapping>
-          <factory-entry name="MarketingEJB" />
+          <factory-entry name="MarketingEJB" value="fd3b5732-4e4a-4665-81fe-ea041667d01b" />
           <factory-entry name="default" value="fd3b5732-4e4a-4665-81fe-ea041667d01b" />
         </datasource-mapping>
         <naming-strategy-map />
@@ -36,6 +36,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="jdk" jdkName="14" jdkType="JavaSDK" />
