@@ -12,7 +12,8 @@ import java.util.List;
 @Table(name = "usertable", schema = "db_marketing")
 @NamedQueries({
 		@NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"),
-		@NamedQuery(name = "User.getAll", query = "SELECT r FROM User r")
+		@NamedQuery(name = "User.getAll", query = "SELECT r FROM User r"),
+		@NamedQuery(name = "User.checkUnique", query = "SELECT r FROM User r WHERE r.username = ?1 or r.email = ?2")
 })
 
 public class User implements Serializable {
@@ -32,7 +33,24 @@ public class User implements Serializable {
 
 	private boolean is_admin;
 
+	private boolean is_blocked;
+
+	private String email;
+
+	private Integer score;
+
 	public User() {
+	}
+
+	public User(String username, String name, String surname, String password, String email) {
+		this.username = username;
+		this.name = name;
+		this.surname = surname;
+		this.password = password;
+		this.email = email;
+		this.score = 0;
+		this.is_admin = false;
+		this.is_blocked = false;
 	}
 
 	public int getId() {
@@ -79,5 +97,23 @@ public class User implements Serializable {
 		return is_admin;
 	}
 
-	public void setIsAdmin(boolean is_admin) { this.is_admin = is_admin; }
+	public void setIsAdmin(boolean is_admin) {
+		this.is_admin = is_admin;
+	}
+
+	public boolean isBlocked() {
+		return is_blocked;
+	}
+
+	public void setIsBlocked(boolean is_blocked) {
+		this.is_blocked = is_blocked;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

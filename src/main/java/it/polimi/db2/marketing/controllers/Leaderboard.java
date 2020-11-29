@@ -1,7 +1,7 @@
 package it.polimi.db2.marketing.controllers;
 
 import it.polimi.db2.marketing.ejb.entities.User;
-import it.polimi.db2.marketing.ejb.services.LeaderboardService;
+import it.polimi.db2.marketing.ejb.services.UserService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -22,8 +22,8 @@ import java.util.List;
 public class Leaderboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
-	@EJB(name = "it.polimi.db2.marketing.ejb.services/LeaderboardService")
-	private LeaderboardService lService;
+	@EJB(name = "it.polimi.db2.marketing.ejb.services/UserService")
+	private UserService uService;
 
 	public Leaderboard() {
 		super();
@@ -54,7 +54,7 @@ public class Leaderboard extends HttpServlet {
 		List<User> allUsers = null;
 
 		try {
-			  allUsers = lService.getAllUsers();
+			  allUsers = uService.getAllUsers();
 		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get data");
 			return;

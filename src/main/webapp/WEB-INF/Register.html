@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Login page</title>
+	<link rel="stylesheet" type="text/css" media="all"
+		  href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<h1>Register to Marketing Application!</h1>
+
+	<form action="#" th:action="@{/Register}"  method="POST">
+		Username: <input type="text" name="username" required><br>
+		Name: <input type="text" name="name" required><br>
+		Surname: <input type="text" name="surname" required><br>
+		Email: <input type="text" name="mail" required><br>
+		Password: <input type="password" name="pwd" required><br>
+		Repeat Password: <input type="password" name="pwd1" required><br>
+		<input type="submit" value="register">
+		<p class="error" th:text=" ${errorMsg}"></p>
+	</form>
+
+</body>
+</html>
