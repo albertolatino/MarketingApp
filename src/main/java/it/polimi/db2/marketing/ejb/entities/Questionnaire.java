@@ -3,6 +3,7 @@ package it.polimi.db2.marketing.ejb.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,6 @@ import java.util.List;
 })
 
 public class Questionnaire implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -25,14 +25,13 @@ public class Questionnaire implements Serializable {
 
     private String title;
 
-    @OneToMany(mappedBy = "date")
-    private List<Question> questions;
+    @OneToMany(mappedBy="questionnaire")
+    private Collection<Question> questions;
 
     public Questionnaire() {
-
     }
 
-    public Questionnaire(List<Question> questions, Date date, String title){
+    public Questionnaire(Collection<Question> questions, Date date, String title){
         this.questions = questions;
         this.date = date;
         this.title = title;
@@ -54,5 +53,11 @@ public class Questionnaire implements Serializable {
         this.title = title;
     }
 
+    public Collection<Question> getQuestions() {
+        return questions;
+    }
 
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
 }
