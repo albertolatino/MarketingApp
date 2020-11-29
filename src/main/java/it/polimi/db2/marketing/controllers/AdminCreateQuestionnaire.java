@@ -27,11 +27,11 @@ import it.polimi.db2.marketing.ejb.entities.*;
 
 
 @WebServlet("/AdminCreate")
-public class AdminCreate extends HttpServlet {
+public class AdminCreateQuestionnaire extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
 
-    public AdminCreate() {
+    public AdminCreateQuestionnaire() {
         super();
     }
 
