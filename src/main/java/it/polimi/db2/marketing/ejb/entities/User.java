@@ -116,4 +116,12 @@ public class User implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public void setScore(Integer score) {
+		this.score = score;
+	}
+
+	public Integer getScore() {
+		return this.score;
+	}
 }
