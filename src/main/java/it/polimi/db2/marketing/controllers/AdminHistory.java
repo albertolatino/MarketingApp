@@ -69,8 +69,11 @@ public class AdminHistory extends HttpServlet {
             return;
         }
 
+
         for(Questionnaire q : questionnaires)
             System.out.println(q.getTitle());
+
+        //TODO em.create questionnaire, but how to get date and title that are in another servlet?
 
         String path = "/WEB-INF/history.html";
         ServletContext servletContext = getServletContext();

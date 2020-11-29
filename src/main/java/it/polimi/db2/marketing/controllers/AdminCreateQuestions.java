@@ -100,14 +100,15 @@ public class AdminCreateQuestions extends HttpServlet {
         }
 
 
-            
+
+
 
 
             //TODO check that there are no questionnaires planned for questionnaireDate in db
 
 
             // Redirect to the Admin create page
-            String path = "/WEB-INF/AdminCreate.html";
+            String path = "/WEB-INF/AdminHome.html";//TODO add a successful message as a parameter to be shown in home
             ServletContext servletContext = getServletContext();
             final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
             templateEngine.process(path, ctx, response.getWriter());

@@ -2,7 +2,9 @@ package it.polimi.db2.marketing.ejb.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * The persistent class for the usertable database table.
@@ -23,7 +25,17 @@ public class Questionnaire implements Serializable {
 
     private String title;
 
+    @OneToMany(mappedBy = "date")
+    private List<Question> questions;
+
     public Questionnaire() {
+
+    }
+
+    public Questionnaire(List<Question> questions, Date date, String title){
+        this.questions = questions;
+        this.date = date;
+        this.title = title;
     }
 
     public Date getDate() {

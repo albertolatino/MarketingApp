@@ -1,5 +1,6 @@
 package it.polimi.db2.marketing.ejb.services;
 
+import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
 
@@ -7,6 +8,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -29,6 +32,13 @@ public class QuestionnaireService {
 
         return questionnaires;
     }
+
+    public void createQuestionnaire(ArrayList<Question> questions, Date date, String title ){
+
+        Questionnaire questionnaire = new Questionnaire(questions, date, title);
+        //TODO persist???
+    }
+
 
 
 }
