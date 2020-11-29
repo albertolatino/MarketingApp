@@ -13,8 +13,15 @@
 	<h1>Welcome to the Leaderboard</h1>
 
 	<table>
+		<tr>
+			<th>Name</th>
+			<th>Surname</th>
+			<th>Score</th>
+		</tr>
 		<tr th:each="u : ${allUsers}">
 			<td th:text="${u.name}"></td>
+			<td th:text="${u.surname}"></td>
+			<td th:text="${u.score}"></td>
 		</tr>
 	</table>
 	
