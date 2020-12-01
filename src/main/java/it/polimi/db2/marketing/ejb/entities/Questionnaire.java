@@ -28,6 +28,9 @@ public class Questionnaire implements Serializable {
     @OneToMany(mappedBy="questionnaire")
     private Collection<Question> questions;
 
+    @OneToMany(mappedBy="questionnaire")
+    private Collection<StatAnswers> statAnswers;
+
     public Questionnaire() {
     }
 
@@ -59,5 +62,13 @@ public class Questionnaire implements Serializable {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public Collection<StatAnswers> getStatAnswers() {
+        return statAnswers;
+    }
+
+    public void setStatAnswers(Collection<StatAnswers> statAnswers) {
+        this.statAnswers = statAnswers;
     }
 }
