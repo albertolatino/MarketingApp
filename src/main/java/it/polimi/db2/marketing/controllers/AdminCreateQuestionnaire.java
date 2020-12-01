@@ -1,12 +1,11 @@
 package it.polimi.db2.marketing.controllers;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import it.polimi.db2.marketing.ejb.entities.User;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,15 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.commons.lang.StringEscapeUtils;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
-
-import it.polimi.db2.marketing.ejb.entities.*;
+import java.io.IOException;
 
 
 
@@ -30,6 +21,7 @@ import it.polimi.db2.marketing.ejb.entities.*;
 public class AdminCreateQuestionnaire extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
+
 
     public AdminCreateQuestionnaire() {
         super();
@@ -81,15 +73,14 @@ public class AdminCreateQuestionnaire extends HttpServlet {
             return;
         }
 
-        boolean isBadRequest = false;
-        Date questionnaireDate = null;
         Integer questionsNumber = null;
+        boolean isBadRequest = false;
+
+
         try {
-            questionsNumber = Integer.parseInt(request.getParameter("number"));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            questionnaireDate = (Date) sdf.parse(request.getParameter("date"));
-            isBadRequest = questionsNumber <= 0 || isBeforeToday(questionnaireDate);
-        } catch (NumberFormatException | NullPointerException | ParseException e) {
+            questionsNumber = Integer. parseInt(request.getParameter("number"));
+            isBadRequest = questionsNumber <= 0;
+        } catch (NumberFormatException | NullPointerException e) {
             isBadRequest = true;
             e.printStackTrace();
         }
@@ -98,13 +89,13 @@ public class AdminCreateQuestionnaire extends HttpServlet {
             return;
         }
 
-        System.out.println(questionnaireDate);
+
+        //System.out.println(questionnaireDate);
         System.out.println(questionsNumber);
 
-        //TODO check that there are no questionnaires planned for questionnaireDate in db
 
 
-        // Redirect to the Admin create page
+
         String path = "/WEB-INF/AdminCreateQuestions.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -112,9 +103,6 @@ public class AdminCreateQuestionnaire extends HttpServlet {
         templateEngine.process(path, ctx, response.getWriter());
     }
 
-    private boolean isBeforeToday(Date date) {
-        return date.before(new Date());
-    }
 
     public void destroy() {
     }

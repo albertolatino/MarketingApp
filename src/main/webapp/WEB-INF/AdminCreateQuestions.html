@@ -18,6 +18,9 @@
     <p>You have selected <span th:text="${number}"></span> questions.</p>
 
     <form action="#" th:action="@{/AdminCreateQuestions}" method="POST">
+        Select Questionnaire Date <br>
+        <input type="date" name="date" id="date"><br>
+        Title: <input type="text" name="title" id="title"><br>
         <table>
             <tr th:each="i : ${#numbers.sequence(0, number - 1)}">
 				<td>Question <span th:text="${i + 1}"></span></td>
@@ -26,5 +29,11 @@
         </table>
         <input type="submit" value="Create">
     </form>
+
+    <script>
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1)
+        document.getElementById("date").setAttribute('value', tomorrow.toISOString().slice(0, 10))
+    </script>
 </body>
 </html>

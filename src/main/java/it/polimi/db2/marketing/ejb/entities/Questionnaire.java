@@ -13,7 +13,8 @@ import java.util.List;
 @Entity
 @Table(name = "questionnaire", schema = "db_marketing")
 @NamedQueries({
-        @NamedQuery(name = "Questionnaire.getAll", query = "SELECT q FROM Questionnaire q")
+        @NamedQuery(name = "Questionnaire.getAll", query = "SELECT q FROM Questionnaire q"),
+        @NamedQuery(name = "Questionnaire.getByDate", query = "SELECT q FROM Questionnaire q WHERE q.date = ?1")
 })
 
 public class Questionnaire implements Serializable {
@@ -33,6 +34,11 @@ public class Questionnaire implements Serializable {
 
     public Questionnaire(Collection<Question> questions, Date date, String title){
         this.questions = questions;
+        this.date = date;
+        this.title = title;
+    }
+
+    public  Questionnaire(Date date, String title){
         this.date = date;
         this.title = title;
     }
