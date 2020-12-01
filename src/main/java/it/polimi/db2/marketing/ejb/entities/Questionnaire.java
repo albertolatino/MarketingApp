@@ -7,9 +7,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-/**
- * The persistent class for the usertable database table.
- */
+
 @Entity
 @Table(name = "questionnaire", schema = "db_marketing")
 @NamedQueries({
