@@ -3,11 +3,10 @@ package it.polimi.db2.marketing.ejb.services;
 import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
+import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
 
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +38,16 @@ public class QuestionnaireService {
         //TODO persist???
     }
 
+    public Questionnaire getToday() throws QuestionnaireNotFoundException, QuestionnaireException  {
+        Questionnaire questionnaire;
+        try {
+            questionnaire = em.createNamedQuery("Questionnaire.getToday", Questionnaire.class).getSingleResult();
+        } catch (NoResultException e) {
+            throw new QuestionnaireNotFoundException();
+        } catch (PersistenceException e) {
+            throw new QuestionnaireException("Could not get Questionnaire");
+        }
 
-
+        return questionnaire;
+    }
 }

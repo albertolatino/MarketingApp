@@ -11,7 +11,8 @@ import java.util.List;
 @Entity
 @Table(name = "questionnaire", schema = "db_marketing")
 @NamedQueries({
-        @NamedQuery(name = "Questionnaire.getAll", query = "SELECT q FROM Questionnaire q")
+        @NamedQuery(name = "Questionnaire.getAll", query = "SELECT q FROM Questionnaire q"),
+        @NamedQuery(name = "Questionnaire.getToday", query = "SELECT q FROM Questionnaire q WHERE q.date = CURRENT_DATE")
 })
 
 public class Questionnaire implements Serializable {
