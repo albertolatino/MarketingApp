@@ -2,6 +2,7 @@ package it.polimi.db2.marketing.ejb.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -38,6 +39,12 @@ public class User implements Serializable {
 	private String email;
 
 	private Integer score;
+
+	@OneToMany(mappedBy="user")
+	private Collection<Answer> answers;
+
+	@OneToMany(mappedBy="user")
+	private Collection<StatAnswers> statAnswers;
 
 	public User() {
 	}
@@ -123,5 +130,21 @@ public class User implements Serializable {
 
 	public Integer getScore() {
 		return this.score;
+	}
+
+	public Collection<Answer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(Collection<Answer> answers) {
+		this.answers = answers;
+	}
+
+	public Collection<StatAnswers> getStatAnswers() {
+		return statAnswers;
+	}
+
+	public void setStatAnswers(Collection<StatAnswers> statAnswers) {
+		this.statAnswers = statAnswers;
 	}
 }

@@ -10,18 +10,13 @@
 	<div align="right">
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
-	<h1>Welcome to the Leaderboard</h1>
+	<h1>Welcome to the Questionnaire Page</h1>
+	<h2 th:text="${questionnaireName}"></h2>
 
 	<table>
-		<tr>
-			<th>Name</th>
-			<th>Surname</th>
-			<th>Score</th>
-		</tr>
-		<tr th:each="u : ${allUsers}">
-			<td th:text="${u.name}"></td>
-			<td th:text="${u.surname}"></td>
-			<td th:text="${u.score}"></td>
+		<tr th:each="q : ${questions}">
+			<td th:text="${q.getText()}"></td>
+			<td><input type="text" th:name="${q.getId()}"></td>
 		</tr>
 	</table>
 	

@@ -7,14 +7,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-/**
- * The persistent class for the usertable database table.
- */
+
 @Entity
 @Table(name = "questionnaire", schema = "db_marketing")
 @NamedQueries({
         @NamedQuery(name = "Questionnaire.getAll", query = "SELECT q FROM Questionnaire q"),
-        @NamedQuery(name = "Questionnaire.getByDate", query = "SELECT q FROM Questionnaire q WHERE q.date = ?1")
+        @NamedQuery(name = "Questionnaire.getByDate", query = "SELECT q FROM Questionnaire q WHERE q.date = ?1"),
+        @NamedQuery(name = "Questionnaire.getToday", query = "SELECT q FROM Questionnaire q WHERE q.date = CURRENT_DATE")
 })
 
 public class Questionnaire implements Serializable {
@@ -28,6 +27,9 @@ public class Questionnaire implements Serializable {
 
     @OneToMany(mappedBy="questionnaire")
     private Collection<Question> questions;
+
+    @OneToMany(mappedBy="questionnaire")
+    private Collection<StatAnswers> statAnswers;
 
     public Questionnaire() {
     }
@@ -65,5 +67,13 @@ public class Questionnaire implements Serializable {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public Collection<StatAnswers> getStatAnswers() {
+        return statAnswers;
+    }
+
+    public void setStatAnswers(Collection<StatAnswers> statAnswers) {
+        this.statAnswers = statAnswers;
     }
 }
