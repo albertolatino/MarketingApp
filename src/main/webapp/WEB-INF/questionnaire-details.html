@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
-    <title>History</title>
+    <title>Questionnaire Details</title>
     <link rel="stylesheet" type="text/css" media="all"
           href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}"/>
 </head>
@@ -13,21 +13,22 @@
 <div align="right">
     <a th:href="@{/Logout}">Logout</a>
 </div>
-<h1>Welcome to the Questionnaire History Page</h1>
+<h1>Welcome to the Questionnaire Page</h1>
 
+<p>Users who submitted the questionnaire</p>
 <table>
     <thead>
     <tr>
-        <th>Title</th>
-        <th>Date</th>
-        <th>Details</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>username</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="q : ${questionnaires}">
-        <td th:text="${q.title}"></td>
-        <td th:text="${#dates.format(q.date, 'yyyy-MM-dd')}"></td>
-        <td><a th:href="@{/QuestionnaireDetails(date=${#dates.format(q.date, 'yyyy-MM-dd')})}">Show</a></td>
+    <tr th:each="u : ${usersSubmitted}">
+        <td th:text="${u.name}"></td>
+        <td th:text="${u.surname}"></td>
+        <td th:text="${u.username}"></td>
     </tr>
     </tbody>
 </table>

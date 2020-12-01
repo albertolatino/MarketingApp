@@ -6,6 +6,10 @@
     <persistence-unit name="MarketingEJB"
                       transaction-type="JTA">
         <jta-data-source>MarketingDB</jta-data-source>
+        <class>it.polimi.db2.marketing.ejb.entities.Answer</class>
+        <class>it.polimi.db2.marketing.ejb.entities.Question</class>
+        <class>it.polimi.db2.marketing.ejb.entities.Questionnaire</class>
+        <class>it.polimi.db2.marketing.ejb.entities.StatAnswers</class>
         <class>it.polimi.db2.marketing.ejb.entities.User</class>
         <properties>
             <property name="eclipselink.logging.level" value="FINE" />

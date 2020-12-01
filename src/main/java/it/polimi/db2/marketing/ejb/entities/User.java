@@ -1,9 +1,8 @@
 package it.polimi.db2.marketing.ejb.entities;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * The persistent class for the usertable database table.
@@ -14,7 +13,12 @@ import java.util.List;
 @NamedQueries({
 		@NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"),
 		@NamedQuery(name = "User.getAll", query = "SELECT r FROM User r"),
-		@NamedQuery(name = "User.checkUnique", query = "SELECT r FROM User r WHERE r.username = ?1 or r.email = ?2")
+		@NamedQuery(name = "User.checkUnique", query = "SELECT r FROM User r WHERE r.username = ?1 or r.email = ?2"),
+
+		//TODO refactor using table user_questionnaire JOIN usertable WHERE has_submitted = true
+		@NamedQuery(name = "User.getUsersWhoSubmittedQuestionnaire",
+				query = "SELECT DISTINCT u FROM User u, Answer a, Question q WHERE q.date = ?1 and u.id = a.user_id and a.question_id = q.id")
+
 })
 
 public class User implements Serializable {

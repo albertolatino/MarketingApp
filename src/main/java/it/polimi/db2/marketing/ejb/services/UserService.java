@@ -7,6 +7,8 @@ import javax.persistence.PersistenceException;
 import javax.persistence.NonUniqueResultException;
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.exceptions.*;
+
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -18,17 +20,17 @@ public class UserService {
 	}
 
 	public User checkCredentials(String usrn, String pwd) throws CredentialsException, NonUniqueResultException {
-		List<User> uList = null;
+		List<User> users;
 		try {
-			uList = em.createNamedQuery("User.checkCredentials", User.class).setParameter(1, usrn).setParameter(2, pwd)
+			users = em.createNamedQuery("User.checkCredentials", User.class).setParameter(1, usrn).setParameter(2, pwd)
 					.getResultList();
 		} catch (PersistenceException e) {
 			throw new CredentialsException("Could not verify credentals");
 		}
-		if (uList.isEmpty())
+		if (users.isEmpty())
 			return null;
-		else if (uList.size() == 1)
-			return uList.get(0);
+		else if (users.size() == 1)
+			return users.get(0);
 		throw new NonUniqueResultException("More than one user registered with same credentials");
 	}
 
@@ -40,10 +42,7 @@ public class UserService {
 		} catch (PersistenceException e) {
 			throw new CredentialsException("Could not verify credentals");
 		}
-		if (uList.isEmpty())
-			return true;
-		else
-			return false;
+		return uList.isEmpty();
 	}
 
 	public List<User> getAllUsers() {
@@ -57,4 +56,13 @@ public class UserService {
 		User user = new User(usrn, name, surname, pwd, mail);
 		em.persist(user);
 	}
+
+	public List<User> getUsersWhoSubmittedQuestionnaire(Date date) {
+		List<User> users;
+		users = em.createNamedQuery("User.getUsersWhoSubmittedQuestionnaire", User.class)
+				.setParameter(1, date).getResultList();
+
+		return users;
+	}
+
 }

@@ -30,7 +30,7 @@ public class AdminHistory extends HttpServlet {
         super();
     }
 
-    public void init() throws ServletException {
+    public void init() {
         ServletContext servletContext = getServletContext();
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
         templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -40,7 +40,7 @@ public class AdminHistory extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         // If the user is not logged in (not present in session) redirect to the login
         String loginPath = getServletContext().getContextPath() + "/index.html";
@@ -49,20 +49,21 @@ public class AdminHistory extends HttpServlet {
             response.sendRedirect(loginPath);
             return;
         }
-        //retrieve all questionnaires
-        List<Questionnaire> questionnaires = null;
 
+        //retrieve all questionnaires
+        List<Questionnaire> questionnaires;
         try {
-            questionnaires = qService.getAllQuestionnaires();
+            questionnaires = qService.getAll();
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
             return;
         }
 
 
-        for(Questionnaire q : questionnaires)
+        for(Questionnaire q : questionnaires) {
             System.out.println(q.getTitle());
-
+            System.out.println(q.getDate());
+        }
         //TODO em.create questionnaire, but how to get date and title that are in another servlet?
 
         String path = "/WEB-INF/history.html";

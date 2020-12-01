@@ -19,12 +19,12 @@ public class QuestionnaireService {
     public QuestionnaireService() {
     }
 
-    public List<Questionnaire> getAllQuestionnaires() throws QuestionnaireException {
+    public List<Questionnaire> getAll() throws QuestionnaireException {
         List<Questionnaire> questionnaires;
         try {
             questionnaires = em.createNamedQuery("Questionnaire.getAll", Questionnaire.class).getResultList();
         } catch (PersistenceException e) {
-            throw new QuestionnaireException("Could not verify credentals");
+            throw new QuestionnaireException("Could not verify credentials");
         }
         if (questionnaires.isEmpty())
             return null;
