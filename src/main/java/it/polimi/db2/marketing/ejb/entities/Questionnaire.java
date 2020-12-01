@@ -12,6 +12,7 @@ import java.util.List;
 @Table(name = "questionnaire", schema = "db_marketing")
 @NamedQueries({
         @NamedQuery(name = "Questionnaire.getAll", query = "SELECT q FROM Questionnaire q"),
+        @NamedQuery(name = "Questionnaire.getByDate", query = "SELECT q FROM Questionnaire q WHERE q.date = ?1"),
         @NamedQuery(name = "Questionnaire.getToday", query = "SELECT q FROM Questionnaire q WHERE q.date = CURRENT_DATE")
 })
 
@@ -35,6 +36,11 @@ public class Questionnaire implements Serializable {
 
     public Questionnaire(Collection<Question> questions, Date date, String title){
         this.questions = questions;
+        this.date = date;
+        this.title = title;
+    }
+
+    public  Questionnaire(Date date, String title){
         this.date = date;
         this.title = title;
     }

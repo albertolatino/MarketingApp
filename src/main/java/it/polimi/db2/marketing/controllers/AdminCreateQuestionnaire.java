@@ -24,6 +24,7 @@ public class AdminCreateQuestionnaire extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
 
+
     public AdminCreateQuestionnaire() {
         super();
     }
@@ -74,15 +75,14 @@ public class AdminCreateQuestionnaire extends HttpServlet {
             return;
         }
 
-        boolean isBadRequest = false;
-        Date questionnaireDate = null;
         Integer questionsNumber = null;
+        boolean isBadRequest = false;
+
+
         try {
-            questionsNumber = Integer.parseInt(request.getParameter("number"));
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            questionnaireDate = (Date) sdf.parse(request.getParameter("date"));
-            isBadRequest = questionsNumber <= 0 || isBeforeToday(questionnaireDate);
-        } catch (NumberFormatException | NullPointerException | ParseException e) {
+            questionsNumber = Integer. parseInt(request.getParameter("number"));
+            isBadRequest = questionsNumber <= 0;
+        } catch (NumberFormatException | NullPointerException e) {
             isBadRequest = true;
             e.printStackTrace();
         }
@@ -91,13 +91,13 @@ public class AdminCreateQuestionnaire extends HttpServlet {
             return;
         }
 
-        System.out.println(questionnaireDate);
+
+        //System.out.println(questionnaireDate);
         System.out.println(questionsNumber);
 
-        //TODO check that there are no questionnaires planned for questionnaireDate in db
 
 
-        // Redirect to the Admin create page
+
         String path = "/WEB-INF/AdminCreateQuestions.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -105,9 +105,6 @@ public class AdminCreateQuestionnaire extends HttpServlet {
         templateEngine.process(path, ctx, response.getWriter());
     }
 
-    private boolean isBeforeToday(Date date) {
-        return date.before(new Date());
-    }
 
     public void destroy() {
     }

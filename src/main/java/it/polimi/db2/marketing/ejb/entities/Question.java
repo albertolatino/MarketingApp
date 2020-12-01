@@ -33,7 +33,15 @@ public class Question implements Serializable {
     @OneToMany(mappedBy="question")
     private Collection<Answer> answers;
 
-    public Question() {
+    public Question(Questionnaire questionnaire, Date date, String text ) {
+
+        this.questionnaire = questionnaire;
+        this.date = date;
+        this.text = text;
+    }
+
+    public Question(){
+
     }
 
     public Questionnaire getQuestionnaire() {

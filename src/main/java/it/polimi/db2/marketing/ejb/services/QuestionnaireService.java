@@ -2,6 +2,8 @@ package it.polimi.db2.marketing.ejb.services;
 
 import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
+import it.polimi.db2.marketing.ejb.entities.User;
+import it.polimi.db2.marketing.ejb.exceptions.CredentialsException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
 
@@ -32,10 +34,31 @@ public class QuestionnaireService {
         return questionnaires;
     }
 
-    public void createQuestionnaire(ArrayList<Question> questions, Date date, String title ){
+    public void createQuestionnaire(ArrayList<String> questions, Date date, String title){
 
-        Questionnaire questionnaire = new Questionnaire(questions, date, title);
-        //TODO persist???
+        Questionnaire questionnaire = new Questionnaire(date, title);
+
+        ArrayList<Question> qs = new ArrayList<>();
+
+        for(String s : questions){
+
+            Question q = new Question(questionnaire,date,s);
+            em.persist(q);//TODO FARE MEGLIO CON QUESTION SERVICE
+            qs.add(q);
+        }
+
+        questionnaire.setQuestions(qs);
+
+        em.persist(questionnaire);
+    }
+
+    public boolean questionnaireAlreadyExist(Date plannedDate){
+
+        List<Questionnaire> qList = null;
+
+           qList = em.createNamedQuery("Questionnaire.getByDate", Questionnaire.class).setParameter(1,plannedDate).getResultList();
+
+        return qList.size() == 1;
     }
 
     public Questionnaire getToday() throws QuestionnaireNotFoundException, QuestionnaireException  {
