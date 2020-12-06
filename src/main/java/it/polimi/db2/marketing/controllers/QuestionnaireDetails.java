@@ -1,7 +1,7 @@
 package it.polimi.db2.marketing.controllers;
 
 import it.polimi.db2.marketing.ejb.entities.User;
-import it.polimi.db2.marketing.ejb.services.UserService;
+import it.polimi.db2.marketing.ejb.services.UserQuestionnaireService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -25,8 +25,8 @@ import java.util.List;
 public class QuestionnaireDetails extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
-    @EJB(name = "it.polimi.db2.marketing.ejb.services/UserService")
-    private UserService uService;
+    @EJB(name = "it.polimi.db2.marketing.ejb.services/UserQuestionnaireService")
+    private UserQuestionnaireService uqService;
 
     public QuestionnaireDetails() {
         super();
@@ -78,19 +78,18 @@ public class QuestionnaireDetails extends HttpServlet {
          * Questionnaire answers of each user. [New page linked to users who submitted]
          */
 
-        //get users who submitted the questionnaire of date
-        List<User> usersSubmitted;
+        //get users who submitted and canceled the questionnaire of date
+        List<User> usersSubmitted, usersCanceled;
 
         try {
-            usersSubmitted = uService.getUsersWhoSubmittedQuestionnaire(date);
+            usersSubmitted = uqService.getUsersWhoSubmitted(date);
+            usersCanceled = uqService.getUsersWhoCanceled(date);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
             return;
         }
-        System.out.println(usersSubmitted.get(0));
-
-        //get users who canceled the questionnaire of date
-
+        System.out.println(usersSubmitted.get(0).getUsername());
+        System.out.println(usersCanceled.get(0).getUsername());
 
 
         String path = "/WEB-INF/questionnaire-details.html";
