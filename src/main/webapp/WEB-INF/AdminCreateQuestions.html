@@ -31,9 +31,8 @@
     </form>
 
     <script>
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1)
-        document.getElementById("date").setAttribute('value', tomorrow.toISOString().slice(0, 10))
+        const today = new Date();
+        document.getElementById("date").setAttribute('value', today.toISOString().slice(0, 10))
     </script>
 </body>
 </html>
