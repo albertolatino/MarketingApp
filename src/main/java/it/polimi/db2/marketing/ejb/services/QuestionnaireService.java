@@ -1,14 +1,16 @@
 package it.polimi.db2.marketing.ejb.services;
 
+import it.polimi.db2.marketing.ejb.entities.Answer;
 import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
-import it.polimi.db2.marketing.ejb.entities.User;
-import it.polimi.db2.marketing.ejb.exceptions.CredentialsException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
 
 import javax.ejb.Stateless;
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -78,5 +80,9 @@ public class QuestionnaireService {
         return questionnaire;
     }
 
-
+    public void addAnswers(List<Answer> answers) {
+        for (Answer a : answers) {
+            em.persist(a);
+        }
+    }
 }

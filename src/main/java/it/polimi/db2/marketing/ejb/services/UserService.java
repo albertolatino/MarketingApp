@@ -1,14 +1,13 @@
 package it.polimi.db2.marketing.ejb.services;
 
+import it.polimi.db2.marketing.ejb.entities.User;
+import it.polimi.db2.marketing.ejb.exceptions.CredentialsException;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.NonUniqueResultException;
-import it.polimi.db2.marketing.ejb.entities.User;
-import it.polimi.db2.marketing.ejb.exceptions.*;
-
-import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -57,12 +56,5 @@ public class UserService {
 		em.persist(user);
 	}
 
-	public List<User> getUsersWhoSubmittedQuestionnaire(Date date) {
-		List<User> users;
-		users = em.createNamedQuery("User.getUsersWhoSubmittedQuestionnaire", User.class)
-				.setParameter(1, date).getResultList();
-
-		return users;
-	}
 
 }

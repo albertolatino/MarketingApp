@@ -13,16 +13,14 @@
 	<h1>Welcome to the Questionnaire Page</h1>
 	<h2 th:text="${questionnaireName}"></h2>
 
-	<table>
-		<tr th:each="q : ${questions}">
-			<td th:text="${q.getText()}"></td>
-			<td><input type="text" th:name="${q.getId()}"></td>
-		</tr>
-	</table>
-	
-
-	<form action="#" th:action="@{/Home}" method="GET">
-		<input type="submit" value="HOME">
+	<form action="#" th:action="@{/TodaysQuestionnaire}" method="POST">
+		<table>
+			<tr th:each="q : ${questions}">
+				<td th:text="${q.getText()}"></td>
+				<td><input type="text" th:name="${q.getId()}" required></td>
+			</tr>
+		</table>
+		<input type="submit" value="NEXT">
 	</form>
 </body>
 </html>

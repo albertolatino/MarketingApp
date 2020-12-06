@@ -28,6 +28,14 @@ public class Answer implements Serializable {
     @JoinColumn(name="user_id", insertable=false, updatable=false)
     private User user;
 
+    public Answer() {}
+
+    public Answer(Integer question_id, Integer user_id, String answer) {
+        this.question_id = question_id;
+        this.user_id = user_id;
+        this.answer = answer;
+    }
+
     public static class Key implements Serializable {
 
         protected Integer question_id;

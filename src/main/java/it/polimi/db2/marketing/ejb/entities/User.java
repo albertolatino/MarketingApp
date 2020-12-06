@@ -14,13 +14,7 @@ import java.util.Collection;
 		@NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"),
 		@NamedQuery(name = "User.getAll", query = "SELECT r FROM User r"),
 		@NamedQuery(name = "User.checkUnique", query = "SELECT r FROM User r WHERE r.username = ?1 or r.email = ?2"),
-
-		//TODO refactor using table user_questionnaire JOIN usertable WHERE has_submitted = true
-		@NamedQuery(name = "User.getUsersWhoSubmittedQuestionnaire",
-				query = "SELECT DISTINCT u FROM User u, Answer a, Question q WHERE q.date = ?1 and u.id = a.user_id and a.question_id = q.id")
-
 })
-
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -49,6 +43,10 @@ public class User implements Serializable {
 
 	@OneToMany(mappedBy="user")
 	private Collection<StatAnswers> statAnswers;
+
+	@OneToMany(mappedBy="user")
+	private Collection<UserQuestionnaire> questionnaires;
+
 
 	public User() {
 	}
