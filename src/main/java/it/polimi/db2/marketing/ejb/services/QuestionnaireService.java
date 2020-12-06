@@ -36,20 +36,24 @@ public class QuestionnaireService {
 
     public void createQuestionnaire(ArrayList<String> questions, Date date, String title){
 
+
+
         Questionnaire questionnaire = new Questionnaire(date, title);
+        em.persist(questionnaire);
 
         ArrayList<Question> qs = new ArrayList<>();
 
-        for(String s : questions){
-
-            Question q = new Question(questionnaire,date,s);
-            em.persist(q);//TODO FARE MEGLIO CON QUESTION SERVICE
+        for(String s : questions) {
+            Question q = new Question(questionnaire, date, s);
             qs.add(q);
+            em.persist(q);
         }
+
+        //for(Question q : qs)
+          //  em.persist(q);
 
         questionnaire.setQuestions(qs);
 
-        em.persist(questionnaire);
     }
 
     public boolean questionnaireAlreadyExist(Date plannedDate){
@@ -73,4 +77,6 @@ public class QuestionnaireService {
 
         return questionnaire;
     }
+
+
 }
