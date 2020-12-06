@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<div align="right">
+		<a th:href="@{/Logout}">Logout</a>
+	</div>
+	<h1>Welcome to the Questionnaire Statistics Page</h1>
+	<h2 th:text="${questionnaireName}"></h2>
+
+	<form action="#" th:action="@{/TodaysQuestionnaire}" method="POST">
+		<table>
+			<tr>
+				<td >Age: </td>
+				<td><input type="text" th:name="${q.getId()}" required></td>
+			</tr>
+			<tr>
+				<td>Sex: </td>
+				<td><select name="sex">
+					<option value="null">I prefer not to respond</option>
+					<option value="M">Male</option>
+					<option value="F">Female</option>
+					<option value="N">Other</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td>Expertise: </td>
+				<td><select name="expertise">
+					<option value="null">I prefer not to respond</option>
+					<option value="L">Low</option>
+					<option value="M">Medium</option>
+					<option value="H">High</option>
+				</select></td>
+			</tr>
+		</table>
+		<input type="submit" value="FINISH">
+		<input type="submit" value="CANCEL">
+	</form>
+</body>
+</html>

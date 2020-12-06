@@ -88,7 +88,6 @@ public class AdminCreateQuestions extends HttpServlet {
         String title = null;
 
         try {
-
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             questionnaireDate = (Date) sdf.parse(request.getParameter("date"));
             title = (String) StringEscapeUtils.escapeJava(request.getParameter("title"));

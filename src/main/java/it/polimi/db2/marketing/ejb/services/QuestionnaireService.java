@@ -1,5 +1,6 @@
 package it.polimi.db2.marketing.ejb.services;
 
+import it.polimi.db2.marketing.ejb.entities.Answer;
 import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.entities.User;
@@ -72,5 +73,11 @@ public class QuestionnaireService {
         }
 
         return questionnaire;
+    }
+
+    public void addAnswers(List<Answer> answers) {
+        for (Answer a : answers) {
+            em.persist(a);
+        }
     }
 }
