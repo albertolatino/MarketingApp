@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "answer", schema = "db_marketing")
+@Table(name = "stat_answers", schema = "db_marketing")
 @IdClass(StatAnswers.Key.class)
 public class StatAnswers implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -17,7 +17,11 @@ public class StatAnswers implements Serializable {
     @Id
     private Integer user_id;
 
-    private String answer;
+    private Integer age;
+
+    private String sex;
+
+    private String expertise;
 
     @ManyToOne
     @JoinColumn(name="date", insertable=false, updatable=false)
@@ -26,6 +30,17 @@ public class StatAnswers implements Serializable {
     @ManyToOne
     @JoinColumn(name="user_id", insertable=false, updatable=false)
     private User user;
+
+    public StatAnswers() {
+    }
+
+    public StatAnswers(Date date, Integer user_id, Integer age, String sex, String expertise) {
+        this.date = date;
+        this.user_id = user_id;
+        this.age = age;
+        this.sex = sex;
+        this.expertise = expertise;
+    }
 
     public static class Key implements Serializable {
 
@@ -87,12 +102,28 @@ public class StatAnswers implements Serializable {
         this.user_id = user_id;
     }
 
-    public String getAnswer() {
-        return answer;
+    public Integer getAge() {
+        return age;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getExpertise() {
+        return expertise;
+    }
+
+    public void setExpertise(String expertise) {
+        this.expertise = expertise;
     }
 }
 

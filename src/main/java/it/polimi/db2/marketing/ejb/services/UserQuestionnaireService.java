@@ -1,8 +1,6 @@
 package it.polimi.db2.marketing.ejb.services;
 
-import it.polimi.db2.marketing.ejb.entities.Questionnaire;
-import it.polimi.db2.marketing.ejb.entities.User;
-import it.polimi.db2.marketing.ejb.entities.UserQuestionnaire;
+import it.polimi.db2.marketing.ejb.entities.*;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -51,4 +49,26 @@ public class UserQuestionnaireService {
         em.persist(uq);
     }
 
+    public boolean checkRespondedToMarketingQuestions(User u, Questionnaire qst) {
+        for (Question q : qst.getQuestions()) {
+            Answer.Key key = new Answer.Key(q.getId(), u.getId());
+            if (em.find(Answer.class, key) == null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public void addStatAnswers(StatAnswers statAnswers) {
+        em.persist(statAnswers);
+    }
+
+    public void submitQuestionnaire(User u, Questionnaire qst) {
+        UserQuestionnaire.Key key = new UserQuestionnaire.Key(u.getId(), qst.getDate());
+
+        UserQuestionnaire uq = em.find(UserQuestionnaire.class, key);
+
+        uq.setHasSubmitted(true);
+    }
 }

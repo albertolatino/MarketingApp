@@ -1,10 +1,15 @@
 package it.polimi.db2.marketing.controllers;
 
+import it.polimi.db2.marketing.ejb.entities.Questionnaire;
+import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
+import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
+import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +23,8 @@ import java.io.IOException;
 public class Home extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
+	@EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
+	private QuestionnaireService qstService;
 
 	public Home() {
 		super();
@@ -43,9 +50,17 @@ public class Home extends HttpServlet {
 			return;
 		}
 
+		Questionnaire qst;
+		try {
+			qst = qstService.getToday();
+		} catch (Exception e) {
+			qst = null;
+		}
+
 		String path = "/WEB-INF/Home.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("today", qst != null);
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

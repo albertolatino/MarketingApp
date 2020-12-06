@@ -117,6 +117,11 @@ public class TodaysQuestionnaire extends HttpServlet {
 			return;
 		}
 
+		if (!uqService.checkAlreadyExists(user, qst)) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad action sequence!");
+			return;
+		}
+
 		// contains all indices of all questions in the current questionnaire
 		List<Integer> allQuestionnaireNumbers = qst.getQuestions().stream().map(Question::getId).collect(Collectors.toList());
 

@@ -14,11 +14,13 @@
 	<p
 		th:text="${'Nice to see you again ' + session.user.name + ' ' + session.user.surname}"></p>
 
+	<span th:text="${message}"></span>
 	<form action="#" th:action="@{/Leaderboard}" method="GET">
 		<input type="submit" value="LEADERBOARD">
 	</form>
 	<form action="#" th:action="@{/TodaysQuestionnaire}" method="GET">
-		<input type="submit" value="TODAY'S QUESTIONNAIRE">
+		<input th:if="${today == true}" type="submit" value="TODAY'S QUESTIONNAIRE">
+		<input th:if="${today == false}" type="submit" value="TODAY'S QUESTIONNAIRE" disabled>
 	</form>
 </body>
 </html>
