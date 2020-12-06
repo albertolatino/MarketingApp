@@ -58,7 +58,7 @@ public class QuestionnaireService {
 
            qList = em.createNamedQuery("Questionnaire.getByDate", Questionnaire.class).setParameter(1,plannedDate).getResultList();
 
-        return qList.size() == 1;
+        return qList.size() > 0;
     }
 
     public Questionnaire getToday() throws QuestionnaireNotFoundException, QuestionnaireException  {

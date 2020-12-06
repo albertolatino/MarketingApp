@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -91,7 +92,6 @@ public class AdminCreateQuestions extends HttpServlet {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             questionnaireDate = (Date) sdf.parse(request.getParameter("date"));
             title = (String) StringEscapeUtils.escapeJava(request.getParameter("title"));
-            questionnaireDate = normalizeDate(questionnaireDate);
             isBadRequest = isBeforeToday(questionnaireDate);
         } catch (NumberFormatException | NullPointerException | ParseException e) {
             isBadRequest = true;
@@ -151,13 +151,11 @@ public class AdminCreateQuestions extends HttpServlet {
     }
 
     private boolean isBeforeToday(Date date) {
-        return date.before(normalizeDate(new Date()));
-    }
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(date);
+        String strToday = dateFormat.format(new Date());
 
-    private Date normalizeDate(Date date) {
-        long time = date.getTime();
-
-        return new Date(time - time % (24 * 60 * 60 * 1000));
+        return strDate.compareTo(strToday) < 0;
     }
 
     public void destroy() {
