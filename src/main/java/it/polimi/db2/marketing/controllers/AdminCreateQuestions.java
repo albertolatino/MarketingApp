@@ -148,7 +148,6 @@ public class AdminCreateQuestions extends HttpServlet {
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         ctx.setVariable("message", message);
         templateEngine.process(path, ctx, response.getWriter());
-
     }
 
     private boolean isBeforeToday(Date date) {
@@ -156,7 +155,7 @@ public class AdminCreateQuestions extends HttpServlet {
     }
 
     private Date normalizeDate(Date date) {
-        long time = new Date().getTime();
+        long time = date.getTime();
 
         return new Date(time - time % (24 * 60 * 60 * 1000));
     }
