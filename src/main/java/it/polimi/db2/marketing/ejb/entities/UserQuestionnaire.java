@@ -15,7 +15,7 @@ import java.util.Objects;
 })
  */
 @NamedQueries({
-        @NamedQuery(name = "UserQuestionnaire.getUsersWhoSubmitted", query = "SELECT u FROM User u, UserQuestionnaire uq WHERE uq.date = ?1 and u.id = uq.user_id and uq.has_submitted = true"),
+        @NamedQuery(name = "UserQuestionnaire.getUsersWhoSubmitted", query = "SELECT u FROM User u JOIN u.questionnaires uq WHERE uq.date = ?1 and u.id = uq.user.id"),
         @NamedQuery(name = "UserQuestionnaire.getUsersWhoCanceled", query = "SELECT u FROM User u, UserQuestionnaire uq WHERE uq.date = ?1 and u.id = uq.user_id and uq.has_submitted = false")
 })
 @IdClass(UserQuestionnaire.Key.class)
@@ -30,11 +30,15 @@ public class UserQuestionnaire implements Serializable {
 
     private boolean has_submitted;
 
-    /*
     @ManyToOne
     @JoinColumn(name="user_id", insertable=false, updatable=false)
     private User user;
-    */
+
+    public UserQuestionnaire(Integer user_id, Date date) {
+        this.user_id = user_id;
+        this.date = date;
+        this.has_submitted = false;
+    }
 
     public Integer getUserId() {
         return user_id;
@@ -67,6 +71,9 @@ public class UserQuestionnaire implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }*/
+
+    public UserQuestionnaire() {
+    }
 
     public static class Key implements Serializable {
 

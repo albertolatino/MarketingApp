@@ -89,7 +89,7 @@ public class QuestionnaireDetails extends HttpServlet {
             return;
         }
         System.out.println(usersSubmitted.get(0).getUsername());
-        System.out.println(usersCanceled.get(0).getUsername());
+        //System.out.println(usersCanceled.get(0).getUsername());
 
 
         String path = "/WEB-INF/questionnaire-details.html";

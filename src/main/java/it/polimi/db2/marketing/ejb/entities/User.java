@@ -44,6 +44,10 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="user")
 	private Collection<StatAnswers> statAnswers;
 
+	@OneToMany(mappedBy="user")
+	private Collection<UserQuestionnaire> questionnaires;
+
+
 	public User() {
 	}
 
