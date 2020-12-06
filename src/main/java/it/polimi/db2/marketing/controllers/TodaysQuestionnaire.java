@@ -8,6 +8,7 @@ import it.polimi.db2.marketing.ejb.exceptions.FormException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
+import it.polimi.db2.marketing.ejb.services.UserQuestionnaireService;
 import it.polimi.db2.marketing.ejb.services.UserService;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
@@ -36,6 +37,8 @@ public class TodaysQuestionnaire extends HttpServlet {
 	private TemplateEngine templateEngine;
 	@EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
 	private QuestionnaireService qstService;
+	@EJB(name = "it.polimi.db2.marketing.services/UserQuestionnaireService")
+	private UserQuestionnaireService uqService;
 
 	public TodaysQuestionnaire() {
 		super();
@@ -60,6 +63,8 @@ public class TodaysQuestionnaire extends HttpServlet {
 			return;
 		}
 
+		User user = (User) session.getAttribute("user");
+
 		Questionnaire qst;
 		try {
 			qst = qstService.getToday();
@@ -72,6 +77,13 @@ public class TodaysQuestionnaire extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
 			return;
 		}
+
+		if (uqService.checkAlreadyExists(user, qst)) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Already Answered!");
+			return;
+		}
+
+		uqService.addQuestionnaireBegin(user, qst);
 
 		String path = "/WEB-INF/TodaysQuestionnaire.html";
 		ServletContext servletContext = getServletContext();

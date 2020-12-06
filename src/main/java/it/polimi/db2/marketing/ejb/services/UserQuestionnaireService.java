@@ -1,6 +1,8 @@
 package it.polimi.db2.marketing.ejb.services;
 
+import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.entities.User;
+import it.polimi.db2.marketing.ejb.entities.UserQuestionnaire;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -33,6 +35,20 @@ public class UserQuestionnaireService {
 
         return users;
 
+    }
+
+    public boolean checkAlreadyExists(User u, Questionnaire qst) {
+        UserQuestionnaire.Key key = new UserQuestionnaire.Key(u.getId(), qst.getDate());
+
+        UserQuestionnaire uq = em.find(UserQuestionnaire.class, key);
+
+        return uq != null;
+    }
+
+    public void addQuestionnaireBegin(User u, Questionnaire qst) {
+        UserQuestionnaire uq = new UserQuestionnaire(u.getId(), qst.getDate());
+
+        em.persist(uq);
     }
 
 }
