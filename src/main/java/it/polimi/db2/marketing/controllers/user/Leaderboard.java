@@ -1,9 +1,8 @@
-package it.polimi.db2.marketing.controllers;
+package it.polimi.db2.marketing.controllers.user;
 
-import it.polimi.db2.marketing.ejb.entities.Questionnaire;
-import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
-import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
-import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
+import it.polimi.db2.marketing.controllers.ServletBase;
+import it.polimi.db2.marketing.ejb.entities.User;
+import it.polimi.db2.marketing.ejb.services.UserService;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -18,34 +17,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet("/Home")
-public class Home extends ServletBase {
+@WebServlet("/Leaderboard")
+public class Leaderboard extends ServletBase {
 	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
-	@EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
-	private QuestionnaireService qstService;
+	@EJB(name = "it.polimi.db2.marketing.ejb.services/UserService")
+	private UserService uService;
 
-	public Home() {
+	public Leaderboard() {
 		super();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		if (redirectIfNotLogged(request, response)) return;
 
-		Questionnaire qst;
+		if (redirectIfNotLogged(request, response)) return;
+		
+		List<User> allUsers = null;
+
 		try {
-			qst = qstService.getToday();
+			  allUsers = uService.getAllUsers();
 		} catch (Exception e) {
-			qst = null;
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get data");
+			return;
 		}
 
-		String path = "/WEB-INF/Home.html";
+		String path = "/WEB-INF/Leaderboard.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("today", qst != null);
+		ctx.setVariable("allUsers", allUsers);
+
 		getTemplateEngine().process(path, ctx, response.getWriter());
 	}
 

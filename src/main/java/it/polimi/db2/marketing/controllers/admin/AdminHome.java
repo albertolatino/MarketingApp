@@ -1,5 +1,6 @@
-package it.polimi.db2.marketing.controllers;
+package it.polimi.db2.marketing.controllers.admin;
 
+import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.User;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -18,7 +19,6 @@ import java.io.IOException;
 @WebServlet("/AdminHome")
 public class AdminHome extends ServletBase {
 	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
 
 	public AdminHome() {
 		super();

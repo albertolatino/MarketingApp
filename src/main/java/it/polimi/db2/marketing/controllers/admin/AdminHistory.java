@@ -1,5 +1,6 @@
-package it.polimi.db2.marketing.controllers;
+package it.polimi.db2.marketing.controllers.admin;
 
+import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import org.thymeleaf.TemplateEngine;
@@ -20,9 +21,8 @@ import java.util.List;
 
 
 @WebServlet("/AdminHistory")
-public class AdminHistory extends HttpServlet {
+public class AdminHistory extends ServletBase {
     private static final long serialVersionUID = 1L;
-    private TemplateEngine templateEngine;
     @EJB(name = "it.polimi.db2.marketing.ejb.services/QuestionnaireService")
     private QuestionnaireService qService;
 
@@ -30,25 +30,11 @@ public class AdminHistory extends HttpServlet {
         super();
     }
 
-    public void init() {
-        ServletContext servletContext = getServletContext();
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        this.templateEngine = new TemplateEngine();
-        this.templateEngine.setTemplateResolver(templateResolver);
-        templateResolver.setSuffix(".html");
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
-        // If the user is not logged in (not present in session) redirect to the login
-        String loginPath = getServletContext().getContextPath() + "/index.html";
-        HttpSession session = request.getSession();
-        if (session.isNew() || session.getAttribute("user") == null) {
-            response.sendRedirect(loginPath);
-            return;
-        }
+        if (redirectIfNotLogged(request, response)) return;
+
 
         //retrieve all questionnaires
         List<Questionnaire> questionnaires;
@@ -70,7 +56,7 @@ public class AdminHistory extends HttpServlet {
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         ctx.setVariable("questionnaires", questionnaires);
-        templateEngine.process(path, ctx, response.getWriter());
+        getTemplateEngine().process(path, ctx, response.getWriter());
 
     }
 

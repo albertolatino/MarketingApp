@@ -1,5 +1,6 @@
-package it.polimi.db2.marketing.controllers;
+package it.polimi.db2.marketing.controllers.user;
 
+import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.*;
 import it.polimi.db2.marketing.ejb.exceptions.FormException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
@@ -29,7 +30,6 @@ import java.util.stream.Collectors;
 @WebServlet("/TodaysQuestionnaireStatistics")
 public class TodaysQuestionnaireStatistics extends ServletBase {
 	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
 	@EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
 	private QuestionnaireService qstService;
 	@EJB(name = "it.polimi.db2.marketing.services/UserQuestionnaireService")
@@ -41,12 +41,10 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String loginpath = getServletContext().getContextPath() + "/index.html";
+
+		if (redirectIfNotLogged(request, response)) return;
+
 		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("user") == null) {
-			response.sendRedirect(loginpath);
-			return;
-		}
 
 		User user = (User) session.getAttribute("user");
 

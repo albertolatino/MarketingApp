@@ -25,7 +25,6 @@ import javax.persistence.NonUniqueResultException;
 @WebServlet("/CheckLogin")
 public class CheckLogin extends ServletBase {
     private static final long serialVersionUID = 1L;
-    private TemplateEngine templateEngine;
     @EJB(name = "it.polimi.db2.marketing.services/UserService")
     private UserService usrService;
 
@@ -76,8 +75,5 @@ public class CheckLogin extends ServletBase {
             response.sendRedirect(path);
         }
 
-    }
-
-    public void destroy() {
     }
 }

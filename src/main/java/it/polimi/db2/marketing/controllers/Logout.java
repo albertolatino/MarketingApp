@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebServlet("/Logout")
-public class Logout extends HttpServlet {
+public class Logout extends ServletBase {
 	private static final long serialVersionUID = 1L;
 
 	public Logout() {
@@ -27,10 +27,4 @@ public class Logout extends HttpServlet {
 		String path = getServletContext().getContextPath() + "/index.html";
 		response.sendRedirect(path);
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }

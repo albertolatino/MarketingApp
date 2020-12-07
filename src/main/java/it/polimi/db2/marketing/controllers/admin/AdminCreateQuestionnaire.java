@@ -1,5 +1,6 @@
-package it.polimi.db2.marketing.controllers;
+package it.polimi.db2.marketing.controllers.admin;
 
+import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.User;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -19,55 +20,36 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-@WebServlet("/AdminDelete")
-public class AdminDelete extends HttpServlet {
+@WebServlet("/AdminCreate")
+public class AdminCreateQuestionnaire extends ServletBase {
     private static final long serialVersionUID = 1L;
-    private TemplateEngine templateEngine;
 
 
-    public AdminDelete() {
+    public AdminCreateQuestionnaire() {
         super();
-    }
-
-    public void init() throws ServletException {
-        ServletContext servletContext = getServletContext();
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        this.templateEngine = new TemplateEngine();
-        this.templateEngine.setTemplateResolver(templateResolver);
-        templateResolver.setSuffix(".html");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // If the user is not logged in (not present in session) redirect to the login
-        String loginpath = getServletContext().getContextPath() + "/index.html";
-        HttpSession session = request.getSession();
-        if (session.isNew() || session.getAttribute("user") == null) {
-            response.sendRedirect(loginpath);
-            return;
-        }
+        if (redirectIfNotLogged(request, response)) return;
 
 
         // Redirect to the Admin create page
-        String path = "/WEB-INF/AdminDelete.html";
+        String path = "/WEB-INF/AdminCreate.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        templateEngine.process(path, ctx, response.getWriter());
+        getTemplateEngine().process(path, ctx, response.getWriter());
     }
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // If the user is not logged in (not present in session) redirect to the login
+
+        if (redirectIfNotLogged(request, response)) return;
+
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-        if (session.isNew() || user == null) {
-            String loginpath = getServletContext().getContextPath() + "/index.html";
-            response.sendRedirect(loginpath);
-            return;
-        }
 
         if (!user.isAdmin()) {
             String path = getServletContext().getContextPath() + "/Home";
@@ -91,22 +73,13 @@ public class AdminDelete extends HttpServlet {
             return;
         }
 
-
         //System.out.println(questionnaireDate);
         System.out.println(questionsNumber);
-
-
-
 
         String path = "/WEB-INF/AdminCreateQuestions.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         ctx.setVariable("number", questionsNumber);
-        templateEngine.process(path, ctx, response.getWriter());
+        getTemplateEngine().process(path, ctx, response.getWriter());
     }
-
-
-    public void destroy() {
-    }
-
 }

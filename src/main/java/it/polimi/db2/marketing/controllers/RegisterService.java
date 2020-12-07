@@ -23,9 +23,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @WebServlet("/Register")
-public class RegisterService extends HttpServlet {
+public class RegisterService extends ServletBase {
     private static final long serialVersionUID = 1L;
-    private TemplateEngine templateEngine;
     @EJB(name = "it.polimi.db2.marketing.services/UserService")
     private UserService usrService;
 
@@ -34,21 +33,12 @@ public class RegisterService extends HttpServlet {
     }
         final Pattern mailPattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
 
-    public void init() throws ServletException {
-        ServletContext servletContext = getServletContext();
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        this.templateEngine = new TemplateEngine();
-        this.templateEngine.setTemplateResolver(templateResolver);
-        templateResolver.setSuffix(".html");
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = "/WEB-INF/Register.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        templateEngine.process(path, ctx, response.getWriter());
+        getTemplateEngine().process(path, ctx, response.getWriter());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -87,7 +77,7 @@ public class RegisterService extends HttpServlet {
 
         if (!pwd.equals(pwd1)) {
             ctx.setVariable("errorMsg", "The two passwords are different!");
-            templateEngine.process(errorPath, ctx, response.getWriter());
+            getTemplateEngine().process(errorPath, ctx, response.getWriter());
             return;
         }
 
@@ -95,14 +85,14 @@ public class RegisterService extends HttpServlet {
 
         if (!mailMatch.matches()) {
             ctx.setVariable("errorMsg", "Invalid email!");
-            templateEngine.process(errorPath, ctx, response.getWriter());
+            getTemplateEngine().process(errorPath, ctx, response.getWriter());
             return;
         }
 
         try {
             if (!usrService.checkUnique(usrn, mail)) {
                 ctx.setVariable("errorMsg", "User already exists!");
-                templateEngine.process(errorPath, ctx, response.getWriter());
+                getTemplateEngine().process(errorPath, ctx, response.getWriter());
                 return;
             }
         } catch (CredentialsException e) {
@@ -114,8 +104,5 @@ public class RegisterService extends HttpServlet {
 
         String path = getServletContext().getContextPath() + "/Home";
         response.sendRedirect(path);
-    }
-
-    public void destroy() {
     }
 }

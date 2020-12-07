@@ -1,5 +1,6 @@
-package it.polimi.db2.marketing.controllers;
+package it.polimi.db2.marketing.controllers.user;
 
+import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.services.UserQuestionnaireService;
 import org.thymeleaf.TemplateEngine;
@@ -24,7 +25,6 @@ import java.util.List;
 @WebServlet("/QuestionnaireDetails")
 public class QuestionnaireDetails extends ServletBase {
     private static final long serialVersionUID = 1L;
-    private TemplateEngine templateEngine;
     @EJB(name = "it.polimi.db2.marketing.ejb.services/UserQuestionnaireService")
     private UserQuestionnaireService uqService;
 
@@ -35,10 +35,8 @@ public class QuestionnaireDetails extends ServletBase {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
-        // If the user is not logged in (not present in session) redirect to the login
         if (redirectIfNotLogged(request, response)) return;
 
-        // obtain and escape params
         Date date = null;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

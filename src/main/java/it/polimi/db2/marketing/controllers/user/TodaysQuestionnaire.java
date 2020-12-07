@@ -1,5 +1,6 @@
-package it.polimi.db2.marketing.controllers;
+package it.polimi.db2.marketing.controllers.user;
 
+import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.*;
 import it.polimi.db2.marketing.ejb.exceptions.FormException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
@@ -29,7 +30,6 @@ import java.util.stream.Collectors;
 @WebServlet("/TodaysQuestionnaire")
 public class TodaysQuestionnaire extends ServletBase {
 	private static final long serialVersionUID = 1L;
-	private TemplateEngine templateEngine;
 	@EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
 	private QuestionnaireService qstService;
 	@EJB(name = "it.polimi.db2.marketing.services/UserQuestionnaireService")
@@ -74,7 +74,7 @@ public class TodaysQuestionnaire extends ServletBase {
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("questionnaireName", qst.getTitle());
 		ctx.setVariable("questions", qst.getQuestions());
-		templateEngine.process(path, ctx, response.getWriter());
+		getTemplateEngine().process(path, ctx, response.getWriter());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

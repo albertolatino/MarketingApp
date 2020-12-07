@@ -1,5 +1,6 @@
-package it.polimi.db2.marketing.controllers;
+package it.polimi.db2.marketing.controllers.admin;
 
+import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -27,9 +28,8 @@ import java.util.Enumeration;
 
 
 @WebServlet("/AdminCreateQuestions")
-public class AdminCreateQuestions extends HttpServlet {
+public class AdminCreateQuestions extends ServletBase {
     private static final long serialVersionUID = 1L;
-    private TemplateEngine templateEngine;
     @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
     private QuestionnaireService questionnaireService;
 
@@ -37,32 +37,17 @@ public class AdminCreateQuestions extends HttpServlet {
         super();
     }
 
-    public void init() throws ServletException {
-        ServletContext servletContext = getServletContext();
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        this.templateEngine = new TemplateEngine();
-        this.templateEngine.setTemplateResolver(templateResolver);
-        templateResolver.setSuffix(".html");
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // If the user is not logged in (not present in session) redirect to the login
-        String loginpath = getServletContext().getContextPath() + "/index.html";
-        HttpSession session = request.getSession();
-        if (session.isNew() || session.getAttribute("user") == null) {
-            response.sendRedirect(loginpath);
-            return;
-        }
+        if (redirectIfNotLogged(request, response)) return;
 
 
         // Redirect to the Admin create questions page
         String path = "/WEB-INF/AdminCreateQuestions.html";
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        templateEngine.process(path, ctx, response.getWriter());
+        getTemplateEngine().process(path, ctx, response.getWriter());
     }
 
 
@@ -149,7 +134,7 @@ public class AdminCreateQuestions extends HttpServlet {
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         ctx.setVariable("message", message);
-        templateEngine.process(path, ctx, response.getWriter());
+        getTemplateEngine().process(path, ctx, response.getWriter());
     }
 
     private boolean isBeforeToday(Date date) {
