@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @WebServlet("/TodaysQuestionnaireStatistics")
-public class TodaysQuestionnaireStatistics extends HttpServlet {
+public class TodaysQuestionnaireStatistics extends ServletBase {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	@EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
@@ -37,15 +37,6 @@ public class TodaysQuestionnaireStatistics extends HttpServlet {
 
 	public TodaysQuestionnaireStatistics() {
 		super();
-	}
-
-	public void init() throws ServletException {
-		ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -72,7 +63,14 @@ public class TodaysQuestionnaireStatistics extends HttpServlet {
 			return;
 		}
 
-		if (!uqService.checkAlreadyExists(user, qst) || !uqService.checkRespondedToMarketingQuestions(user, qst)) {
+		if (uqService.hasSubmitted(user, qst)) {
+			System.out.println("ALREADY SUBMITTED!");
+			String path = getServletContext().getContextPath() + "/Home";
+			response.sendRedirect(path);
+			return;
+		}
+
+		if (!uqService.checkAlreadyExists(user, qst)) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad action sequence!");
 			return;
 		}
@@ -108,7 +106,7 @@ public class TodaysQuestionnaireStatistics extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("message", "Questionnaire responses successfully submitted!");
-		templateEngine.process(path, ctx, response.getWriter());
+		getTemplateEngine().process(path, ctx, response.getWriter());
 	}
 
 	public void destroy() {

@@ -17,7 +17,6 @@ public class UserQuestionnaireService {
     }
 
     public List<User> getUsersWhoSubmitted(Date date) {
-
         List<User> users;
         users = em.createNamedQuery("UserQuestionnaire.getUsersWhoSubmitted", User.class)
                 .setParameter(1, date).getResultList();
@@ -26,7 +25,6 @@ public class UserQuestionnaireService {
 
     }
     public List<User> getUsersWhoCanceled(Date date) {
-
         List<User> users;
         users = em.createNamedQuery("UserQuestionnaire.getUsersWhoCanceled", User.class)
                 .setParameter(1, date).getResultList();
@@ -36,17 +34,13 @@ public class UserQuestionnaireService {
     }
 
     public boolean checkAlreadyExists(User u, Questionnaire qst) {
-        UserQuestionnaire.Key key = new UserQuestionnaire.Key(u.getId(), qst.getDate());
-
-        UserQuestionnaire uq = em.find(UserQuestionnaire.class, key);
+        UserQuestionnaire uq = find(u, qst);
 
         return uq != null;
     }
 
     public void beginQuestionnaire(User u, Questionnaire qst) {
-        UserQuestionnaire.Key key = new UserQuestionnaire.Key(u.getId(), qst.getDate());
-
-        UserQuestionnaire uqToDelete = em.find(UserQuestionnaire.class, key);
+        UserQuestionnaire uqToDelete = find(u, qst);
         if (uqToDelete == null) {
             UserQuestionnaire uq = new UserQuestionnaire(u.getId(), qst.getDate());
             em.persist(uq);
@@ -69,14 +63,18 @@ public class UserQuestionnaireService {
     }
 
     public void submitQuestionnaire(User u, Questionnaire qst) {
-        UserQuestionnaire.Key key = new UserQuestionnaire.Key(u.getId(), qst.getDate());
-
-        UserQuestionnaire uq = em.find(UserQuestionnaire.class, key);
+        UserQuestionnaire uq = find(u, qst);
 
         uq.setHasSubmitted(true);
     }
 
-    public UserQuestionnaire find(User u, Questionnaire qst) {
+    public boolean hasSubmitted(User u, Questionnaire qst) {
+        UserQuestionnaire uq = find(u, qst);
+
+        return uq != null && uq.getHasSubmitted();
+    }
+
+    private UserQuestionnaire find(User u, Questionnaire qst) {
         UserQuestionnaire.Key key = new UserQuestionnaire.Key(u.getId(), qst.getDate());
 
         return em.find(UserQuestionnaire.class, key);

@@ -22,7 +22,7 @@ import java.util.List;
 
 
 @WebServlet("/QuestionnaireDetails")
-public class QuestionnaireDetails extends HttpServlet {
+public class QuestionnaireDetails extends ServletBase {
     private static final long serialVersionUID = 1L;
     private TemplateEngine templateEngine;
     @EJB(name = "it.polimi.db2.marketing.ejb.services/UserQuestionnaireService")
@@ -32,25 +32,11 @@ public class QuestionnaireDetails extends HttpServlet {
         super();
     }
 
-    public void init() {
-        ServletContext servletContext = getServletContext();
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        this.templateEngine = new TemplateEngine();
-        this.templateEngine.setTemplateResolver(templateResolver);
-        templateResolver.setSuffix(".html");
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
         // If the user is not logged in (not present in session) redirect to the login
-        String loginPath = getServletContext().getContextPath() + "/index.html";
-        HttpSession session = request.getSession();
-        if (session.isNew() || session.getAttribute("user") == null) {
-            response.sendRedirect(loginPath);
-            return;
-        }
+        if (redirectIfNotLogged(request, response)) return;
 
         // obtain and escape params
         Date date = null;
@@ -96,7 +82,7 @@ public class QuestionnaireDetails extends HttpServlet {
         ServletContext servletContext = getServletContext();
         final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
         ctx.setVariable("usersSubmitted", usersSubmitted);
-        templateEngine.process(path, ctx, response.getWriter());
+        getTemplateEngine().process(path, ctx, response.getWriter());
 
     }
 

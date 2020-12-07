@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/Leaderboard")
-public class Leaderboard extends HttpServlet {
+public class Leaderboard extends ServletBase {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	@EJB(name = "it.polimi.db2.marketing.ejb.services/UserService")
@@ -29,27 +29,10 @@ public class Leaderboard extends HttpServlet {
 		super();
 	}
 
-	public void init() throws ServletException {
-		ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
-	}
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// If the user is not logged in (not present in session) redirect to the login
-		String loginpath = getServletContext().getContextPath() + "/index.html";
-		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("user");
-		
-		if (session.isNew() || user == null) {
-			response.sendRedirect(loginpath);
-			return;
-		}
+		if (redirectIfNotLogged(request, response)) return;
 		
 		List<User> allUsers = null;
 
@@ -65,7 +48,7 @@ public class Leaderboard extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("allUsers", allUsers);
 
-		templateEngine.process(path, ctx, response.getWriter());
+		getTemplateEngine().process(path, ctx, response.getWriter());
 	}
 
 	public void destroy() {

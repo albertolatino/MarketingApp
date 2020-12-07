@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @WebServlet("/TodaysQuestionnaire")
-public class TodaysQuestionnaire extends HttpServlet {
+public class TodaysQuestionnaire extends ServletBase {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	@EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
@@ -39,26 +39,13 @@ public class TodaysQuestionnaire extends HttpServlet {
 		super();
 	}
 
-	public void init() throws ServletException {
-		ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
-	}
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String loginpath = getServletContext().getContextPath() + "/index.html";
-		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("user") == null) {
-			response.sendRedirect(loginpath);
-			return;
-		}
+		if (redirectIfNotLogged(request, response)) return;
 
-		User user = (User) session.getAttribute("user");
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
 
 		Questionnaire qst;
 		try {
@@ -73,9 +60,7 @@ public class TodaysQuestionnaire extends HttpServlet {
 			return;
 		}
 
-		UserQuestionnaire userQuestionnaire = uqService.find(user, qst);
-
-		if (userQuestionnaire != null && userQuestionnaire.getHasSubmitted()) {
+		if (uqService.hasSubmitted(user, qst)) {
 			System.out.println("ALREADY SUBMITTED!");
 			String path = getServletContext().getContextPath() + "/Home";
 			response.sendRedirect(path);
@@ -164,10 +149,6 @@ public class TodaysQuestionnaire extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("questionnaireName", qst.getTitle());
-		templateEngine.process(path, ctx, response.getWriter());
+		getTemplateEngine().process(path, ctx, response.getWriter());
 	}
-
-	public void destroy() {
-	}
-
 }

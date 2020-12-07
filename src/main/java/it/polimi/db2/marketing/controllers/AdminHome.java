@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/AdminHome")
-public class AdminHome extends HttpServlet {
+public class AdminHome extends ServletBase {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 
@@ -24,27 +24,14 @@ public class AdminHome extends HttpServlet {
 		super();
 	}
 
-	public void init() throws ServletException {
-		ServletContext servletContext = getServletContext();
-		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-		this.templateEngine = new TemplateEngine();
-		this.templateEngine.setTemplateResolver(templateResolver);
-		templateResolver.setSuffix(".html");
-	}
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// If the user is not logged in (not present in session) redirect to the login
-		String loginpath = getServletContext().getContextPath() + "/index.html";
 		String userhomepath = getServletContext().getContextPath() + "/Home";
 
+		if (redirectIfNotLogged(request, response)) return;
+
 		HttpSession session = request.getSession();
-		//is not user nor admin
-		if (session.isNew() || session.getAttribute("user") == null) {
-			response.sendRedirect(loginpath);
-			return;
-		}
+
 		User user = (User) session.getAttribute("user");
 		
 		//is user but not admin 
@@ -58,7 +45,7 @@ public class AdminHome extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 
-		templateEngine.process(path, ctx, response.getWriter());
+		getTemplateEngine().process(path, ctx, response.getWriter());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
