@@ -82,7 +82,13 @@ public class QuestionnaireService {
 
     public void addAnswers(List<Answer> answers) {
         for (Answer a : answers) {
-            em.persist(a);
+            Answer.Key key = new Answer.Key(a.getQuestionId(), a.getUserId());
+            Answer currentAnswer = em.find(Answer.class, key);
+            if (currentAnswer == null) {
+                em.persist(a);
+            } else {
+                currentAnswer.setAnswer(a.getAnswer());
+            }
         }
     }
 }

@@ -1,15 +1,11 @@
 package it.polimi.db2.marketing.controllers;
 
-import it.polimi.db2.marketing.ejb.entities.Answer;
-import it.polimi.db2.marketing.ejb.entities.Question;
-import it.polimi.db2.marketing.ejb.entities.Questionnaire;
-import it.polimi.db2.marketing.ejb.entities.User;
+import it.polimi.db2.marketing.ejb.entities.*;
 import it.polimi.db2.marketing.ejb.exceptions.FormException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import it.polimi.db2.marketing.ejb.services.UserQuestionnaireService;
-import it.polimi.db2.marketing.ejb.services.UserService;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -17,7 +13,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.ejb.EJB;
-import javax.persistence.NoResultException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -78,12 +73,14 @@ public class TodaysQuestionnaire extends HttpServlet {
 			return;
 		}
 
-		if (uqService.checkAlreadyExists(user, qst)) {
+		UserQuestionnaire userQuestionnaire = uqService.find(user, qst);
+
+		if (userQuestionnaire != null && userQuestionnaire.getHasSubmitted()) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Already Answered!");
 			return;
 		}
 
-		uqService.addQuestionnaireBegin(user, qst);
+		uqService.beginQuestionnaire(user, qst);
 
 		String path = "/WEB-INF/TodaysQuestionnaire.html";
 		ServletContext servletContext = getServletContext();

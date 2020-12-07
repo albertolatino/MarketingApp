@@ -43,10 +43,14 @@ public class UserQuestionnaireService {
         return uq != null;
     }
 
-    public void addQuestionnaireBegin(User u, Questionnaire qst) {
-        UserQuestionnaire uq = new UserQuestionnaire(u.getId(), qst.getDate());
+    public void beginQuestionnaire(User u, Questionnaire qst) {
+        UserQuestionnaire.Key key = new UserQuestionnaire.Key(u.getId(), qst.getDate());
 
-        em.persist(uq);
+        UserQuestionnaire uqToDelete = em.find(UserQuestionnaire.class, key);
+        if (uqToDelete == null) {
+            UserQuestionnaire uq = new UserQuestionnaire(u.getId(), qst.getDate());
+            em.persist(uq);
+        }
     }
 
     public boolean checkRespondedToMarketingQuestions(User u, Questionnaire qst) {
@@ -70,5 +74,11 @@ public class UserQuestionnaireService {
         UserQuestionnaire uq = em.find(UserQuestionnaire.class, key);
 
         uq.setHasSubmitted(true);
+    }
+
+    public UserQuestionnaire find(User u, Questionnaire qst) {
+        UserQuestionnaire.Key key = new UserQuestionnaire.Key(u.getId(), qst.getDate());
+
+        return em.find(UserQuestionnaire.class, key);
     }
 }
