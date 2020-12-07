@@ -76,7 +76,8 @@ public class TodaysQuestionnaire extends HttpServlet {
 		UserQuestionnaire userQuestionnaire = uqService.find(user, qst);
 
 		if (userQuestionnaire != null && userQuestionnaire.getHasSubmitted()) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Already Answered!");
+			String path = getServletContext().getContextPath() + "/Home";
+			response.sendRedirect(path);
 			return;
 		}
 

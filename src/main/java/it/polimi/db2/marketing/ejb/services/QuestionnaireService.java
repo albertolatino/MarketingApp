@@ -59,10 +59,8 @@ public class QuestionnaireService {
     }
 
     public boolean questionnaireAlreadyExist(Date plannedDate){
-
         List<Questionnaire> qList = null;
-
-           qList = em.createNamedQuery("Questionnaire.getByDate", Questionnaire.class).setParameter(1,plannedDate).getResultList();
+       qList = em.createNamedQuery("Questionnaire.getByDate", Questionnaire.class).setParameter(1,plannedDate).getResultList();
 
         return qList.size() > 0;
     }
