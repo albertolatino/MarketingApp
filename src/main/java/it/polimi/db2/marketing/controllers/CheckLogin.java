@@ -1,6 +1,8 @@
 package it.polimi.db2.marketing.controllers;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -60,11 +62,9 @@ public class CheckLogin extends ServletBase {
 
         String path;
         if (user == null) {
-            ServletContext servletContext = getServletContext();
-            final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-            ctx.setVariable("errorMsg", "Incorrect username or password");
-            path = "/index.html";
-            getTemplateEngine().process(path, ctx, response.getWriter());
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("errorMsg", "Incorrect username or password");
+            renderPage(request, response, "/index.html", variables);
         } else {
             request.getSession().setAttribute("user", user);
             if (user.isAdmin()) {

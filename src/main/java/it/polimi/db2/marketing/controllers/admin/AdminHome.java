@@ -30,21 +30,6 @@ public class AdminHome extends ServletBase {
 		if (redirectIfNotLogged(request, response)) return;
 		if (redirectIfNotAdmin(request, response)) return;
 
-
-		// Redirect to the Home page
-		String path = "/WEB-INF/AdminHome.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-
-		getTemplateEngine().process(path, ctx, response.getWriter());
+		renderPage(request, response, "/WEB-INF/AdminHome.html");
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doGet(request, response);
-	}
-
-	public void destroy() {
-	}
-
 }

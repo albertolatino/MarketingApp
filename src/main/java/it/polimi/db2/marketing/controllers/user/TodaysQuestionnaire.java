@@ -22,9 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @WebServlet("/TodaysQuestionnaire")
@@ -69,12 +67,10 @@ public class TodaysQuestionnaire extends ServletBase {
 
 		uqService.beginQuestionnaire(user, qst);
 
-		String path = "/WEB-INF/TodaysQuestionnaire.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("questionnaireName", qst.getTitle());
-		ctx.setVariable("questions", qst.getQuestions());
-		getTemplateEngine().process(path, ctx, response.getWriter());
+		Map<String, Object> variables = new HashMap<>();
+		variables.put("questionnaireName", qst.getTitle());
+		variables.put("questions", qst.getQuestions());
+		renderPage(request, response, "/WEB-INF/TodaysQuestionnaire.html", variables);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -144,10 +140,8 @@ public class TodaysQuestionnaire extends ServletBase {
 
 		request.getSession().setAttribute("answers", answers);
 
-		String path = "/WEB-INF/TodaysQuestionnaireStatistics.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("questionnaireName", qst.getTitle());
-		getTemplateEngine().process(path, ctx, response.getWriter());
+		Map<String, Object> variables = new HashMap<>();
+		variables.put("questionnaireName", qst.getTitle());
+		renderPage(request, response, "/WEB-INF/TodaysQuestionnaireStatistics.html", variables);
 	}
 }

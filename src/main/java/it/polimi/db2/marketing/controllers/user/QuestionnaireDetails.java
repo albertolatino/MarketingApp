@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @WebServlet("/QuestionnaireDetails")
@@ -75,21 +77,13 @@ public class QuestionnaireDetails extends ServletBase {
         System.out.println(usersSubmitted.get(0).getUsername());
         //System.out.println(usersCanceled.get(0).getUsername());
 
-
-        String path = "/WEB-INF/questionnaire-details.html";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        ctx.setVariable("usersSubmitted", usersSubmitted);
-        getTemplateEngine().process(path, ctx, response.getWriter());
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("usersSubmitted", usersSubmitted);
+        renderPage(request, response, "/WEB-INF/questionnaire-details.html", variables);
 
     }
 
     private Date getToday() {
         return new Date(System.currentTimeMillis());
     }
-
-
-    public void destroy() {
-    }
-
 }

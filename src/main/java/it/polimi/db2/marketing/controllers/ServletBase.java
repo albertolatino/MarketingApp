@@ -2,6 +2,7 @@ package it.polimi.db2.marketing.controllers;
 
 import it.polimi.db2.marketing.ejb.entities.User;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Map;
 
 public class ServletBase extends HttpServlet {
     private TemplateEngine templateEngine;
@@ -52,5 +54,16 @@ public class ServletBase extends HttpServlet {
         return false;
     }
 
+    public void renderPage(HttpServletRequest request, HttpServletResponse response, String path) throws IOException {
+        ServletContext servletContext = getServletContext();
+        WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+        getTemplateEngine().process(path, ctx, response.getWriter());
+    }
 
+    public void renderPage(HttpServletRequest request, HttpServletResponse response, String path, Map<String, Object> variables) throws IOException {
+        ServletContext servletContext = getServletContext();
+        WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+        ctx.setVariables(variables);
+        getTemplateEngine().process(path, ctx, response.getWriter());
+    }
 }

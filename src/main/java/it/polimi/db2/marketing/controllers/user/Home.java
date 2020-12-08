@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/Home")
 public class Home extends ServletBase {
@@ -42,12 +44,10 @@ public class Home extends ServletBase {
 			qst = null;
 		}
 
-		String path = "/WEB-INF/Home.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("today", qst != null);
-		getTemplateEngine().process(path, ctx, response.getWriter());
-	}
+		Map<String, Object> variables = new HashMap<>();
+		variables.put("today", qst != null);
+		renderPage(request, response, "/WEB-INF/Home.html", variables);
+}
 
 	public void destroy() {
 	}

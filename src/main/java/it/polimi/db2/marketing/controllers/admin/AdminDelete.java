@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @WebServlet("/AdminDelete")
@@ -35,11 +37,7 @@ public class AdminDelete extends ServletBase {
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
 
-        // Redirect to the Admin create page
-        String path = "/WEB-INF/AdminDelete.html";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        getTemplateEngine().process(path, ctx, response.getWriter());
+        renderPage(request, response, "/WEB-INF/AdminDelete.html");
     }
 
 
@@ -65,17 +63,8 @@ public class AdminDelete extends ServletBase {
             return;
         }
 
-
-        //System.out.println(questionnaireDate);
-        System.out.println(questionsNumber);
-
-
-
-
-        String path = "/WEB-INF/AdminCreateQuestions.html";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        ctx.setVariable("number", questionsNumber);
-        getTemplateEngine().process(path, ctx, response.getWriter());
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("number", questionsNumber);
+        renderPage(request, response, "/WEB-INF/AdminCreateQuestions.html", variables);
     }
 }

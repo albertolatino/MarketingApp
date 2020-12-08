@@ -22,9 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @WebServlet("/TodaysQuestionnaireStatistics")
@@ -109,11 +107,8 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 
         session.removeAttribute("answers");
 
-
-		String path = "/WEB-INF/Home.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("message", "Questionnaire responses successfully submitted!");
-		getTemplateEngine().process(path, ctx, response.getWriter());
+		Map<String, Object> variables = new HashMap<>();
+		variables.put("message", "Questionnaire responses successfully submitted!");
+		renderPage(request, response, "/WEB-INF/Home.html", variables);
 	}
 }

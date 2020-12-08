@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/Leaderboard")
 public class Leaderboard extends ServletBase {
@@ -43,12 +45,9 @@ public class Leaderboard extends ServletBase {
 			return;
 		}
 
-		String path = "/WEB-INF/Leaderboard.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("allUsers", allUsers);
-
-		getTemplateEngine().process(path, ctx, response.getWriter());
+		Map<String, Object> variables = new HashMap<>();
+		variables.put("allUsers", allUsers);
+		renderPage(request, response, "/WEB-INF/Leaderboard.html", variables);
 	}
 
 	public void destroy() {

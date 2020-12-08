@@ -21,10 +21,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Enumeration;
+import java.util.*;
 
 
 @WebServlet("/AdminCreateQuestions")
@@ -43,12 +40,7 @@ public class AdminCreateQuestions extends ServletBase {
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
 
-
-        // Redirect to the Admin create questions page
-        String path = "/WEB-INF/AdminCreateQuestions.html";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        getTemplateEngine().process(path, ctx, response.getWriter());
+        renderPage(request, response, "/WEB-INF/AdminCreateQuestions.html");
     }
 
 
@@ -116,14 +108,11 @@ public class AdminCreateQuestions extends ServletBase {
 
 
         //TODO check that there are no questionnaires planned for questionnaireDate in db
+        //TODO add a successful message as a parameter to be shown in home
 
-
-        // Redirect to the Admin create page
-        String path = "/WEB-INF/AdminHome.html";//TODO add a successful message as a parameter to be shown in home
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        ctx.setVariable("message", message);
-        getTemplateEngine().process(path, ctx, response.getWriter());
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("message", message);
+        renderPage(request, response, "/WEB-INF/AdminHome.html", variables);
     }
 
     private boolean isBeforeToday(Date date) {
@@ -134,10 +123,6 @@ public class AdminCreateQuestions extends ServletBase {
         return strDate.compareTo(strToday) < 0;
     }
 
-
-    public void destroy() {
-    }
-
     public Date incrementDate(Date date, int days){
         Calendar calendar=Calendar.getInstance();
         calendar.setTime(date);
@@ -145,7 +130,4 @@ public class AdminCreateQuestions extends ServletBase {
         calendar.add(Calendar.DATE, 1);
         return calendar.getTime();
     }
-
-
-
 }

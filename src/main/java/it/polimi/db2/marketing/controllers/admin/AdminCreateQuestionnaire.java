@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @WebServlet("/AdminCreate")
@@ -35,12 +37,8 @@ public class AdminCreateQuestionnaire extends ServletBase {
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
 
+        renderPage(request, response, "/WEB-INF/AdminCreate.html");
 
-        // Redirect to the Admin create page
-        String path = "/WEB-INF/AdminCreate.html";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        getTemplateEngine().process(path, ctx, response.getWriter());
     }
 
 
@@ -70,10 +68,8 @@ public class AdminCreateQuestionnaire extends ServletBase {
         //System.out.println(questionnaireDate);
         System.out.println(questionsNumber);
 
-        String path = "/WEB-INF/AdminCreateQuestions.html";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        ctx.setVariable("number", questionsNumber);
-        getTemplateEngine().process(path, ctx, response.getWriter());
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("number", questionsNumber);
+        renderPage(request, response, "/WEB-INF/AdminCreateQuestions.html", variables);
     }
 }

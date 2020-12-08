@@ -17,7 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @WebServlet("/AdminHistory")
@@ -53,16 +55,8 @@ public class AdminHistory extends ServletBase {
         }
         //TODO em.create questionnaire, but how to get date and title that are in another servlet?
 
-        String path = "/WEB-INF/history.html";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        ctx.setVariable("questionnaires", questionnaires);
-        getTemplateEngine().process(path, ctx, response.getWriter());
-
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("questionnaires", questionnaires);
+        renderPage(request, response, "/WEB-INF/history.html", variables);
     }
-
-
-    public void destroy() {
-    }
-
 }
