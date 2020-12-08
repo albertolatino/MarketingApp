@@ -33,6 +33,7 @@ public class AdminCreateQuestionnaire extends ServletBase {
             throws ServletException, IOException {
 
         if (redirectIfNotLogged(request, response)) return;
+        if (redirectIfNotAdmin(request, response)) return;
 
 
         // Redirect to the Admin create page
@@ -47,15 +48,8 @@ public class AdminCreateQuestionnaire extends ServletBase {
             throws ServletException, IOException {
 
         if (redirectIfNotLogged(request, response)) return;
+        if (redirectIfNotAdmin(request, response)) return;
 
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-
-        if (!user.isAdmin()) {
-            String path = getServletContext().getContextPath() + "/Home";
-            response.sendRedirect(path);
-            return;
-        }
 
         Integer questionsNumber = null;
         boolean isBadRequest = false;

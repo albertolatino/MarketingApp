@@ -41,6 +41,7 @@ public class AdminCreateQuestions extends ServletBase {
             throws ServletException, IOException {
 
         if (redirectIfNotLogged(request, response)) return;
+        if (redirectIfNotAdmin(request, response)) return;
 
 
         // Redirect to the Admin create questions page
@@ -53,20 +54,9 @@ public class AdminCreateQuestions extends ServletBase {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // If the user is not logged in (not present in session) redirect to the login
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        if (session.isNew() || user == null) {
-            String loginpath = getServletContext().getContextPath() + "/index.html";
-            response.sendRedirect(loginpath);
-            return;
-        }
 
-        if (!user.isAdmin()) {
-            String path = getServletContext().getContextPath() + "/Home";
-            response.sendRedirect(path);
-            return;
-        }
+        if (redirectIfNotLogged(request, response)) return;
+        if (redirectIfNotAdmin(request, response)) return;
 
         boolean isBadRequest = false;
         Date questionnaireDate = null;

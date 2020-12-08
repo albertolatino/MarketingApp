@@ -116,8 +116,4 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 		ctx.setVariable("message", "Questionnaire responses successfully submitted!");
 		getTemplateEngine().process(path, ctx, response.getWriter());
 	}
-
-	public void destroy() {
-	}
-
 }

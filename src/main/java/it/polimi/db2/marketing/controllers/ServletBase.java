@@ -1,5 +1,6 @@
 package it.polimi.db2.marketing.controllers;
 
+import it.polimi.db2.marketing.ejb.entities.User;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -38,4 +39,18 @@ public class ServletBase extends HttpServlet {
 
         return false;
     }
+
+    public boolean redirectIfNotAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String path = getServletContext().getContextPath() + "/Home";
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        if (!user.isAdmin()) {
+            response.sendRedirect(path);
+            return true;
+        }
+
+        return false;
+    }
+
+
 }

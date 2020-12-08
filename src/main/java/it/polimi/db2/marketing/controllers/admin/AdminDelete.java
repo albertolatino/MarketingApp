@@ -33,8 +33,7 @@ public class AdminDelete extends ServletBase {
             throws ServletException, IOException {
 
         if (redirectIfNotLogged(request, response)) return;
-
-
+        if (redirectIfNotAdmin(request, response)) return;
 
         // Redirect to the Admin create page
         String path = "/WEB-INF/AdminDelete.html";
@@ -46,27 +45,16 @@ public class AdminDelete extends ServletBase {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // If the user is not logged in (not present in session) redirect to the login
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        if (session.isNew() || user == null) {
-            String loginpath = getServletContext().getContextPath() + "/index.html";
-            response.sendRedirect(loginpath);
-            return;
-        }
 
-        if (!user.isAdmin()) {
-            String path = getServletContext().getContextPath() + "/Home";
-            response.sendRedirect(path);
-            return;
-        }
+        if (redirectIfNotLogged(request, response)) return;
+        if (redirectIfNotAdmin(request, response)) return;
 
         Integer questionsNumber = null;
         boolean isBadRequest = false;
 
 
         try {
-            questionsNumber = Integer. parseInt(request.getParameter("number"));
+            questionsNumber = Integer.parseInt(request.getParameter("number"));
             isBadRequest = questionsNumber <= 0;
         } catch (NumberFormatException | NullPointerException e) {
             isBadRequest = true;
@@ -90,9 +78,4 @@ public class AdminDelete extends ServletBase {
         ctx.setVariable("number", questionsNumber);
         getTemplateEngine().process(path, ctx, response.getWriter());
     }
-
-
-    public void destroy() {
-    }
-
 }

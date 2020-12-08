@@ -34,6 +34,7 @@ public class AdminHistory extends ServletBase {
             throws IOException {
 
         if (redirectIfNotLogged(request, response)) return;
+        if (redirectIfNotAdmin(request, response)) return;
 
 
         //retrieve all questionnaires

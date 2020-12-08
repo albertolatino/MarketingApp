@@ -26,19 +26,10 @@ public class AdminHome extends ServletBase {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String userhomepath = getServletContext().getContextPath() + "/Home";
 
 		if (redirectIfNotLogged(request, response)) return;
+		if (redirectIfNotAdmin(request, response)) return;
 
-		HttpSession session = request.getSession();
-
-		User user = (User) session.getAttribute("user");
-		
-		//is user but not admin 
-		if(!user.isAdmin()) {
-			response.sendRedirect(userhomepath);
-			return;
-		}
 
 		// Redirect to the Home page
 		String path = "/WEB-INF/AdminHome.html";
