@@ -73,6 +73,13 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 			return;
 		}
 
+		ArrayList<Answer> answers = (ArrayList<Answer>) session.getAttribute("answers");
+		if (answers == null) {
+			String questionnairePath = getServletContext().getContextPath() + "/index.html";
+			response.sendRedirect(questionnairePath);
+			return;
+		}
+
 		// insert statistical questions
         Integer age = null;
         String sex = null;
@@ -95,9 +102,12 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 
         StatAnswers statAnswers = new StatAnswers(qst.getDate(), user.getId(), age, sex, expertise);
 
-        uqService.addStatAnswers(statAnswers);
+        qstService.addAnswers(answers);
+        qstService.addStatAnswers(statAnswers);
 
         uqService.submitQuestionnaire(user, qst);
+
+        session.removeAttribute("answers");
 
 
 		String path = "/WEB-INF/Home.html";

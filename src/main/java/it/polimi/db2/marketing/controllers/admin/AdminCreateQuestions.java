@@ -103,7 +103,6 @@ public class AdminCreateQuestions extends ServletBase {
             ArrayList<String> questions = new ArrayList<>();
 
             try {
-
                 Enumeration<String> parameters = request.getParameterNames();
                 String parameterName = null;
 

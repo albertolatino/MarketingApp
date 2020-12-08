@@ -25,7 +25,7 @@ public class Questionnaire implements Serializable {
 
     private String title;
 
-    @OneToMany(mappedBy="questionnaire")
+    @OneToMany(mappedBy="questionnaire", cascade=CascadeType.PERSIST)
     private Collection<Question> questions;
 
     @OneToMany(mappedBy="questionnaire")

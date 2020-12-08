@@ -58,10 +58,6 @@ public class UserQuestionnaireService {
         return true;
     }
 
-    public void addStatAnswers(StatAnswers statAnswers) {
-        em.persist(statAnswers);
-    }
-
     public void submitQuestionnaire(User u, Questionnaire qst) {
         UserQuestionnaire uq = find(u, qst);
 

@@ -142,8 +142,7 @@ public class TodaysQuestionnaire extends ServletBase {
 			return;
 		}
 
-
-		qstService.addAnswers(answers);
+		request.getSession().setAttribute("answers", answers);
 
 		String path = "/WEB-INF/TodaysQuestionnaireStatistics.html";
 		ServletContext servletContext = getServletContext();
