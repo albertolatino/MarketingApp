@@ -19,13 +19,8 @@ public class UserQuestionnaireService {
 
     public List<User> getUsersWhoSubmitted(Date date) {
         List<User> users;
-        //date = incrementDate(date, 1);
-        System.out.println("incremented date");
-        System.out.println(date);
         users = em.createNamedQuery("UserQuestionnaire.getUsersWhoSubmitted", User.class)
-                .setParameter(1, date)
-                .getResultList();
-
+                .setParameter(1, date).getResultList();
         return users;
 
     }
@@ -80,13 +75,4 @@ public class UserQuestionnaireService {
 
         return em.find(UserQuestionnaire.class, key);
     }
-
-    public Date incrementDate(Date date, int days){
-        Calendar calendar=Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.HOUR_OF_DAY, 5);
-        calendar.add(Calendar.DATE, 1);
-        return calendar.getTime();
-    }
-
 }

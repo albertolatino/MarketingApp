@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Questionnaire Details</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}"/>
+</head>
+<body>
+<div align="right">
+    <a th:href="@{/AdminHome}">Home</a>
+</div>
+<div align="right">
+    <a th:href="@{/Logout}">Logout</a>
+</div>
+<h1>Welcome to the Answers Page</h1>
+
+<p>Answers of user to questionnaire</p>
+<table>
+    <thead>
+    <tr>
+        <th>Question</th>
+        <th>Answer</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--
+    <tr th:each="q : ${questions}">
+        <td th:text="${q.text}"></td>
+        <td th:text="${q.text}"></td>
+    </tr>-->
+    <tr th:each="q,iterStat : ${questions}">
+        <td th:text="${q.text}">ID</td>
+        <td th:text="${answers[iterStat.index].answer}">Emp Account</td>
+    </tr>
+
+    </tbody>
+</table>
+
+</body>
+</html>

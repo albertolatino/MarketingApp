@@ -61,14 +61,6 @@ public class UserQuestionnaire implements Serializable {
     public void setHasSubmitted(boolean has_submitted) {
         this.has_submitted = has_submitted;
     }
-    /*
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }*/
 
     public static class Key implements Serializable {
 

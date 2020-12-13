@@ -58,6 +58,10 @@ public class QuestionnaireService {
         return qList.size() > 0;
     }
 
+    public Questionnaire findByDate(Date date) {
+        return em.find(Questionnaire.class, date);
+    }
+
     public Questionnaire getToday() throws QuestionnaireNotFoundException, QuestionnaireException  {
         Questionnaire questionnaire;
         try {
@@ -85,5 +89,17 @@ public class QuestionnaireService {
 
     public void addStatAnswers(StatAnswers statAnswers) {
         em.persist(statAnswers);
+    }
+
+    public List<Answer> getAnswersToQuestions(List<Question> questions, Integer userId) {
+        List<Answer> answers = new ArrayList<>();
+        Answer answer;
+        Answer.Key answerKey;
+        for(Question q : questions) {
+            answerKey = new Answer.Key(q.getId(),userId);
+            answer = em.find(Answer.class, answerKey);
+            answers.add(answer);
+        }
+        return answers;
     }
 }
