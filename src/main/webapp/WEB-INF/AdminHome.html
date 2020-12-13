@@ -10,8 +10,10 @@
 <div align="right">
     <a th:href="@{/Logout}">Logout</a>
 </div>
-<h1>Admin Home Page</h1>
-<p th:text="${'Nice to see you again ' + session.user.name + ' ' + session.user.surname}"></p>
+<h1>Welcome to Admin Home Page</h1>
+<p
+        th:text="${'Nice to see you again ' + session.user.name + ' ' + session.user.surname}"></p>
+
 
 <div>
     <span th:text="${message}"></span>
@@ -20,6 +22,10 @@
     </form>
     <form action="#" th:action="@{/AdminHistory}" method="GET">
         <input type="submit" value="History">
+    </form>
+
+    <form action="#" th:action="@{/AdminDelete}" method="GET">
+        <input type="submit" value="Delete Questionnaire">
     </form>
 </div>
 </body>

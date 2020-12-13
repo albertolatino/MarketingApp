@@ -33,6 +33,17 @@ public class AdminDelete extends ServletBase {
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
 
+        doPost(request,response);
+
+    }
+
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        if (redirectIfNotLogged(request, response)) return;
+        if (redirectIfNotAdmin(request, response)) return;
+
         Date deletionDate = null;
         String message;
         boolean isBadRequest = false;
@@ -53,9 +64,7 @@ public class AdminDelete extends ServletBase {
         }
 
 
-        // deletionDate = incrementDate(deletionDate,1);
-
-        if (questionnaireService.questionnaireAlreadyExist(deletionDate)) {
+        if(questionnaireService.questionnaireAlreadyExist(deletionDate)){
 
             message = "Questionnaire correctly deleted";
             questionnaireService.deleteQuestionnaire(deletionDate);
