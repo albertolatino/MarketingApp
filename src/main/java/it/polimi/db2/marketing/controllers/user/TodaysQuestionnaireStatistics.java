@@ -107,9 +107,18 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 
         StatAnswers statAnswers = new StatAnswers(qst.getDate(), user.getId(), age, sex, expertise);
 
-        qstService.addAnswers(answers);
-        qstService.addStatAnswers(statAnswers);
+		//convert to list of answers to strings
+		ArrayList<String> answersString = new ArrayList<>();
+		for(Answer a : answers)
+			answersString.add(a.getAnswer().toLowerCase());
 
+		if(qstService.containsOffensiveWords(answersString)) {
+			//TODO block user, at login check if user is blocked,
+			// display you are blocked page both at login and now
+		}
+
+		qstService.addAnswers(answers);
+        qstService.addStatAnswers(statAnswers);
         uqService.submitQuestionnaire(user, qst);
 
         session.removeAttribute("answers");

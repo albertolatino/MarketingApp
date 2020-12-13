@@ -23,7 +23,6 @@
         <th>Surname</th>
         <th>Username</th>
         <th>Answers</th>
-        <th>Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -32,7 +31,6 @@
         <td th:text="${u.surname}"></td>
         <td th:text="${u.username}"></td>
         <td><a th:href="@{/GetAnswers(date=${#httpServletRequest.getParameter('date')}, userid=${u.id})}">Answer</a></td>
-        <td><a th:href="@{/AdminDelete(date=${#httpServletRequest.getParameter('date')})}">Delete</a></td>
     </tr>
     </tbody>
 </table>

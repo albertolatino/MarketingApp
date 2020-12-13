@@ -110,4 +110,13 @@ public class QuestionnaireService {
         }
         return answers;
     }
+
+    //TODO
+    public boolean containsOffensiveWords(ArrayList<String> strings) {
+        boolean bool = false;
+        for (String s : strings) {
+
+        }
+        return bool;
+    }
 }
