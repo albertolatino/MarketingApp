@@ -44,6 +44,14 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 
 		HttpSession session = request.getSession();
 
+		String submit = StringEscapeUtils.escapeJava(request.getParameter("submit"));
+		if (submit.equals("CANCEL")) {
+			session.removeAttribute("answers");
+			String path = getServletContext().getContextPath() + "/Home";
+			response.sendRedirect(path);
+			return;
+		}
+
 		User user = (User) session.getAttribute("user");
 
 		Questionnaire qst;
