@@ -52,8 +52,6 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 			return;
 		}
 
-
-
 		User user = (User) session.getAttribute("user");
 
 		Questionnaire qst;
