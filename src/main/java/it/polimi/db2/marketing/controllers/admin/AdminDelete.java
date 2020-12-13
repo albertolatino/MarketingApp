@@ -43,7 +43,6 @@ public class AdminDelete extends ServletBase {
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
 
-        renderPage(request, response, "/WEB-INF/AdminDelete.html");
     }
 
 
@@ -72,8 +71,6 @@ public class AdminDelete extends ServletBase {
             return;
         }
 
-
-       // deletionDate = incrementDate(deletionDate,1);
 
         if(questionnaireService.questionnaireAlreadyExist(deletionDate)){
 

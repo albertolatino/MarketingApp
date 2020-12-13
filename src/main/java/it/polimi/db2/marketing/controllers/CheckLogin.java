@@ -66,6 +66,9 @@ public class CheckLogin extends ServletBase {
             variables.put("errorMsg", "Incorrect username or password");
             renderPage(request, response, "/index.html", variables);
         } else {
+
+            usrService.registerAccess(user);
+
             request.getSession().setAttribute("user", user);
             if (user.isAdmin()) {
                 path = getServletContext().getContextPath() + "/AdminHome";

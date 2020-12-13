@@ -1,5 +1,6 @@
 package it.polimi.db2.marketing.ejb.services;
 
+import it.polimi.db2.marketing.ejb.entities.Log;
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.exceptions.CredentialsException;
 
@@ -8,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -59,6 +61,12 @@ public class UserService {
 		User user = new User(usrn, name, surname, pwd, mail);
 		em.persist(user);
 	}
+
+	public void registerAccess(User user){
+		Log log = new Log(user);
+		em.persist(log);
+	}
+
 
 
 }
