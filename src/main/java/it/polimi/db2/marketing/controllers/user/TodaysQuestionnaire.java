@@ -67,9 +67,18 @@ public class TodaysQuestionnaire extends ServletBase {
 
 		uqService.beginQuestionnaire(user, qst);
 
+		ArrayList<Answer> answers = (ArrayList<Answer>) session.getAttribute("answers");
+		Map<Integer, String> answersMap = null;
+		if (answers != null) {
+			answersMap = new HashMap<>();
+			for (Answer a : answers)
+				answersMap.put(a.getQuestionId(), a.getAnswer());
+		}
+
 		Map<String, Object> variables = new HashMap<>();
 		variables.put("questionnaireName", qst.getTitle());
 		variables.put("questions", qst.getQuestions());
+		variables.put("answers", answersMap);
 		renderPage(request, response, "/WEB-INF/TodaysQuestionnaire.html", variables);
 	}
 

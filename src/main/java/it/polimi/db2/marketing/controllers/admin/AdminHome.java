@@ -2,6 +2,7 @@ package it.polimi.db2.marketing.controllers.admin;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.User;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/AdminHome")
 public class AdminHome extends ServletBase {
@@ -30,6 +33,10 @@ public class AdminHome extends ServletBase {
 		if (redirectIfNotLogged(request, response)) return;
 		if (redirectIfNotAdmin(request, response)) return;
 
-		renderPage(request, response, "/WEB-INF/AdminHome.html");
+		String message = StringEscapeUtils.escapeJava(request.getParameter("message"));
+
+		Map<String, Object> variables = new HashMap<>();
+		variables.put("message", message);
+		renderPage(request, response, "/WEB-INF/AdminHome.html", variables);
 	}
 }

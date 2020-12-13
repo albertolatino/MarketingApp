@@ -8,6 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user_questionnaire", schema = "db_marketing")
+@Cacheable(false)
 @NamedQueries({
         @NamedQuery(name = "UserQuestionnaire.getUsersWhoSubmitted", query = "SELECT u FROM User u, UserQuestionnaire uq WHERE u = uq.user AND uq.date = ?1 AND uq.has_submitted = true"),
         @NamedQuery(name = "UserQuestionnaire.getUsersWhoCanceled", query = "SELECT u FROM User u, UserQuestionnaire uq WHERE u = uq.user AND uq.date = ?1 AND uq.has_submitted = false")

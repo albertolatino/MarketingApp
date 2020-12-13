@@ -5,6 +5,7 @@ import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -44,12 +45,11 @@ public class Home extends ServletBase {
 			qst = null;
 		}
 
+		String message = StringEscapeUtils.escapeJava(request.getParameter("message"));
+
 		Map<String, Object> variables = new HashMap<>();
 		variables.put("today", qst != null);
+		variables.put("message", message);
 		renderPage(request, response, "/WEB-INF/Home.html", variables);
-}
-
-	public void destroy() {
 	}
-
 }

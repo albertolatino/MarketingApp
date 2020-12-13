@@ -20,14 +20,17 @@
     <tr>
         <th>Title</th>
         <th>Date</th>
-        <th>Details</th>
+        <th>Answers</th>
+        <th>Delete</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="q : ${questionnaires}">
         <td th:text="${q.title}"></td>
         <td th:text="${#dates.format(q.date, 'yyyy-MM-dd')}"></td>
-        <td><a th:href="@{/QuestionnaireDetails(date=${#dates.format(q.date, 'yyyy-MM-dd')})}">Show</a></td>
+        <td><a th:href="@{/QuestionnaireDetails(date=${#dates.format(q.date, 'yyyy-MM-dd')})}">Answers</a></td>
+        <td><a th:href="@{/AdminDelete(date=${#dates.format(q.date, 'yyyy-MM-dd')})}">Delete</a></td>
+
     </tr>
     </tbody>
 </table>

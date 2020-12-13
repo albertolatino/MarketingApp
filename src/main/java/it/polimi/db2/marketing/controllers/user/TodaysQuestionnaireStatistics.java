@@ -44,13 +44,21 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 
 		HttpSession session = request.getSession();
 
+		String submit = StringEscapeUtils.escapeJava(request.getParameter("submit"));
+		if (submit.equals("CANCEL")) {
+			session.removeAttribute("answers");
+			String path = getServletContext().getContextPath() + "/Home?message=Questionnaire canceled.";
+			response.sendRedirect(path);
+			return;
+		}
+
 		User user = (User) session.getAttribute("user");
 
 		Questionnaire qst;
 		try {
 			qst = qstService.getToday();
 		} catch (QuestionnaireNotFoundException e) {
-			String path = getServletContext().getContextPath() + "/Home";
+			String path = getServletContext().getContextPath() + "/Home?message=Error fetching the questionnaire.";
 			response.sendRedirect(path);
 			return;
 		} catch (QuestionnaireException e) {
@@ -60,8 +68,7 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 		}
 
 		if (uqService.hasSubmitted(user, qst)) {
-			System.out.println("ALREADY SUBMITTED!");
-			String path = getServletContext().getContextPath() + "/Home";
+			String path = getServletContext().getContextPath() + "/Home?message=Already submitted!";
 			response.sendRedirect(path);
 			return;
 		}
@@ -107,8 +114,7 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 
         session.removeAttribute("answers");
 
-		Map<String, Object> variables = new HashMap<>();
-		variables.put("message", "Questionnaire responses successfully submitted!");
-		renderPage(request, response, "/WEB-INF/Home.html", variables);
+		String path = getServletContext().getContextPath() + "/Home?message=Questionnaire responses successfully submitted!";
+		response.sendRedirect(path);
 	}
 }
