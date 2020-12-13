@@ -33,6 +33,8 @@ public class AdminDelete extends ServletBase {
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
 
+        doPost(request,response);
+
     }
 
 
