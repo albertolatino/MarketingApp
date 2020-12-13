@@ -18,6 +18,10 @@ public class UserService {
 	public UserService() {
 	}
 
+	public User getUser(int userid) {
+		return em.find(User.class, userid);
+	}
+
 	public User checkCredentials(String usrn, String pwd) throws CredentialsException, NonUniqueResultException {
 		List<User> users;
 		try {

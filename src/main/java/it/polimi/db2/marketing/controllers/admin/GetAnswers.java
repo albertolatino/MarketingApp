@@ -4,7 +4,9 @@ import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.Answer;
 import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
+import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
+import it.polimi.db2.marketing.ejb.services.UserService;
 
 import javax.ejb.EJB;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +24,8 @@ public class GetAnswers extends ServletBase {
 
     @EJB(name = "it.polimi.db2.marketing.ejb.services/QuestionnaireService")
     private QuestionnaireService qnnaireService;
+    @EJB(name = "it.polimi.db2.marketing.ejb.services/UserService")
+    private UserService userService;
 
     public GetAnswers() {
         super();
@@ -39,9 +43,10 @@ public class GetAnswers extends ServletBase {
             //TODO escape
             date = sdf.parse(request.getParameter("date"));
             userid = Integer.parseInt(request.getParameter("userid"));
-            //TODO see style
+            //TODO see style, badrequest
             //cannot see history for future questionnaire
             if (getToday().before(date)) {
+                //todo create new exception
                 throw new Exception("Missing or empty credential value");
             }
 
@@ -57,11 +62,13 @@ public class GetAnswers extends ServletBase {
         List<Question> questions;
         List<Answer> answers;
         Questionnaire questionnaire;
+        User user;
 
         try {
             questionnaire = qnnaireService.findByDate(date);
             questions = questionnaire.getQuestions();
             answers = qnnaireService.getAnswersToQuestions(questions, userid);
+            user = userService.getUser(userid);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
             return;
@@ -70,7 +77,7 @@ public class GetAnswers extends ServletBase {
         Map<String, Object> variables = new HashMap<>();
         variables.put("questions", questions);
         variables.put("answers", answers);
-
+        variables.put("user", user);
         renderPage(request, response, "/WEB-INF/answers.html", variables);
     }
 

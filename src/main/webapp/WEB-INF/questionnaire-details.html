@@ -13,7 +13,7 @@
 <div align="right">
     <a th:href="@{/Logout}">Logout</a>
 </div>
-<h1>Welcome to the Questionnaire Page</h1>
+<h1 th:text="${'Questionnaire of ' + #httpServletRequest.getParameter('date')}"></h1>
 
 <p>Users who submitted the questionnaire</p>
 <table>
@@ -23,6 +23,7 @@
         <th>Surname</th>
         <th>Username</th>
         <th>Answers</th>
+        <th>Delete</th>
     </tr>
     </thead>
     <tbody>
@@ -30,8 +31,8 @@
         <td th:text="${u.name}"></td>
         <td th:text="${u.surname}"></td>
         <td th:text="${u.username}"></td>
-        <td><a th:href="@{/GetAnswers(date=${#httpServletRequest.getParameter('date')}, userid=${u.id})}">Show</a></td>
-
+        <td><a th:href="@{/GetAnswers(date=${#httpServletRequest.getParameter('date')}, userid=${u.id})}">Answer</a></td>
+        <td><a th:href="@{/AdminDelete(date=${#httpServletRequest.getParameter('date')})}">Delete</a></td>
     </tr>
     </tbody>
 </table>

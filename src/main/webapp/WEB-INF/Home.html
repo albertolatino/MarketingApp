@@ -10,10 +10,8 @@
 	<div align="right">
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
-	<h1>Welcome to the Marketing Home Page</h1>
-	<p
-		th:text="${'Nice to see you again ' + session.user.name + ' ' + session.user.surname}"></p>
-
+	<h1>Welcome to the Gamified Marketing Application</h1>
+	<p th:text="${'Nice to see you again ' + session.user.name + ' ' + session.user.surname}"></p>
 	<span th:text="${message}"></span>
 	<form action="#" th:action="@{/Leaderboard}" method="GET">
 		<input type="submit" value="LEADERBOARD">
