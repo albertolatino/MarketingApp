@@ -14,6 +14,7 @@
         <class>it.polimi.db2.marketing.ejb.entities.UserQuestionnaire</class>
         <properties>
             <property name="eclipselink.logging.level" value="FINE" />
+            <property name="hibernate.jdbc.time_zone" value="CET"/>
         </properties>
     </persistence-unit>
 </persistence>
