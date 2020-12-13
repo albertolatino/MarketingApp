@@ -1,4 +1,4 @@
-package it.polimi.db2.marketing.controllers.user;
+package it.polimi.db2.marketing.controllers.admin;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.User;
@@ -42,8 +42,8 @@ public class QuestionnaireDetails extends ServletBase {
         Date date = null;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            //TODO escape
             date = sdf.parse(request.getParameter("date"));
-
             //TODO see style
             //cannot see history for future questionnaire
             if (getToday().before(date)) {
@@ -66,6 +66,8 @@ public class QuestionnaireDetails extends ServletBase {
 
         //get users who submitted and canceled the questionnaire of date
         List<User> usersSubmitted, usersCanceled;
+        System.out.println("DATE IS: ");
+        System.out.println(date);
 
         try {
             usersSubmitted = uqService.getUsersWhoSubmitted(date);
@@ -74,11 +76,12 @@ public class QuestionnaireDetails extends ServletBase {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
             return;
         }
-        System.out.println(usersSubmitted.get(0).getUsername());
-        //System.out.println(usersCanceled.get(0).getUsername());
+        //TODO no users submitted or canceled print statement in thymeleaf (conditional in thyme)
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("usersSubmitted", usersSubmitted);
+        variables.put("usersCanceled", usersCanceled);
+
         renderPage(request, response, "/WEB-INF/questionnaire-details.html", variables);
 
     }

@@ -11,6 +11,7 @@
         <class>it.polimi.db2.marketing.ejb.entities.Questionnaire</class>
         <class>it.polimi.db2.marketing.ejb.entities.StatAnswers</class>
         <class>it.polimi.db2.marketing.ejb.entities.User</class>
+        <class>it.polimi.db2.marketing.ejb.entities.UserQuestionnaire</class>
         <properties>
             <property name="eclipselink.logging.level" value="FINE" />
         </properties>
