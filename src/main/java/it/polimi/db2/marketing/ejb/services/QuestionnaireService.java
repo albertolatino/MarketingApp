@@ -48,7 +48,15 @@ public class QuestionnaireService {
         }
 
         questionnaire.setQuestions(qs);
-        em.persist(questionnaire);
+        em.persist(questionnaire);//questions are persisted with cascading
+    }
+
+    public void deleteQuestionnaire(Date deletionDate){
+
+       Questionnaire q = em.find(Questionnaire.class, deletionDate);
+       System.out.println("DATA DEL QUESTIONARIO" + q.getDate());
+       em.remove(q);
+       em.flush();
     }
 
     public boolean questionnaireAlreadyExist(Date plannedDate){

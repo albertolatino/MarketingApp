@@ -1,5 +1,7 @@
 package it.polimi.db2.marketing.ejb.entities;
 
+import org.eclipse.persistence.jaxb.xmlmodel.XmlAnyAttribute;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,7 +15,9 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "Questionnaire.getAll", query = "SELECT q FROM Questionnaire q"),
         @NamedQuery(name = "Questionnaire.getByDate", query = "SELECT q FROM Questionnaire q WHERE q.date = ?1"),
-        @NamedQuery(name = "Questionnaire.getToday", query = "SELECT q FROM Questionnaire q WHERE q.date = CURRENT_DATE")
+        @NamedQuery(name = "Questionnaire.getToday", query = "SELECT q FROM Questionnaire q WHERE q.date = CURRENT_DATE"),
+        @NamedQuery(name = "Questionnaire.deleteByDate", query = "DELETE FROM Questionnaire q WHERE q.date = ?1"),
+
 })
 
 public class Questionnaire implements Serializable {
@@ -25,11 +29,12 @@ public class Questionnaire implements Serializable {
 
     private String title;
 
-    @OneToMany(mappedBy="questionnaire", cascade=CascadeType.PERSIST)
+    @OneToMany(mappedBy="questionnaire", cascade=CascadeType.ALL)
     private Collection<Question> questions;
 
-    @OneToMany(mappedBy="questionnaire")
+    @OneToMany(mappedBy="questionnaire", cascade=CascadeType.ALL)
     private Collection<StatAnswers> statAnswers;
+
 
     public Questionnaire() {
     }

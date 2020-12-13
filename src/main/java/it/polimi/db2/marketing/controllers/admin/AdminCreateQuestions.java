@@ -70,7 +70,7 @@ public class AdminCreateQuestions extends ServletBase {
 
         String message;
         //Increment by one
-        questionnaireDate = incrementDate(questionnaireDate,1);
+        //questionnaireDate = incrementDate(questionnaireDate,1);
 
         //check there aren't other questionnaires in this date
         //TODO EVENTUALMENTE SOSTITUIRE INVECE DI NAMED QUERY CON EM.FIND
@@ -123,11 +123,4 @@ public class AdminCreateQuestions extends ServletBase {
         return strDate.compareTo(strToday) < 0;
     }
 
-    public Date incrementDate(Date date, int days){
-        Calendar calendar=Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.HOUR_OF_DAY, 5);
-        calendar.add(Calendar.DATE, 1);
-        return calendar.getTime();
-    }
 }

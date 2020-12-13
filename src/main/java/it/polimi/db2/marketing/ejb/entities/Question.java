@@ -30,7 +30,7 @@ public class Question implements Serializable {
     @JoinColumn(name="date", insertable=false, updatable=false)
     private Questionnaire questionnaire;
 
-    @OneToMany(mappedBy="question")
+    @OneToMany(mappedBy="question",cascade=CascadeType.ALL)
     private Collection<Answer> answers;
 
     public Question(Date date, String text ) {
