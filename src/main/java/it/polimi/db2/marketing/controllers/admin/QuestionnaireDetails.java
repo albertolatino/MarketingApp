@@ -1,20 +1,13 @@
-package it.polimi.db2.marketing.controllers.user;
+package it.polimi.db2.marketing.controllers.admin;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.services.UserQuestionnaireService;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.ejb.EJB;
-import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,8 +35,8 @@ public class QuestionnaireDetails extends ServletBase {
         Date date = null;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            //TODO escape
             date = sdf.parse(request.getParameter("date"));
-
             //TODO see style
             //cannot see history for future questionnaire
             if (getToday().before(date)) {
@@ -57,13 +50,6 @@ public class QuestionnaireDetails extends ServletBase {
             return;
         }
 
-        /* To show in questionnaire-details.html:
-         * List of users who submitted the questionnaire,
-         * List of users who canceled the questionnaire.
-         *
-         * Questionnaire answers of each user. [New page linked to users who submitted]
-         */
-
         //get users who submitted and canceled the questionnaire of date
         List<User> usersSubmitted, usersCanceled;
 
@@ -74,13 +60,12 @@ public class QuestionnaireDetails extends ServletBase {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
             return;
         }
-        System.out.println(usersSubmitted.get(0).getUsername());
-        //System.out.println(usersCanceled.get(0).getUsername());
+        //TODO no users submitted or canceled print statement in thymeleaf (conditional in thyme)
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("usersSubmitted", usersSubmitted);
+        variables.put("usersCanceled", usersCanceled);
         renderPage(request, response, "/WEB-INF/questionnaire-details.html", variables);
-
     }
 
     private Date getToday() {

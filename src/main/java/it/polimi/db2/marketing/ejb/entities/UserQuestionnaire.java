@@ -3,20 +3,14 @@ package it.polimi.db2.marketing.ejb.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 
 @Entity
 @Table(name = "user_questionnaire", schema = "db_marketing")
-/*
-@SecondaryTables({
-        @SecondaryTable(name="usertable", schema = "db_marketing"),
-})
- */
 @NamedQueries({
-        @NamedQuery(name = "UserQuestionnaire.getUsersWhoSubmitted", query = "SELECT u FROM User u JOIN u.questionnaires uq WHERE uq.date = ?1 and u.id = uq.user.id"),
-        @NamedQuery(name = "UserQuestionnaire.getUsersWhoCanceled", query = "SELECT u FROM User u, UserQuestionnaire uq WHERE uq.date = ?1 and u.id = uq.user_id and uq.has_submitted = false")
+        @NamedQuery(name = "UserQuestionnaire.getUsersWhoSubmitted", query = "SELECT u FROM User u, UserQuestionnaire uq WHERE u = uq.user AND uq.date = ?1 AND uq.has_submitted = true"),
+        @NamedQuery(name = "UserQuestionnaire.getUsersWhoCanceled", query = "SELECT u FROM User u, UserQuestionnaire uq WHERE u = uq.user AND uq.date = ?1 AND uq.has_submitted = false")
 })
 @IdClass(UserQuestionnaire.Key.class)
 public class UserQuestionnaire implements Serializable {
@@ -26,6 +20,7 @@ public class UserQuestionnaire implements Serializable {
     private Integer user_id;
 
     @Id
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     private boolean has_submitted;
@@ -33,6 +28,9 @@ public class UserQuestionnaire implements Serializable {
     @ManyToOne
     @JoinColumn(name="user_id", insertable=false, updatable=false)
     private User user;
+
+    public UserQuestionnaire() {
+    }
 
     public UserQuestionnaire(Integer user_id, Date date) {
         this.user_id = user_id;
@@ -62,17 +60,6 @@ public class UserQuestionnaire implements Serializable {
 
     public void setHasSubmitted(boolean has_submitted) {
         this.has_submitted = has_submitted;
-    }
-    /*
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }*/
-
-    public UserQuestionnaire() {
     }
 
     public static class Key implements Serializable {

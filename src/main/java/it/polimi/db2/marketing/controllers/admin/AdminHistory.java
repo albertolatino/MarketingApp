@@ -48,11 +48,6 @@ public class AdminHistory extends ServletBase {
             return;
         }
 
-
-        for(Questionnaire q : questionnaires) {
-            System.out.println(q.getTitle());
-            System.out.println(q.getDate());
-        }
         //TODO em.create questionnaire, but how to get date and title that are in another servlet?
 
         Map<String, Object> variables = new HashMap<>();

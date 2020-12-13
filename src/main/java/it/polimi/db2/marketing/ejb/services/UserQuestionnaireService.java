@@ -5,6 +5,7 @@ import it.polimi.db2.marketing.ejb.entities.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,6 @@ public class UserQuestionnaireService {
         List<User> users;
         users = em.createNamedQuery("UserQuestionnaire.getUsersWhoSubmitted", User.class)
                 .setParameter(1, date).getResultList();
-
         return users;
 
     }

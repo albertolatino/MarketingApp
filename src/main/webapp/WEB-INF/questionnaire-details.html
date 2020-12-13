@@ -21,7 +21,8 @@
     <tr>
         <th>Name</th>
         <th>Surname</th>
-        <th>username</th>
+        <th>Username</th>
+        <th>Answers</th>
     </tr>
     </thead>
     <tbody>
@@ -29,8 +30,29 @@
         <td th:text="${u.name}"></td>
         <td th:text="${u.surname}"></td>
         <td th:text="${u.username}"></td>
+        <td><a th:href="@{/GetAnswers(date=${#httpServletRequest.getParameter('date')}, userid=${u.id})}">Show</a></td>
+
     </tr>
     </tbody>
 </table>
+
+<p>Users who canceled the questionnaire</p>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Username</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="u : ${usersCanceled}">
+        <td th:text="${u.name}"></td>
+        <td th:text="${u.surname}"></td>
+        <td th:text="${u.username}"></td>
+    </tr>
+    </tbody>
+</table>
+
 </body>
 </html>
