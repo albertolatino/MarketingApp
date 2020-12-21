@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,6 +51,12 @@ public class Home extends ServletBase {
 		Map<String, Object> variables = new HashMap<>();
 		variables.put("today", qst != null);
 		variables.put("message", message);
+		if (qst != null) {
+			byte[] imageData = qst.getImage();
+			String encoded = new String(Base64.getEncoder().encode(imageData));
+			variables.put("image", encoded);
+
+		}
 		renderPage(request, response, "/WEB-INF/Home.html", variables);
 	}
 }

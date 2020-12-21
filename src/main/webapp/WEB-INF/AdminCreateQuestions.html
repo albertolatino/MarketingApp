@@ -17,7 +17,7 @@
 
     <p>You have selected <span th:text="${number}"></span> questions.</p>
 
-    <form action="#" th:action="@{/AdminCreateQuestions}" method="POST">
+    <form action="#" th:action="@{/AdminCreateQuestions}" method="POST" enctype="multipart/form-data">
         Select Questionnaire Date <br>
         <input type="date" name="date" id="date"><br>
         Title: <input type="text" name="title" id="title"><br>
@@ -27,6 +27,7 @@
                 <td><input type="text" th:name="${i}"></td>
             </tr>
         </table>
+        Image: <input type="file" name="file"><br>
         <input type="submit" value="Create">
     </form>
 

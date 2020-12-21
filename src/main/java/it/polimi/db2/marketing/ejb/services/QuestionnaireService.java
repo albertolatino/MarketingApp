@@ -37,8 +37,8 @@ public class QuestionnaireService {
         return questionnaires;
     }
 
-    public void createQuestionnaire(ArrayList<String> questions, Date date, String title){
-        Questionnaire questionnaire = new Questionnaire(date, title);
+    public void createQuestionnaire(ArrayList<String> questions, Date date, String title, byte[] imageData){
+        Questionnaire questionnaire = new Questionnaire(date, title, imageData);
 
         ArrayList<Question> qs = new ArrayList<>();
 

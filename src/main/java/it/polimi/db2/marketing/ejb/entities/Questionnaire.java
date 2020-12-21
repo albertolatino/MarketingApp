@@ -29,6 +29,10 @@ public class Questionnaire implements Serializable {
 
     private String title;
 
+    @Lob
+    @Column(columnDefinition="LONGBLOB")
+    private byte[] image;
+
     @OneToMany(mappedBy="questionnaire", cascade=CascadeType.ALL)
     private Collection<Question> questions;
 
@@ -39,15 +43,17 @@ public class Questionnaire implements Serializable {
     public Questionnaire() {
     }
 
-    public Questionnaire(Collection<Question> questions, Date date, String title){
+    public Questionnaire(Collection<Question> questions, Date date, String title, byte[] image){
         this.questions = questions;
         this.date = date;
         this.title = title;
+        this.image = image;
     }
 
-    public  Questionnaire(Date date, String title){
+    public  Questionnaire(Date date, String title, byte[] image){
         this.date = date;
         this.title = title;
+        this.image = image;
     }
 
     public Date getDate() {
@@ -80,5 +86,13 @@ public class Questionnaire implements Serializable {
 
     public void setStatAnswers(Collection<StatAnswers> statAnswers) {
         this.statAnswers = statAnswers;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

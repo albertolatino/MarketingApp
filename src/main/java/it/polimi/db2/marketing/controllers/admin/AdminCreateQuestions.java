@@ -12,12 +12,11 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +24,7 @@ import java.util.*;
 
 
 @WebServlet("/AdminCreateQuestions")
+@MultipartConfig
 public class AdminCreateQuestions extends ServletBase {
     private static final long serialVersionUID = 1L;
     @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
@@ -53,11 +53,20 @@ public class AdminCreateQuestions extends ServletBase {
         boolean isBadRequest = false;
         Date questionnaireDate = null;
         String title = null;
+        Part filePart = null;
+        String filename = null;
+        byte[] imageData = null;
 
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             questionnaireDate = (Date) sdf.parse(request.getParameter("date"));
             title = (String) StringEscapeUtils.escapeJava(request.getParameter("title"));
+            filePart = request.getPart("file");
+            filename = filePart.getName();
+            InputStream fileStream = filePart.getInputStream();
+            System.out.println("File size is : " + fileStream.available());
+            imageData = new byte[fileStream.available()];
+            fileStream.read(imageData);
             isBadRequest = isBeforeToday(questionnaireDate);
         } catch (NumberFormatException | NullPointerException | ParseException e) {
             isBadRequest = true;
@@ -102,7 +111,7 @@ public class AdminCreateQuestions extends ServletBase {
 
 
 
-            questionnaireService.createQuestionnaire(questions, questionnaireDate, title);
+            questionnaireService.createQuestionnaire(questions, questionnaireDate, title, imageData);
 
         }
 
