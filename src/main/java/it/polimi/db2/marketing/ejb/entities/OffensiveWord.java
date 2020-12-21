@@ -1,19 +1,19 @@
 package it.polimi.db2.marketing.ejb.entities;
 
-import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import it.polimi.db2.marketing.ejb.entities.Questionnaire;
+import java.io.Serializable;
 
 /**
  * The persistent class for the question database table.
  *
  */
 @Entity
-@Table(name = "question", schema = "db_marketing")
+@Table(name = "offensive_word", schema = "db_marketing")
+//TODO
+@NamedQueries({
+        @NamedQuery(name = "OffensiveWord.containsWord",
+                query = "SELECT o FROM OffensiveWord o WHERE ?1.contains(o.word)")
+})
 public class OffensiveWord implements Serializable {
     private static final long serialVersionUID = 1L;
 
