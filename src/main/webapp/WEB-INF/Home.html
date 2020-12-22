@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="ISO-8859-1" />
 <title>Home</title>
 <link rel="stylesheet" type="text/css" media="all"
 	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
@@ -14,12 +14,24 @@
 	<p th:text="${'Nice to see you again ' + session.user.name + ' ' + session.user.surname}"></p>
 	<span th:text="${message}"></span>
 	<form action="#" th:action="@{/Leaderboard}" method="GET">
-		<input type="submit" value="LEADERBOARD">
+		<input type="submit" value="LEADERBOARD" />
 	</form>
 	<form action="#" th:action="@{/TodaysQuestionnaire}" method="GET">
-		<input th:if="${today == true}" type="submit" value="TODAY'S QUESTIONNAIRE">
-		<input th:if="${today == false}" type="submit" value="TODAY'S QUESTIONNAIRE" disabled>
+		<input th:if="${today == true}" type="submit" value="TODAY'S QUESTIONNAIRE" />
+		<input th:if="${today == false}" type="submit" value="TODAY'S QUESTIONNAIRE" disabled />
 	</form>
-	<img th:if="${today == true}" th:src="*{'data:image/png;base64,'+image}" alt="product image" />
+	<img th:src="*{'data:image/png;base64,'+image}" alt="product image" /><br>
+	<table>
+		<tr>
+			<th></th>
+			<th th:each="q : ${answers.getAllQuestionId()}" th:text="${answers.getQuestionText(q)}"></th>
+		</tr>
+		<th:block th:each="u : ${answers.getAllUsers()}">
+			<tr>
+				<th th:text="${u}"></th>
+				<td th:each="q : ${answers.getAllQuestionId()}" th:text="${answers.getAnswer(u, q)}"></td>
+			</tr>
+		</th:block>
+	</table>
 </body>
 </html>

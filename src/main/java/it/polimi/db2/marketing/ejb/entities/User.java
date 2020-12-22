@@ -17,6 +17,9 @@ import java.util.Collection;
 		@NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"),
 		@NamedQuery(name = "User.getAll", query = "SELECT r FROM User r"),
 		@NamedQuery(name = "User.checkUnique", query = "SELECT r FROM User r WHERE r.username = ?1 or r.email = ?2"),
+		@NamedQuery(name = "User.usersWhoRespondedToQuestionnaire",
+			query = "SELECT u, a FROM User u, Answer a WHERE a.user_id = u.id AND " +
+					"a.question_id IN (SELECT q.id FROM Question q WHERE q.questionnaire.date = ?1)")
 })
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;

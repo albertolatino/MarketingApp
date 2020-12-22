@@ -1,20 +1,16 @@
 package it.polimi.db2.marketing.ejb.services;
 
-import it.polimi.db2.marketing.ejb.entities.Answer;
-import it.polimi.db2.marketing.ejb.entities.Question;
-import it.polimi.db2.marketing.ejb.entities.Questionnaire;
-import it.polimi.db2.marketing.ejb.entities.StatAnswers;
+import it.polimi.db2.marketing.ejb.entities.*;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
+import it.polimi.db2.marketing.utils.AnsweredList;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Stateless
 public class QuestionnaireService {
@@ -118,5 +114,20 @@ public class QuestionnaireService {
 
         }
         return bool;
+    }
+
+    public AnsweredList getAllAnswers(Questionnaire q) {
+        q = em.merge(q);
+        List<Question> questions = q.getQuestions();
+        AnsweredList toRet = new AnsweredList(questions);
+
+        List<Object[]> users = em.createNamedQuery("User.usersWhoRespondedToQuestionnaire").setParameter(1, q.getDate()).getResultList();
+        for (Object[] arr : users) {
+            User u = (User) arr[0];
+            Answer a = (Answer) arr[1];
+            toRet.addAnswer(u.getName(), a.getQuestionId(), a.getAnswer());
+        }
+
+        return toRet;
     }
 }

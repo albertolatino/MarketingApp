@@ -1,10 +1,12 @@
 package it.polimi.db2.marketing.controllers.user;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
+import it.polimi.db2.marketing.ejb.entities.Answer;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
+import it.polimi.db2.marketing.utils.AnsweredList;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet("/Home")
@@ -55,7 +58,8 @@ public class Home extends ServletBase {
 			byte[] imageData = qst.getImage();
 			String encoded = new String(Base64.getEncoder().encode(imageData));
 			variables.put("image", encoded);
-
+			AnsweredList answers = qstService.getAllAnswers(qst);
+			variables.put("answers", answers);
 		}
 		renderPage(request, response, "/WEB-INF/Home.html", variables);
 	}

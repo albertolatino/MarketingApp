@@ -11,8 +11,8 @@ import java.io.Serializable;
 @Table(name = "offensive_word", schema = "db_marketing")
 //TODO
 @NamedQueries({
-        @NamedQuery(name = "OffensiveWord.containsWord",
-                query = "SELECT o FROM OffensiveWord o WHERE ?1.contains(o.word)")
+//        @NamedQuery(name = "OffensiveWord.containsWord",
+//                query = "SELECT o FROM OffensiveWord o WHERE ?1.contains(o.word)")
 })
 public class OffensiveWord implements Serializable {
     private static final long serialVersionUID = 1L;
