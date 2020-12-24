@@ -1,29 +1,24 @@
 package it.polimi.db2.marketing.controllers.user;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
-import it.polimi.db2.marketing.ejb.entities.*;
-import it.polimi.db2.marketing.ejb.exceptions.FormException;
+import it.polimi.db2.marketing.ejb.entities.Answer;
+import it.polimi.db2.marketing.ejb.entities.Questionnaire;
+import it.polimi.db2.marketing.ejb.entities.StatAnswers;
+import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import it.polimi.db2.marketing.ejb.services.UserQuestionnaireService;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.ejb.EJB;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 @WebServlet("/TodaysQuestionnaireStatistics")
 public class TodaysQuestionnaireStatistics extends ServletBase {
@@ -38,7 +33,7 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws IOException {
 
 		if (redirectIfNotLogged(request, response)) return;
 
@@ -112,7 +107,14 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 		for(Answer a : answers)
 			answersString.add(a.getAnswer().toLowerCase());
 
-		if(qstService.containsOffensiveWords(answersString)) {
+
+		//answersString.add("DICK11 is bad word");
+		//answersString.add("PENIS is bad word");
+		//answersString.add("CHICKEN is not bad word");
+
+		boolean containsProfanity = qstService.containsOffensiveWords(answersString);
+		if(containsProfanity) {
+			System.out.println("SERVLET contains profanity");
 			//TODO block user, at login check if user is blocked,
 			// display you are blocked page both at login and now
 		}

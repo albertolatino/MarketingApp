@@ -107,14 +107,19 @@ public class QuestionnaireService {
         return answers;
     }
 
-    //TODO
-    public boolean containsOffensiveWords(ArrayList<String> strings) {
-        boolean bool = false;
-        for (String s : strings) {
-
+    public boolean containsOffensiveWords(ArrayList<String> answers) {
+        Long num;
+        for (String a : answers) {
+                num = em.createNamedQuery("OffensiveWord.containsWord", Long.class).setParameter(1, a).getSingleResult();
+                if(num != 0) {
+                    System.out.println(a+" contains a bad word");
+                    return true;
+                } else
+                    System.out.println(a+" DOES NOT contain a bad word");
         }
-        return bool;
+        return false;
     }
+
 
     public AnsweredList getAllAnswers(Questionnaire q) {
         q = em.merge(q);

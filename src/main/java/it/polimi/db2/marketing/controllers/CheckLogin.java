@@ -1,29 +1,21 @@
 package it.polimi.db2.marketing.controllers;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.ejb.EJB;
-import javax.persistence.PersistenceException;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringEscapeUtils;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.exceptions.CredentialsException;
+import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import it.polimi.db2.marketing.ejb.services.UserService;
+import org.apache.commons.lang.StringEscapeUtils;
 
+import javax.ejb.EJB;
 import javax.persistence.NonUniqueResultException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/CheckLogin")
 public class CheckLogin extends ServletBase {
@@ -57,6 +49,8 @@ public class CheckLogin extends ServletBase {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
             return;
         }
+
+
 
         // If the user exists, add info to the session and go to home page, otherwise
         // show login page with error message
