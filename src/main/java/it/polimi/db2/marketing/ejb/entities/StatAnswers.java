@@ -24,11 +24,11 @@ public class StatAnswers implements Serializable {
     private String expertise;
 
     @ManyToOne
-    @JoinColumn(name="date", insertable=false, updatable=false)
+    @JoinColumn(name = "date", insertable = false, updatable = false)
     private Questionnaire questionnaire;
 
     @ManyToOne
-    @JoinColumn(name="user_id", insertable=false, updatable=false)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
     public StatAnswers() {
@@ -68,7 +68,10 @@ public class StatAnswers implements Serializable {
             this.user_id = user_id;
         }
 
-        public Key() {};
+        public Key() {
+        }
+
+        ;
 
         @Override
         public boolean equals(Object o) {

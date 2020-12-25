@@ -2,18 +2,15 @@ package it.polimi.db2.marketing.controllers;
 
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.exceptions.CredentialsException;
-import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import it.polimi.db2.marketing.ejb.services.UserService;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.ejb.EJB;
 import javax.persistence.NonUniqueResultException;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,13 +53,13 @@ public class CheckLogin extends ServletBase {
             Map<String, Object> variables = new HashMap<>();
             variables.put("errorMsg", "Incorrect username or password");
             renderPage(request, response, "/index.html", variables);
-        } else if(user.isBlocked()) {
+        } else if (user.isBlocked()) {
             renderPage(request, response, "/WEB-INF/blocked-user.html");
         } else {
             usrService.registerAccess(user);
             request.getSession().setAttribute("user", user);
 
-            String path =  user.isAdmin() ? "/AdminHome" : "/Home";
+            String path = user.isAdmin() ? "/AdminHome" : "/Home";
             response.sendRedirect(getServletContext().getContextPath() + path);
         }
 

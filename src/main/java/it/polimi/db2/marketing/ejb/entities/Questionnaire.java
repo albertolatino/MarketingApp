@@ -1,10 +1,7 @@
 package it.polimi.db2.marketing.ejb.entities;
 
-import org.eclipse.persistence.jaxb.xmlmodel.XmlAnyAttribute;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;

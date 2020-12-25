@@ -27,7 +27,7 @@ public class UserQuestionnaire implements Serializable {
     private boolean has_submitted;
 
     @ManyToOne
-    @JoinColumn(name="user_id", insertable=false, updatable=false)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
     public UserQuestionnaire() {
@@ -89,7 +89,10 @@ public class UserQuestionnaire implements Serializable {
             this.date = date;
         }
 
-        public Key() {};
+        public Key() {
+        }
+
+        ;
 
         @Override
         public boolean equals(Object o) {

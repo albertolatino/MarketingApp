@@ -23,6 +23,7 @@ public class UserQuestionnaireService {
         return users;
 
     }
+
     public List<User> getUsersWhoCanceled(Date date) {
         List<User> users;
         users = em.createNamedQuery("UserQuestionnaire.getUsersWhoCanceled", User.class)

@@ -4,7 +4,6 @@ import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 
 import javax.ejb.EJB;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,18 +27,18 @@ public class AdminDelete extends ServletBase {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
 
-        doPost(request,response);
+        doPost(request, response);
 
     }
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
@@ -64,7 +63,7 @@ public class AdminDelete extends ServletBase {
         }
 
 
-        if(questionnaireService.questionnaireAlreadyExist(deletionDate)){
+        if (questionnaireService.questionnaireAlreadyExist(deletionDate)) {
 
             message = "Questionnaire correctly deleted";
             questionnaireService.deleteQuestionnaire(deletionDate);

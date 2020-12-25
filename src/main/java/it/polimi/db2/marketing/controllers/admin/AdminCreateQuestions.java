@@ -1,20 +1,16 @@
 package it.polimi.db2.marketing.controllers.admin;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
-import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.ejb.EJB;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -35,7 +31,7 @@ public class AdminCreateQuestions extends ServletBase {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
@@ -59,7 +55,7 @@ public class AdminCreateQuestions extends ServletBase {
 
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            questionnaireDate = (Date) sdf.parse(request.getParameter("date"));
+            questionnaireDate = sdf.parse(request.getParameter("date"));
             title = (String) StringEscapeUtils.escapeJava(request.getParameter("title"));
             filePart = request.getPart("file");
             filename = filePart.getName();
@@ -108,7 +104,6 @@ public class AdminCreateQuestions extends ServletBase {
             } catch (NumberFormatException | NullPointerException e) {
                 e.printStackTrace();
             }
-
 
 
             questionnaireService.createQuestionnaire(questions, questionnaireDate, title, imageData);

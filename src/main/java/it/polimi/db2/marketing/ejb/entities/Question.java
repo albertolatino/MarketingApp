@@ -1,16 +1,12 @@
 package it.polimi.db2.marketing.ejb.entities;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 
 /**
  * The persistent class for the question database table.
- *
  */
 @Entity
 @Table(name = "question", schema = "db_marketing")
@@ -27,18 +23,18 @@ public class Question implements Serializable {
     private String text;
 
     @ManyToOne
-    @JoinColumn(name="date", insertable=false, updatable=false)
+    @JoinColumn(name = "date", insertable = false, updatable = false)
     private Questionnaire questionnaire;
 
-    @OneToMany(mappedBy="question",cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private Collection<Answer> answers;
 
-    public Question(Date date, String text ) {
+    public Question(Date date, String text) {
         this.date = date;
         this.text = text;
     }
 
-    public Question(){
+    public Question() {
 
     }
 

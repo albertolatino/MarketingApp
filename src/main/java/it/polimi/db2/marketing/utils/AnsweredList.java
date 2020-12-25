@@ -1,9 +1,11 @@
 package it.polimi.db2.marketing.utils;
-import it.polimi.db2.marketing.ejb.entities.Answer;
-import it.polimi.db2.marketing.ejb.entities.Question;
-import it.polimi.db2.marketing.ejb.entities.User;
 
-import java.util.*;
+import it.polimi.db2.marketing.ejb.entities.Question;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AnsweredList {
     private final Map<Integer, String> questionIdMap = new HashMap<>();

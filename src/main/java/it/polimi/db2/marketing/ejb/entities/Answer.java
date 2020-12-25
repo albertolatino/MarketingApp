@@ -3,7 +3,6 @@ package it.polimi.db2.marketing.ejb.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -21,14 +20,15 @@ public class Answer implements Serializable {
     private String answer;
 
     @ManyToOne
-    @JoinColumn(name="question_id", insertable=false, updatable=false)
+    @JoinColumn(name = "question_id", insertable = false, updatable = false)
     private Question question;
 
     @ManyToOne
-    @JoinColumn(name="user_id", insertable=false, updatable=false)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
-    public Answer() {}
+    public Answer() {
+    }
 
     public Answer(Integer question_id, Integer user_id, String answer) {
         this.question_id = question_id;
@@ -62,7 +62,10 @@ public class Answer implements Serializable {
             this.user_id = user_id;
         }
 
-        public Key() {};
+        public Key() {
+        }
+
+        ;
 
         @Override
         public boolean equals(Object o) {
