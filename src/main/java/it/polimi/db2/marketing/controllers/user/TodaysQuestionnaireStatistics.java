@@ -74,6 +74,7 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 		}
 
 		ArrayList<Answer> answers = (ArrayList<Answer>) session.getAttribute("answers");
+		session.removeAttribute("answers");
 		if (answers == null) {
 			String questionnairePath = getServletContext().getContextPath() + "/index.html";
 			response.sendRedirect(questionnairePath);
@@ -115,6 +116,12 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 		boolean containsProfanity = qstService.containsOffensiveWords(answersString);
 		if(containsProfanity) {
 			System.out.println("SERVLET contains profanity");
+
+			user.setIsBlocked(true);
+			session.removeAttribute("user");
+			renderPage(request, response, "/WEB-INF/blocked-user.html");
+
+			return;
 			//TODO block user, at login check if user is blocked,
 			// display you are blocked page both at login and now
 		}
@@ -122,8 +129,6 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 		qstService.addAnswers(answers);
         qstService.addStatAnswers(statAnswers);
         uqService.submitQuestionnaire(user, qst);
-
-        session.removeAttribute("answers");
 
 		String path = getServletContext().getContextPath() + "/Home?message=Questionnaire responses successfully submitted!";
 		response.sendRedirect(path);

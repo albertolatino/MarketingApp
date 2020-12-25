@@ -24,7 +24,7 @@ public class CheckLogin extends ServletBase {
     private UserService usrService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         // obtain and escape params
         String usrn = null;
         String pwd = null;
@@ -34,43 +34,36 @@ public class CheckLogin extends ServletBase {
             if (usrn == null || pwd == null || usrn.isEmpty() || pwd.isEmpty()) {
                 throw new Exception("Missing or empty credential value");
             }
-
         } catch (Exception e) {
             // for debugging only e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
             return;
         }
+
         User user;
         try {
             // query db to authenticate for user
             user = usrService.checkCredentials(usrn, pwd);
         } catch (CredentialsException | NonUniqueResultException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
             return;
         }
 
-
-
         // If the user exists, add info to the session and go to home page, otherwise
         // show login page with error message
-
-        String path;
         if (user == null) {
             Map<String, Object> variables = new HashMap<>();
             variables.put("errorMsg", "Incorrect username or password");
             renderPage(request, response, "/index.html", variables);
+        } else if(user.isBlocked()) {
+            renderPage(request, response, "/WEB-INF/blocked-user.html");
         } else {
-
             usrService.registerAccess(user);
-
             request.getSession().setAttribute("user", user);
-            if (user.isAdmin()) {
-                path = getServletContext().getContextPath() + "/AdminHome";
-            } else {
-                path = getServletContext().getContextPath() + "/Home";
-            }
-            response.sendRedirect(path);
+
+            String path =  user.isAdmin() ? "/AdminHome" : "/Home";
+            response.sendRedirect(getServletContext().getContextPath() + path);
         }
 
     }
