@@ -17,7 +17,7 @@
 		<input type="submit" value="LEADERBOARD" />
 	</form>
 	<th:block th:if="${today == true}">
-		<form action="#" th:action="@{/TodaysQuestionnaire}" method="GET">
+		<form th:if="${hasSubmitted == false}" action="#" th:action="@{/TodaysQuestionnaire}" method="GET">
 			<input type="submit" value="TODAY'S QUESTIONNAIRE" />
 		</form>
 		<img th:src="*{'data:image/png;base64,'+image}" alt="product image" /><br>
