@@ -10,11 +10,19 @@
 	<h1>Welcome to Marketing application</h1>
 
 	<form action="CheckLogin" method="POST">
-		Username: <input type="text" name="username" required> <br>
-		Password: <input type="password" name="pwd" required><br>
+		<table>
+			<tr>
+				<td>Username</td>
+				<td><input type="text" name="username" required></td>
+			</tr>
+			<tr>
+				<td>Password</td>
+				<td><input type="password" name="pwd" required></td>
+			</tr>
+		</table>
 		<input type="submit" value="Login">
-		<p th:text=" ${errorMsg}"></p>
 	</form>
+	<p th:text=" ${errorMsg}"></p>
 	<hr>
 	<h3>If you are new...</h3>
 	<form action="Register" method="GET">

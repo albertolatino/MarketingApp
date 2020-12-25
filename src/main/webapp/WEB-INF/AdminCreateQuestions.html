@@ -18,16 +18,24 @@
     <p>You have selected <span th:text="${number}"></span> questions.</p>
 
     <form action="#" th:action="@{/AdminCreateQuestions}" method="POST" enctype="multipart/form-data">
-        Select Questionnaire Date <br>
-        <input type="date" name="date" id="date"><br>
-        Title: <input type="text" name="title" id="title"><br>
         <table>
+            <tr>
+                <td>Date</td>
+                <td><input type="date" name="date" id="date"></td>
+            </tr>
+            <tr>
+                <td>Title</td>
+                <td><input type="text" name="title" id="title"></td>
+            </tr>
             <tr th:each="i : ${#numbers.sequence(0, number - 1)}">
-				<td>Question <span th:text="${i + 1}"></span></td>
+                <td>Question <span th:text="${i + 1}"></span></td>
                 <td><input type="text" th:name="${i}"></td>
             </tr>
+            <tr>
+                <td>Image</td>
+                <td><input type="file" name="file"></td>
+            </tr>
         </table>
-        Image: <input type="file" name="file"><br>
         <input type="submit" value="Create">
     </form>
 

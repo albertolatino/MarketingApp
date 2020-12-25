@@ -16,7 +16,12 @@
 	<h1>Create a new questionnaire</h1>
 
     <form action="#" th:action="@{/AdminCreate}" method="POST">
-        Number of questions: <input type="number" name="number">
+		<table>
+			<tr>
+				<td>Number of questions</td>
+				<td><input type="number" name="number"></td>
+			</tr>
+		</table>
         <input type="submit" value="Create">
     </form>
 

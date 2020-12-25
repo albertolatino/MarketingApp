@@ -47,6 +47,7 @@ public class Home extends ServletBase {
             String encoded = new String(Base64.getEncoder().encode(imageData));
             variables.put("image", encoded);
             AnsweredList answers = qstService.getAllAnswers(qst);
+            System.out.println(answers);
             variables.put("answers", answers);
         }
         renderPage(request, response, "/WEB-INF/Home.html", variables);

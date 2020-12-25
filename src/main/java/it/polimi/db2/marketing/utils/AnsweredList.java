@@ -18,9 +18,14 @@ public class AnsweredList {
     }
 
     public void addAnswer(String userName, int questionId, String answer) {
-        Map<Integer, String> qa = new HashMap<>();
+        Map<Integer, String> qa;
+        if (userAnswerMap.containsKey(userName)) {
+            qa = userAnswerMap.get(userName);
+        } else {
+            qa = new HashMap<>();
+            userAnswerMap.put(userName, qa);
+        }
         qa.put(questionId, answer);
-        userAnswerMap.put(userName, qa);
     }
 
     public Collection<String> getAllUsers() {
@@ -41,5 +46,13 @@ public class AnsweredList {
 
     public String getAnswer(String userName, int questionId) {
         return userAnswerMap.get(userName).get(questionId);
+    }
+
+    @Override
+    public String toString() {
+        return "AnsweredList{" +
+                "questionIdMap=" + questionIdMap +
+                ", userAnswerMap=" + userAnswerMap +
+                '}';
     }
 }

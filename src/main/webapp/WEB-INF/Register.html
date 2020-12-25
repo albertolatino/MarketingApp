@@ -10,15 +10,35 @@
 	<h1>Register to the Marketing Application!</h1>
 
 	<form action="#" th:action="@{/Register}"  method="POST">
-		Username: <input type="text" name="username" required><br>
-		Name: <input type="text" name="name" required><br>
-		Surname: <input type="text" name="surname" required><br>
-		Email: <input type="text" name="mail" required><br>
-		Password: <input type="password" name="pwd" required><br>
-		Repeat Password: <input type="password" name="pwd1" required><br>
+		<table>
+			<tr>
+				<td>Username</td>
+				<td><input type="text" name="username" required></td>
+			</tr>
+			<tr>
+				<td>Name</td>
+				<td><input type="text" name="name" required></td>
+			</tr>
+			<tr>
+				<td>Surname</td>
+				<td><input type="text" name="surname" required></td>
+			</tr>
+			<tr>
+				<td>Email</td>
+				<td><input type="text" name="mail" required></td>
+			</tr>
+			<tr>
+				<td>Password</td>
+				<td><input type="password" name="pwd" required></td>
+			</tr>
+			<tr>
+				<td>Repeat Password</td>
+				<td><input type="password" name="pwd1" required></td>
+			</tr>
+		</table>
 		<input type="submit" value="register">
-		<p class="error" th:text=" ${errorMsg}"></p>
 	</form>
+	<p class="error" th:text=" ${errorMsg}"></p>
 
 </body>
 </html>
