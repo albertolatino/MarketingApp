@@ -8,6 +8,9 @@
 </head>
 <body>
 	<div align="right">
+		<a th:href="@{/Home}">Home</a>
+	</div>
+	<div align="right">
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
 	<h1>Questionnaire Statistics</h1>
@@ -16,8 +19,8 @@
 	<form action="#" th:action="@{/TodaysQuestionnaireStatistics}" method="POST">
 		<table>
 			<tr>
-				<td >Age</td>
-				<td><input type="text"></td>
+				<td>Age</td>
+				<td><input type="number"></td>
 			</tr>
 			<tr>
 				<td>Sex</td>
@@ -38,8 +41,8 @@
 				</select></td>
 			</tr>
 		</table>
-		<input type="submit" name="submit" value="FINISH">
-		<input type="submit" name="submit" value="CANCEL">
+		<input type="submit" name="submit" value="Finish">
+		<input type="submit" name="submit" value="Cancel">
 	</form>
 </body>
 </html>

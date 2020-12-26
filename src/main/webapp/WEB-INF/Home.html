@@ -14,16 +14,18 @@
 	<p th:text="${'Nice to see you again ' + session.user.name + ' ' + session.user.surname}"></p>
 	<p class="message" th:if="${message != null}" th:text="${message}"></p>
 	<form action="#" th:action="@{/Leaderboard}" method="GET">
-		<input type="submit" value="LEADERBOARD" />
+		<input type="submit" value="Leaderboard" />
 	</form>
 	<th:block th:if="${today == true}">
 		<p class="message" th:if="${hasSubmitted == true}">Already submitted today!</p>
 		<form th:if="${hasSubmitted == false}" action="#" th:action="@{/TodaysQuestionnaire}" method="GET">
-			<input type="submit" value="TODAY'S QUESTIONNAIRE" />
+			<input type="submit" value="Answer Questionnaire" />
 		</form>
+		<hr>
+		<h2>Today's questionnaire:</h2>
 		<h2 th:text="${title}"></h2>
 		<img th:src="*{'data:image/png;base64,'+image}" alt="product image" /><br>
-		<table>
+		<table class="bordered">
 			<tr>
 				<th></th>
 				<th th:each="q : ${answers.getAllQuestionId()}" th:text="${answers.getQuestionText(q)}"></th>

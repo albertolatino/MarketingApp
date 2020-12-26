@@ -16,7 +16,7 @@
 <h1 th:text="${'Questionnaire of ' + #httpServletRequest.getParameter('date')}"></h1>
 
 <p>Users who submitted the questionnaire</p>
-<table>
+<table class="bordered">
     <thead>
     <tr>
         <th>Name</th>
@@ -36,7 +36,7 @@
 </table>
 
 <p>Users who canceled the questionnaire</p>
-<table>
+<table class="bordered">
     <thead>
     <tr>
         <th>Name</th>

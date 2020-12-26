@@ -8,11 +8,14 @@
 </head>
 <body>
 	<div align="right">
+		<a th:href="@{/Home}">Home</a>
+	</div>
+	<div align="right">
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
 	<h1>Leaderboard</h1>
 
-	<table>
+	<table class="bordered">
 		<tr>
 			<th>Name</th>
 			<th>Surname</th>
@@ -24,10 +27,5 @@
 			<td th:text="${u.score}"></td>
 		</tr>
 	</table>
-	
-
-	<form action="#" th:action="@{/Home}" method="GET">
-		<input type="submit" value="HOME">
-	</form>
 </body>
 </html>

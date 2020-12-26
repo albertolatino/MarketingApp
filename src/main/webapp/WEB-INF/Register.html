@@ -38,7 +38,7 @@
 		</table>
 		<input type="submit" value="register">
 	</form>
-	<p class="error" th:text=" ${errorMsg}"></p>
+	<p class="error" th:if="${errorMsg != null}" th:text=" ${errorMsg}"></p>
 
 </body>
 </html>

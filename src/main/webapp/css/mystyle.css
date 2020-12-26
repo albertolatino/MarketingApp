@@ -12,6 +12,20 @@ h1,h2,h3 {
   line-height: 1.2;
 }
 
+table {
+  border-collapse: collapse;
+}
+
+table.bordered {
+  width: 100%;
+}
+
+table.bordered td, table.bordered th {
+  padding: 5px;
+  border-style: solid;
+  border-width: 1px;
+}
+
 td {
   padding-right: 5px;
 }
@@ -39,9 +53,10 @@ html {
   height: 100%;
 }
 
-image {
+img {
   max-width: 50%;
   margin: 0 auto;
+  display: block;
 }
 
 .message {

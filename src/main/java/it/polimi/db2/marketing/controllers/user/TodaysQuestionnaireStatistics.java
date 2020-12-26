@@ -39,7 +39,7 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
         HttpSession session = request.getSession();
 
         String submit = StringEscapeUtils.escapeJava(request.getParameter("submit"));
-        if (submit.equals("CANCEL")) {
+        if (submit.equals("Cancel")) {
             session.removeAttribute("answers");
             String path = getServletContext().getContextPath() + "/Home?message=Questionnaire canceled.";
             response.sendRedirect(path);
