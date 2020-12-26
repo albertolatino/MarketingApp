@@ -56,6 +56,7 @@ public class Home extends ServletBase {
             AnsweredList answers = qstService.getAllAnswers(qst);
             System.out.println(answers);
             variables.put("answers", answers);
+            variables.put("title", qst.getTitle());
         }
         renderPage(request, response, "/WEB-INF/Home.html", variables);
     }

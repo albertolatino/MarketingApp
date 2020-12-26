@@ -60,7 +60,6 @@ public class AdminCreateQuestions extends ServletBase {
             filePart = request.getPart("file");
             filename = filePart.getName();
             InputStream fileStream = filePart.getInputStream();
-            System.out.println("File size is : " + fileStream.available());
             imageData = new byte[fileStream.available()];
             fileStream.read(imageData);
             isBadRequest = isBeforeToday(questionnaireDate);

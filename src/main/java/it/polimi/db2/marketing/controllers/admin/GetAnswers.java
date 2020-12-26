@@ -38,6 +38,7 @@ public class GetAnswers extends ServletBase {
             throws IOException {
 
         if (redirectIfNotLogged(request, response)) return;
+        if (redirectIfNotAdmin(request, response)) return;
 
         Date date = null;
         Integer userid = null;

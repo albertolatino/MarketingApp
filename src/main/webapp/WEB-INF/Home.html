@@ -17,9 +17,11 @@
 		<input type="submit" value="LEADERBOARD" />
 	</form>
 	<th:block th:if="${today == true}">
+		<p class="message" th:if="${hasSubmitted == true}">Already submitted today!</p>
 		<form th:if="${hasSubmitted == false}" action="#" th:action="@{/TodaysQuestionnaire}" method="GET">
 			<input type="submit" value="TODAY'S QUESTIONNAIRE" />
 		</form>
+		<h2 th:text="${title}"></h2>
 		<img th:src="*{'data:image/png;base64,'+image}" alt="product image" /><br>
 		<table>
 			<tr>
@@ -32,5 +34,6 @@
 			</tr>
 		</table>
 	</th:block>
+	<p class="message" th:if="${today == false}">No questionnaire for today, try later!</p>
 </body>
 </html>
