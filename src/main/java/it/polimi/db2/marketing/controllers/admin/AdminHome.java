@@ -25,9 +25,11 @@ public class AdminHome extends ServletBase {
         if (redirectIfNotAdmin(request, response)) return;
 
         String message = StringEscapeUtils.escapeJava(request.getParameter("message"));
+        String error = StringEscapeUtils.escapeJava(request.getParameter("error"));
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("message", message);
+        variables.put("error", error);
         renderPage(request, response, "/WEB-INF/AdminHome.html", variables);
     }
 }

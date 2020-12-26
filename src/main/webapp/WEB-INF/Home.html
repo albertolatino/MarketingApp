@@ -12,7 +12,7 @@
 	</div>
 	<h1>Welcome to the Gamified Marketing Application</h1>
 	<p th:text="${'Nice to see you again ' + session.user.name + ' ' + session.user.surname}"></p>
-	<span th:text="${message}"></span>
+	<p class="message" th:if="${message != null}" th:text="${message}"></p>
 	<form action="#" th:action="@{/Leaderboard}" method="GET">
 		<input type="submit" value="LEADERBOARD" />
 	</form>

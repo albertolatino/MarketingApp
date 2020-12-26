@@ -73,14 +73,15 @@ public class AdminCreateQuestions extends ServletBase {
             return;
         }
 
-        String message;
+        String message = null;
+        String error = null;
         //Increment by one
         //questionnaireDate = incrementDate(questionnaireDate,1);
 
         //check there aren't other questionnaires in this date
         //TODO EVENTUALMENTE SOSTITUIRE INVECE DI NAMED QUERY CON EM.FIND
         if (questionnaireService.questionnaireAlreadyExist(questionnaireDate)) {
-            message = "A questionnaire for this date already exists";
+            error = "A questionnaire for this date already exists";
         } else {
 
             message = "Questionnaire correctly created";
@@ -110,13 +111,12 @@ public class AdminCreateQuestions extends ServletBase {
 
         }
 
-
-        //TODO check that there are no questionnaires planned for questionnaireDate in db
-        //TODO add a successful message as a parameter to be shown in home
-
-        Map<String, Object> variables = new HashMap<>();
-        variables.put("message", message);
-        renderPage(request, response, "/WEB-INF/AdminHome.html", variables);
+        String path = getServletContext().getContextPath() + "/AdminHome?";
+        if (message != null)
+            path += "message="+message+"&";
+        if (error != null)
+            path += "error="+error+"&";
+        response.sendRedirect(path);
     }
 
     private boolean isBeforeToday(Date date) {
