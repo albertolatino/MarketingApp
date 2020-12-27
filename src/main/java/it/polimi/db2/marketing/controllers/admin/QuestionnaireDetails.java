@@ -36,10 +36,7 @@ public class QuestionnaireDetails extends ServletBase {
         Date date = null;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            //TODO escape
             date = sdf.parse(request.getParameter("date"));
-            //TODO see style
-            //cannot see history for future questionnaire
             if (getToday().before(date)) {
                 throw new Exception("Missing or empty credential value");
             }
@@ -61,7 +58,6 @@ public class QuestionnaireDetails extends ServletBase {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
             return;
         }
-        //TODO no users submitted or canceled print statement in thymeleaf (conditional in thyme)
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("usersSubmitted", usersSubmitted);

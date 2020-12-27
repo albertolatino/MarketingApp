@@ -137,4 +137,10 @@ public class QuestionnaireService {
 
         return toRet;
     }
+
+    public List<Question> getQuestions(Questionnaire q) {
+        q = em.merge(q);
+
+        return q.getQuestions();
+    }
 }

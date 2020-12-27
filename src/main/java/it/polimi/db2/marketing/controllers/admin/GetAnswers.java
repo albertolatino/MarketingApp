@@ -16,10 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @WebServlet("/GetAnswers")
@@ -66,7 +63,7 @@ public class GetAnswers extends ServletBase {
 
         try {
             questionnaire = qnnaireService.findByDate(date);
-            questions = questionnaire.getQuestions();
+            questions = qnnaireService.getQuestions(questionnaire);
             answers = qnnaireService.getAnswersToQuestions(questions, userid);
             user = userService.getUser(userid);
         } catch (Exception e) {
