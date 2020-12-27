@@ -82,10 +82,10 @@ public class CreateQuestionnaire extends ServletBase {
 
         try {
             Enumeration<String> parameters = request.getParameterNames();
-            String parameterName = null;
+            String parameterName;
 
             while (parameters.hasMoreElements()) {
-                parameterName = (String) parameters.nextElement();
+                parameterName = parameters.nextElement();
                 if (!parameterName.equals("title") && !parameterName.equals("date"))
                     questions.add(StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
             }

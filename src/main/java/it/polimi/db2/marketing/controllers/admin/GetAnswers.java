@@ -5,6 +5,7 @@ import it.polimi.db2.marketing.ejb.entities.Answer;
 import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.entities.User;
+import it.polimi.db2.marketing.ejb.exceptions.DateException;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import it.polimi.db2.marketing.ejb.services.UserService;
 
@@ -44,19 +45,14 @@ public class GetAnswers extends ServletBase {
         Integer userid = null;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            //TODO escape
             date = sdf.parse(request.getParameter("date"));
             userid = Integer.parseInt(request.getParameter("userid"));
-            //TODO see style, badrequest
-            //cannot see history for future questionnaire
             if (getToday().before(date)) {
-                //todo create new exception
-                throw new Exception("Missing or empty credential value");
+                throw new DateException("Missing or empty credential value");
             }
-
         } catch (ParseException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Date inserted has wrong format");
-        } catch (Exception e) {
+        } catch (DateException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
             return;
         }
