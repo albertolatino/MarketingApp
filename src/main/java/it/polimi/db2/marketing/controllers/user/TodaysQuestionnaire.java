@@ -108,38 +108,11 @@ public class TodaysQuestionnaire extends ServletBase {
         }
 
         // contains all indices of all questions in the current questionnaire
-        List<Integer> allQuestionnaireNumbers = qst.getQuestions().stream().map(Question::getId).collect(Collectors.toList());
-
-        ArrayList<Answer> answers = new ArrayList<>();
+        List<Answer> answers;
         try {
-
-            Enumeration<String> parameters = request.getParameterNames();
-            String parameterName = null;
-
-            while (parameters.hasMoreElements()) {
-                parameterName = (String) parameters.nextElement();
-                int questionNumber = Integer.parseInt(parameterName);
-                String strAnswer = (StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
-                if (strAnswer == null || strAnswer.length() == 0) {
-                    throw new FormException();
-                }
-
-                answers.add(new Answer(
-                        Integer.parseInt(parameterName), user.getId(), strAnswer
-                ));
-
-                // removes the id of the answered question from the list, indicating that the question has been answered
-                allQuestionnaireNumbers.remove(Integer.valueOf(questionNumber));
-            }
+            answers = getAnswers(request, user, qst);
         } catch (NumberFormatException | NullPointerException | FormException e) {
-            e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect or missing param values");
-            return;
-        }
-
-        // checks that all questions have been answered
-        if (allQuestionnaireNumbers.size() > 0) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Not all questions answered");
             return;
         }
 
@@ -148,5 +121,34 @@ public class TodaysQuestionnaire extends ServletBase {
         Map<String, Object> variables = new HashMap<>();
         variables.put("questionnaireName", qst.getTitle());
         renderPage(request, response, "/WEB-INF/TodaysQuestionnaireStatistics.html", variables);
+    }
+
+    private List<Answer> getAnswers(HttpServletRequest request, User user, Questionnaire qst) throws FormException {
+        List<Integer> allQuestionnaireNumbers = qst.getQuestions().stream().map(Question::getId).collect(Collectors.toList());
+
+        ArrayList<Answer> answers = new ArrayList<>();
+
+        Enumeration<String> parameters = request.getParameterNames();
+        String parameterName;
+
+        while (parameters.hasMoreElements()) {
+            parameterName = parameters.nextElement();
+            int questionNumber = Integer.parseInt(parameterName);
+            String strAnswer = (StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
+            if (strAnswer == null || strAnswer.length() == 0)
+                throw new FormException();
+
+            answers.add(new Answer(
+                    Integer.parseInt(parameterName), user.getId(), strAnswer
+            ));
+
+            // removes the id of the answered question from the list, indicating that the question has been answered
+            allQuestionnaireNumbers.remove(Integer.valueOf(questionNumber));
+        }
+
+        if (allQuestionnaireNumbers.size() > 0)
+            throw new FormException();
+
+        return answers;
     }
 }
