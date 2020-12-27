@@ -11,7 +11,8 @@ import java.util.Objects;
 @Cacheable(false)
 @NamedQueries({
         @NamedQuery(name = "UserQuestionnaire.getUsersWhoSubmitted", query = "SELECT u FROM User u, UserQuestionnaire uq WHERE u = uq.user AND uq.date = ?1 AND uq.has_submitted = true"),
-        @NamedQuery(name = "UserQuestionnaire.getUsersWhoCanceled", query = "SELECT u FROM User u, UserQuestionnaire uq WHERE u = uq.user AND uq.date = ?1 AND uq.has_submitted = false")
+        @NamedQuery(name = "UserQuestionnaire.getUsersWhoCanceled", query = "SELECT u FROM User u, UserQuestionnaire uq WHERE u = uq.user AND uq.date = ?1 AND uq.has_submitted = false"),
+        @NamedQuery(name = "UserQuestionnaire.getReviewsByQst", query = "SELECT uq FROM UserQuestionnaire uq WHERE uq.date = ?1")
 })
 @IdClass(UserQuestionnaire.Key.class)
 public class UserQuestionnaire implements Serializable {
@@ -26,9 +27,16 @@ public class UserQuestionnaire implements Serializable {
 
     private boolean has_submitted;
 
+    private String review;
+
     @ManyToOne
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "date", insertable = false, updatable = false)
+    private Questionnaire questionnaire;
+
 
     public UserQuestionnaire() {
     }
@@ -63,6 +71,14 @@ public class UserQuestionnaire implements Serializable {
         this.has_submitted = has_submitted;
     }
 
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
+    }
+
     public static class Key implements Serializable {
 
         protected Integer user_id;
@@ -92,7 +108,6 @@ public class UserQuestionnaire implements Serializable {
         public Key() {
         }
 
-        ;
 
         @Override
         public boolean equals(Object o) {

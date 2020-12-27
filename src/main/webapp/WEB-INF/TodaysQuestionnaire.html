@@ -22,6 +22,11 @@
 				<td th:text="${q.getText()}"></td>
 				<td><input type="text" th:name="${q.getId()}" th:value="${answers != null} ? ${answers.get(q.getId())} : ''" required></td>
 			</tr>
+
+			<tr>
+				<td>REVIEW</td>
+				<td><input type="text" name="review" required></td>
+			</tr>
 		</table>
 		<input type="submit" value="NEXT">
 	</form>

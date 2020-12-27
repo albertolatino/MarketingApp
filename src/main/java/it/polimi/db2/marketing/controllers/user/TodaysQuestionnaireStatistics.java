@@ -80,6 +80,8 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
             return;
         }
 
+        String review = (String) session.getAttribute("review");
+
         // insert statistical questions
         Integer age = null;
         String sex = null;
@@ -112,8 +114,11 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
         //answersString.add("PENIS is bad word");
         //answersString.add("CHICKEN is not bad word");
 
+        ArrayList<String> reviews = new ArrayList<>();
+        reviews.add(review);
+        boolean ReviewContainsProfanity = qstService.containsOffensiveWords(reviews);
         boolean containsProfanity = qstService.containsOffensiveWords(answersString);
-        if (containsProfanity) {
+        if (containsProfanity || ReviewContainsProfanity) {
             //block user, display blocked page
             user.setIsBlocked(true);
             session.removeAttribute("user");
@@ -121,7 +126,9 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
             return;
         }
 
+
         qstService.addAnswers(answers);
+        uqService.addReview(review, user, qst);
         qstService.addStatAnswers(statAnswers);
         uqService.submitQuestionnaire(user, qst);
 

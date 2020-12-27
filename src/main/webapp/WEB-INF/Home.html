@@ -26,14 +26,10 @@
 		<h2 th:text="${title}"></h2>
 		<img th:src="*{'data:image/png;base64,'+image}" alt="product image" /><br>
 		<table class="bordered">
-			<tr>
-				<th></th>
-				<th th:each="q : ${answers.getAllQuestionId()}" th:text="${answers.getQuestionText(q)}"></th>
+			<tr th:each="r : ${reviews}">
+				<td th:text="${r}"></td>
 			</tr>
-			<tr th:each="u : ${answers.getAllUsers()}">
-				<th th:text="${u}"></th>
-				<td th:each="q : ${answers.getAllQuestionId()}" th:text="${answers.getAnswer(u, q)}"></td>
-			</tr>
+
 		</table>
 	</th:block>
 	<p class="message" th:if="${today == false}">No questionnaire for today, try later!</p>

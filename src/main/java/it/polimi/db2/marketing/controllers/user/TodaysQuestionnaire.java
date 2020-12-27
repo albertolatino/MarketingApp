@@ -111,25 +111,33 @@ public class TodaysQuestionnaire extends ServletBase {
         List<Integer> allQuestionnaireNumbers = qst.getQuestions().stream().map(Question::getId).collect(Collectors.toList());
 
         ArrayList<Answer> answers = new ArrayList<>();
+        String review = null;
         try {
 
             Enumeration<String> parameters = request.getParameterNames();
             String parameterName = null;
 
             while (parameters.hasMoreElements()) {
+
                 parameterName = (String) parameters.nextElement();
-                int questionNumber = Integer.parseInt(parameterName);
-                String strAnswer = (StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
-                if (strAnswer == null || strAnswer.length() == 0) {
-                    throw new FormException();
+
+                if (parameterName.equals("review")) {
+                    review = StringEscapeUtils.escapeJava(request.getParameter(parameterName));
+                } else {
+                    int questionNumber = Integer.parseInt(parameterName);
+                    String strAnswer = (StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
+                    if (strAnswer == null || strAnswer.length() == 0) {
+                        throw new FormException();
+                    }
+
+                    answers.add(new Answer(
+                            Integer.parseInt(parameterName), user.getId(), strAnswer
+                    ));
+
+                    // removes the id of the answered question from the list, indicating that the question has been answered
+                    allQuestionnaireNumbers.remove(Integer.valueOf(questionNumber));
                 }
 
-                answers.add(new Answer(
-                        Integer.parseInt(parameterName), user.getId(), strAnswer
-                ));
-
-                // removes the id of the answered question from the list, indicating that the question has been answered
-                allQuestionnaireNumbers.remove(Integer.valueOf(questionNumber));
             }
         } catch (NumberFormatException | NullPointerException | FormException e) {
             e.printStackTrace();
@@ -143,6 +151,7 @@ public class TodaysQuestionnaire extends ServletBase {
             return;
         }
 
+        request.getSession().setAttribute("review", review);
         request.getSession().setAttribute("answers", answers);
 
         Map<String, Object> variables = new HashMap<>();
