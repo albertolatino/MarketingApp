@@ -55,7 +55,6 @@ public class TodaysQuestionnaire extends ServletBase {
         }
 
         if (uqService.hasSubmitted(user, qst)) {
-            System.out.println("ALREADY SUBMITTED!");
             String path = getServletContext().getContextPath() + "/Home";
             response.sendRedirect(path);
             return;

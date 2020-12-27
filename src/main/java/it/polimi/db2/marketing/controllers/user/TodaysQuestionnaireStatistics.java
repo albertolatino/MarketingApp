@@ -9,6 +9,7 @@ import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import it.polimi.db2.marketing.ejb.services.UserQuestionnaireService;
+import it.polimi.db2.marketing.ejb.services.UserService;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.ejb.EJB;
@@ -26,6 +27,8 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
     private QuestionnaireService qstService;
     @EJB(name = "it.polimi.db2.marketing.services/UserQuestionnaireService")
     private UserQuestionnaireService uqService;
+    @EJB(name = "it.polimi.db2.marketing.services/UserService")
+    private UserService uService;
 
     public TodaysQuestionnaireStatistics() {
         super();
@@ -80,25 +83,38 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
             return;
         }
 
+        boolean isBadRequest = false;
+
         // insert statistical questions
         Integer age = null;
-        String sex = null;
-        String expertise = null;
-        String unparsedAge;
-        unparsedAge = StringEscapeUtils.escapeJava(request.getParameter("age"));
-        if (unparsedAge != null && !unparsedAge.isEmpty()) {
-            try {
-                age = Integer.parseInt(unparsedAge);
-            } catch (NumberFormatException e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad integer input for age");
-                return;
-            }
+        String unparsedAge = StringEscapeUtils.escapeJava(request.getParameter("age"));
+        String sex = StringEscapeUtils.escapeJava(request.getParameter("sex"));
+        String expertise = StringEscapeUtils.escapeJava(request.getParameter("expertise"));
+
+        try {
+            age = Integer.parseInt(unparsedAge);
+        } catch (NumberFormatException e) {
+            isBadRequest = true;
+        }
+        if (sex.isEmpty())
+            sex = null;
+        else if(!(sex.equals("M") || sex.equals("F") || sex.equals("N")))
+            isBadRequest = true;
+
+        if (expertise.isEmpty())
+            expertise = null;
+        else if(!(expertise.equals("H") || expertise.equals("M") || expertise.equals("L")))
+            isBadRequest = true;
+
+        if (age == null || age <= 0) {
+            isBadRequest = true;
         }
 
-        sex = StringEscapeUtils.escapeJava(request.getParameter("sex"));
-        expertise = StringEscapeUtils.escapeJava(request.getParameter("expertise"));
-        if (sex.isEmpty()) sex = null;
-        if (expertise.isEmpty()) expertise = null;
+        if(isBadRequest) {
+            String path = getServletContext().getContextPath() + "/Home?message=Some fields of your questionnaire are wrong or incomplete!";
+            response.sendRedirect(path);
+            return;
+        }
 
         StatAnswers statAnswers = new StatAnswers(qst.getDate(), user.getId(), age, sex, expertise);
 
@@ -115,7 +131,7 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
         boolean containsProfanity = qstService.containsOffensiveWords(answersString);
         if (containsProfanity) {
             //block user, display blocked page
-            user.setIsBlocked(true);
+            uService.blockUser(user);
             session.removeAttribute("user");
             renderPage(request, response, "/WEB-INF/blocked-user.html");
             return;
