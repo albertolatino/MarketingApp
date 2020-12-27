@@ -29,7 +29,7 @@
         <td th:text="${q.title}"></td>
         <td th:text="${#dates.format(q.date, 'yyyy-MM-dd')}"></td>
         <td><a th:href="@{/QuestionnaireDetails(date=${#dates.format(q.date, 'yyyy-MM-dd')})}">Answers</a></td>
-        <td><a th:href="@{/AdminDelete(date=${#dates.format(q.date, 'yyyy-MM-dd')})}">Delete</a></td>
+        <td><a th:if="${#dates.format(q.date, 'yyyy-MM-dd') < #dates.format(today, 'yyyy-MM-dd')}" th:href="@{/AdminDelete(date=${#dates.format(q.date, 'yyyy-MM-dd')})}">Delete</a></td>
     </tr>
     </tbody>
 </table>

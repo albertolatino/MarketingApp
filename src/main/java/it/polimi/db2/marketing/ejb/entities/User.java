@@ -12,7 +12,7 @@ import java.util.Collection;
 @Cacheable(false)
 @NamedQueries({
         @NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"),
-        @NamedQuery(name = "User.getAll", query = "SELECT r FROM User r"),
+        @NamedQuery(name = "User.getNonAdminUsers", query = "SELECT r FROM User r WHERE r.is_admin = FALSE"),
         @NamedQuery(name = "User.checkUnique", query = "SELECT r FROM User r WHERE r.username = ?1 or r.email = ?2"),
         @NamedQuery(name = "User.usersWhoRespondedToQuestionnaire",
                 query = "SELECT u, a FROM User u, Answer a WHERE a.user_id = u.id AND " +

@@ -5,6 +5,7 @@ import it.polimi.db2.marketing.ejb.entities.Answer;
 import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.entities.User;
+import it.polimi.db2.marketing.ejb.exceptions.DateException;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import it.polimi.db2.marketing.ejb.services.UserService;
 
@@ -15,10 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @WebServlet("/GetAnswers")
@@ -44,19 +42,14 @@ public class GetAnswers extends ServletBase {
         Integer userid = null;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            //TODO escape
             date = sdf.parse(request.getParameter("date"));
             userid = Integer.parseInt(request.getParameter("userid"));
-            //TODO see style, badrequest
-            //cannot see history for future questionnaire
             if (getToday().before(date)) {
-                //todo create new exception
-                throw new Exception("Missing or empty credential value");
+                throw new DateException("Missing or empty credential value");
             }
-
         } catch (ParseException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Date inserted has wrong format");
-        } catch (Exception e) {
+        } catch (DateException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
             return;
         }
@@ -70,7 +63,7 @@ public class GetAnswers extends ServletBase {
 
         try {
             questionnaire = qnnaireService.findByDate(date);
-            questions = questionnaire.getQuestions();
+            questions = qnnaireService.getQuestions(questionnaire);
             answers = qnnaireService.getAnswersToQuestions(questions, userid);
             user = userService.getUser(userid);
         } catch (Exception e) {

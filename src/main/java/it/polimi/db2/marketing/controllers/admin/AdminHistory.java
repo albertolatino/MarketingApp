@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,8 @@ public class AdminHistory extends ServletBase {
         try {
             questionnaires = qService.getAll();
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
+            String path = getServletContext().getContextPath() + "/AdminHome?error=Error fetching questionnaires data";
+            response.sendRedirect(path);
             return;
         }
 
@@ -44,6 +46,7 @@ public class AdminHistory extends ServletBase {
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("questionnaires", questionnaires);
+        variables.put("today", new Date());
         renderPage(request, response, "/WEB-INF/history.html", variables);
     }
 }

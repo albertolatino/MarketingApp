@@ -55,7 +55,6 @@ public class TodaysQuestionnaire extends ServletBase {
         }
 
         if (uqService.hasSubmitted(user, qst)) {
-            System.out.println("ALREADY SUBMITTED!");
             String path = getServletContext().getContextPath() + "/Home";
             response.sendRedirect(path);
             return;
@@ -108,54 +107,53 @@ public class TodaysQuestionnaire extends ServletBase {
         }
 
         // contains all indices of all questions in the current questionnaire
-        List<Integer> allQuestionnaireNumbers = qst.getQuestions().stream().map(Question::getId).collect(Collectors.toList());
-
-        ArrayList<Answer> answers = new ArrayList<>();
-        String review = null;
+        List<Answer> answers;
         try {
-
-            Enumeration<String> parameters = request.getParameterNames();
-            String parameterName = null;
-
-            while (parameters.hasMoreElements()) {
-
-                parameterName = (String) parameters.nextElement();
-
-                if (parameterName.equals("review")) {
-                    review = StringEscapeUtils.escapeJava(request.getParameter(parameterName));
-                } else {
-                    int questionNumber = Integer.parseInt(parameterName);
-                    String strAnswer = (StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
-                    if (strAnswer == null || strAnswer.length() == 0) {
-                        throw new FormException();
-                    }
-
-                    answers.add(new Answer(
-                            Integer.parseInt(parameterName), user.getId(), strAnswer
-                    ));
-
-                    // removes the id of the answered question from the list, indicating that the question has been answered
-                    allQuestionnaireNumbers.remove(Integer.valueOf(questionNumber));
-                }
-
-            }
+            answers = getAnswers(request, user, qst);
         } catch (NumberFormatException | NullPointerException | FormException e) {
-            e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect or missing param values");
             return;
         }
+        String review = StringEscapeUtils.escapeJava(request.getParameter("review"));
 
-        // checks that all questions have been answered
-        if (allQuestionnaireNumbers.size() > 0) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Not all questions answered");
-            return;
-        }
-
-        request.getSession().setAttribute("review", review);
         request.getSession().setAttribute("answers", answers);
+        request.getSession().setAttribute("review", review);
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("questionnaireName", qst.getTitle());
         renderPage(request, response, "/WEB-INF/TodaysQuestionnaireStatistics.html", variables);
+    }
+
+    private List<Answer> getAnswers(HttpServletRequest request, User user, Questionnaire qst) throws FormException {
+        List<Integer> allQuestionnaireNumbers = qst.getQuestions().stream().map(Question::getId).collect(Collectors.toList());
+
+        ArrayList<Answer> answers = new ArrayList<>();
+
+        Enumeration<String> parameters = request.getParameterNames();
+        String parameterName;
+
+        while (parameters.hasMoreElements()) {
+            parameterName = parameters.nextElement();
+
+            int questionNumber = Integer.parseInt(parameterName);
+            String strAnswer = (StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
+            if (strAnswer == null || strAnswer.length() == 0)
+                throw new FormException();
+
+            answers.add(new Answer(
+                    Integer.parseInt(parameterName), user.getId(), strAnswer
+            ));
+
+            // removes the id of the answered question from the list, indicating that the question has been answered
+            allQuestionnaireNumbers.remove(Integer.valueOf(questionNumber));
+
+        }
+
+        if (allQuestionnaireNumbers.size() > 0)
+            throw new FormException();
+
+        return answers;
+
+
     }
 }

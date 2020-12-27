@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Create Questionnaire</title>
+<link rel="stylesheet" type="text/css" media="all"
+	href="../CSS/mystyle.css" th:href="@{/css/mystyle.css}" />
+</head>
+<body>
+	<div align="right">
+		<a th:href="@{/AdminHome}">Home</a>
+	</div>
+	<div align="right">
+		<a th:href="@{/Logout}">Logout</a>
+	</div>
+	<h1>Insert new questions</h1>
+
+    <p class="error" th:if="${error != null}" th:text="${error}"></p>
+    <div style="margin-bottom:20px;">
+        <p>Change number of questions:</p>
+        <button id="minus">-</button><button id="plus">+</button>
+    </div>
+
+    <form action="#" th:action="@{/CreateQuestionnaire}" method="POST" enctype="multipart/form-data">
+        <table>
+            <tr>
+                <td>Date</td>
+                <td><input type="date" name="date" id="date" required></td>
+            </tr>
+            <tr>
+                <td>Title</td>
+                <td><input type="text" name="title" id="title" required></td>
+            </tr>
+            <tr>
+                <td>Image</td>
+                <td><input type="file" name="file" required></td>
+            </tr>
+        </table>
+        <h2>Questions:</h2>
+        <div id="questions">
+            <input type="text" name="0" id="0" required />
+        </div>
+        <input type="submit" value="Create">
+    </form>
+
+    <script>
+        const today = new Date();
+        document.getElementById("date").setAttribute('value', today.toISOString().slice(0, 10));
+
+        let currQuestionId = 0;
+
+        const questionsTable = document.getElementById("questions");
+        document.getElementById("minus").onclick = () => {
+            if (currQuestionId > 0) {
+                let currQuestionElement = document.getElementById(currQuestionId);
+                questionsTable.removeChild(currQuestionElement);
+
+                currQuestionId--;
+            }
+        }
+
+        document.getElementById("plus").onclick = () => {
+            currQuestionId++;
+            let newQuestionElement = document.createElement("input");
+            newQuestionElement.setAttribute("type", "text");
+            newQuestionElement.setAttribute("name", currQuestionId);
+            newQuestionElement.setAttribute("id", currQuestionId);
+            newQuestionElement.setAttribute("required", "required");
+            questionsTable.appendChild(newQuestionElement);
+        }
+    </script>
+</body>
+</html>

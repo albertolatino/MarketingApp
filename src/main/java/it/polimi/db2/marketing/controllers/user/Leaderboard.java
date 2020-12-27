@@ -28,10 +28,10 @@ public class Leaderboard extends ServletBase {
 
         if (redirectIfNotLogged(request, response)) return;
 
-        List<User> allUsers = null;
+        List<User> allUsers;
 
         try {
-            allUsers = uService.getAllUsers();
+            allUsers = uService.getNonAdminUsers();
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get data");
             return;
