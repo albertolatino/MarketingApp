@@ -55,7 +55,6 @@ public class TodaysQuestionnaire extends ServletBase {
         }
 
         if (uqService.hasSubmitted(user, qst)) {
-            System.out.println("ALREADY SUBMITTED!");
             String path = getServletContext().getContextPath() + "/Home";
             response.sendRedirect(path);
             return;
@@ -114,10 +113,10 @@ public class TodaysQuestionnaire extends ServletBase {
         try {
 
             Enumeration<String> parameters = request.getParameterNames();
-            String parameterName = null;
+            String parameterName;
 
             while (parameters.hasMoreElements()) {
-                parameterName = (String) parameters.nextElement();
+                parameterName = parameters.nextElement();
                 int questionNumber = Integer.parseInt(parameterName);
                 String strAnswer = (StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
                 if (strAnswer == null || strAnswer.length() == 0) {

@@ -50,10 +50,7 @@ public class UserService {
     }
 
     public List<User> getNonAdminUsers() {
-        List<User> allUsers = null;
-        allUsers = em.createNamedQuery("User.getNonAdminUsers", User.class).getResultList();
-
-        return allUsers;
+        return em.createNamedQuery("User.getNonAdminUsers", User.class).getResultList();
     }
 
     public void addUser(String usrn, String name, String surname, String pwd, String mail) {
@@ -64,6 +61,11 @@ public class UserService {
     public void registerAccess(User user) {
         Log log = new Log(user);
         em.persist(log);
+    }
+
+    public void blockUser(User user) {
+        user.setIsBlocked(true);
+        em.merge(user);
     }
 
 
