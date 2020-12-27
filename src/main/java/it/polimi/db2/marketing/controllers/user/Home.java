@@ -5,7 +5,6 @@ import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import it.polimi.db2.marketing.ejb.services.UserQuestionnaireService;
-import it.polimi.db2.marketing.utils.AnsweredList;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.ejb.EJB;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet("/Home")
@@ -53,9 +53,11 @@ public class Home extends ServletBase {
             byte[] imageData = qst.getImage();
             String encoded = new String(Base64.getEncoder().encode(imageData));
             variables.put("image", encoded);
-            AnsweredList answers = qstService.getAllAnswers(qst);
-            System.out.println(answers);
-            variables.put("answers", answers);
+           // AnsweredList answers = qstService.getAllAnswers(qst);
+            List<String> reviews = uqService.getAllReviews(qst);
+            //System.out.println(answers);
+            variables.put("reviews", reviews);
+
             variables.put("title", qst.getTitle());
         }
         renderPage(request, response, "/WEB-INF/Home.html", variables);

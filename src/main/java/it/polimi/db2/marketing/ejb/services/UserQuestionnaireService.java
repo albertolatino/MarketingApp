@@ -1,10 +1,13 @@
 package it.polimi.db2.marketing.ejb.services;
 
 import it.polimi.db2.marketing.ejb.entities.*;
+import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
+import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -72,5 +75,26 @@ public class UserQuestionnaireService {
         UserQuestionnaire.Key key = new UserQuestionnaire.Key(u.getId(), qst.getDate());
 
         return em.find(UserQuestionnaire.class, key);
+    }
+
+    public void addReview(String text, User user, Questionnaire qst){
+
+        UserQuestionnaire uqst = find(user, qst);
+        uqst.setReview(text);
+    }
+
+    public List<String> getAllReviews(Questionnaire q){
+
+       Date date = q.getDate();
+       List<String> reviews = new ArrayList<>();
+
+       List<UserQuestionnaire> userQuestionnaires = em.createNamedQuery("UserQuestionnaire.getReviewsByQst", UserQuestionnaire.class)
+                .setParameter(1, date).getResultList();
+
+       for(UserQuestionnaire uq : userQuestionnaires){
+           reviews.add(uq.getReview());
+       }
+
+       return reviews;
     }
 }
