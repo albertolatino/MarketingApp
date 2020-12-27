@@ -49,9 +49,9 @@ public class UserService {
         return uList.isEmpty();
     }
 
-    public List<User> getAllUsers() {
+    public List<User> getNonAdminUsers() {
         List<User> allUsers = null;
-        allUsers = em.createNamedQuery("User.getAll", User.class).getResultList();
+        allUsers = em.createNamedQuery("User.getNonAdminUsers", User.class).getResultList();
 
         return allUsers;
     }
