@@ -28,7 +28,7 @@ public class Leaderboard extends ServletBase {
 
         if (redirectIfNotLogged(request, response)) return;
 
-        List<User> allUsers = null;
+        List<User> allUsers;
 
         try {
             allUsers = uService.getNonAdminUsers();

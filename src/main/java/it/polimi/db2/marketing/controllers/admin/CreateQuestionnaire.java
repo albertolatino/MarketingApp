@@ -1,6 +1,7 @@
 package it.polimi.db2.marketing.controllers.admin;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
+import it.polimi.db2.marketing.ejb.exceptions.DateException;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
 import it.polimi.db2.marketing.utils.AnsweredList;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -63,46 +64,38 @@ public class CreateQuestionnaire extends ServletBase {
             imageData = new byte[fileStream.available()];
             fileStream.read(imageData);
             if (isBeforeToday(questionnaireDate)) {
-                Map<String, Object> variables = new HashMap<>();
-                variables.put("error", "Questionnaire date must not be in the past!");
-                renderPage(request, response, "/WEB-INF/CreateQuestionnaire.html", variables);
-                return;
+                throw new DateException("Questionnaire date must not be in the past!");
             }
-        } catch (NumberFormatException | NullPointerException | ParseException e) {
+            if (questionnaireService.questionnaireAlreadyExist(questionnaireDate)) {
+                throw new DateException("A questionnaire for that date already exists!");
+            }
+        } catch (NumberFormatException | NullPointerException | ParseException | DateException e) {
             Map<String, Object> variables = new HashMap<>();
             variables.put("error", e.getMessage());
             renderPage(request, response, "/WEB-INF/CreateQuestionnaire.html", variables);
             return;
         }
 
-        //check there aren't other questionnaires in this date
-        //TODO EVENTUALMENTE SOSTITUIRE INVECE DI NAMED QUERY CON EM.FIND
-        if (questionnaireService.questionnaireAlreadyExist(questionnaireDate)) {
-            Map<String, Object> variables = new HashMap<>();
-            variables.put("error", "A questionnaire for that date already exists!");
-            renderPage(request, response, "/WEB-INF/CreateQuestionnaire.html", variables);
-            return;
-        } else {
-            // Take questions from form
-            ArrayList<String> questions = new ArrayList<>();
 
-            try {
-                Enumeration<String> parameters = request.getParameterNames();
-                String parameterName = null;
+        // Take questions from form
+        ArrayList<String> questions = new ArrayList<>();
 
-                while (parameters.hasMoreElements()) {
-                    parameterName = (String) parameters.nextElement();
-                    if (!parameterName.equals("title") && !parameterName.equals("date"))
-                        questions.add(StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
-                }
+        try {
+            Enumeration<String> parameters = request.getParameterNames();
+            String parameterName = null;
 
-            } catch (NumberFormatException | NullPointerException e) {
-                e.printStackTrace();
+            while (parameters.hasMoreElements()) {
+                parameterName = (String) parameters.nextElement();
+                if (!parameterName.equals("title") && !parameterName.equals("date"))
+                    questions.add(StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
             }
 
-            questionnaireService.createQuestionnaire(questions, questionnaireDate, title, imageData);
-
+        } catch (NumberFormatException | NullPointerException e) {
+            e.printStackTrace();
         }
+
+        questionnaireService.createQuestionnaire(questions, questionnaireDate, title, imageData);
+
 
         String path = getServletContext().getContextPath() + "/AdminHome?message=Questionnaire correctly created";
         response.sendRedirect(path);

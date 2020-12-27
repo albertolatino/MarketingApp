@@ -62,23 +62,16 @@ public class AdminDelete extends ServletBase {
             return;
         }
 
+        String path = getServletContext().getContextPath() + "/AdminHome?";
 
         if (questionnaireService.questionnaireAlreadyExist(deletionDate)) {
-
-            message = "Questionnaire correctly deleted";
+            path += "message=Questionnaire correctly deleted";
             questionnaireService.deleteQuestionnaire(deletionDate);
-
         } else {
-            message = "Cannot retrieve questionnaire for this date";
+            path += "error=Cannot retrieve questionnaire for this date";
         }
 
-        Map<String, Object> variables = new HashMap<>();
-        variables.put("message", message);
-
-        String path = getServletContext().getContextPath() + "/AdminHome";
         response.sendRedirect(path);
-
-        //renderPage(request, response, "/WEB-INF/AdminHome.html", variables);
     }
 
     private boolean isBeforeToday(Date date) {

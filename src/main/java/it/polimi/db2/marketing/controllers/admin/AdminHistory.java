@@ -36,7 +36,8 @@ public class AdminHistory extends ServletBase {
         try {
             questionnaires = qService.getAll();
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
+            String path = getServletContext().getContextPath() + "/AdminHome?error=Error fetching questionnaires data";
+            response.sendRedirect(path);
             return;
         }
 
