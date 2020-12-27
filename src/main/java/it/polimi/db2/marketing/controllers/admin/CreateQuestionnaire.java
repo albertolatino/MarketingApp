@@ -2,6 +2,7 @@ package it.polimi.db2.marketing.controllers.admin;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
+import it.polimi.db2.marketing.utils.AnsweredList;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.ejb.EJB;
@@ -19,14 +20,14 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-@WebServlet("/AdminCreateQuestions")
+@WebServlet("/CreateQuestionnaire")
 @MultipartConfig
-public class AdminCreateQuestions extends ServletBase {
+public class CreateQuestionnaire extends ServletBase {
     private static final long serialVersionUID = 1L;
     @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
     private QuestionnaireService questionnaireService;
 
-    public AdminCreateQuestions() {
+    public CreateQuestionnaire() {
         super();
     }
 
@@ -36,7 +37,7 @@ public class AdminCreateQuestions extends ServletBase {
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
 
-        renderPage(request, response, "/WEB-INF/AdminCreateQuestions.html");
+        renderPage(request, response, "/WEB-INF/CreateQuestionnaire.html");
     }
 
 
@@ -46,7 +47,6 @@ public class AdminCreateQuestions extends ServletBase {
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
 
-        boolean isBadRequest = false;
         Date questionnaireDate = null;
         String title = null;
         Part filePart = null;
@@ -62,30 +62,27 @@ public class AdminCreateQuestions extends ServletBase {
             InputStream fileStream = filePart.getInputStream();
             imageData = new byte[fileStream.available()];
             fileStream.read(imageData);
-            isBadRequest = isBeforeToday(questionnaireDate);
+            if (isBeforeToday(questionnaireDate)) {
+                Map<String, Object> variables = new HashMap<>();
+                variables.put("error", "Questionnaire date must not be in the past!");
+                renderPage(request, response, "/WEB-INF/CreateQuestionnaire.html", variables);
+                return;
+            }
         } catch (NumberFormatException | NullPointerException | ParseException e) {
-            isBadRequest = true;
-            e.printStackTrace();
-        }
-        if (isBadRequest) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect or missing param values");
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("error", e.getMessage());
+            renderPage(request, response, "/WEB-INF/CreateQuestionnaire.html", variables);
             return;
         }
-
-        String message = null;
-        String error = null;
-        //Increment by one
-        //questionnaireDate = incrementDate(questionnaireDate,1);
 
         //check there aren't other questionnaires in this date
         //TODO EVENTUALMENTE SOSTITUIRE INVECE DI NAMED QUERY CON EM.FIND
         if (questionnaireService.questionnaireAlreadyExist(questionnaireDate)) {
-            error = "A questionnaire for this date already exists";
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("error", "A questionnaire for that date already exists!");
+            renderPage(request, response, "/WEB-INF/CreateQuestionnaire.html", variables);
+            return;
         } else {
-
-            message = "Questionnaire correctly created";
-
-
             // Take questions from form
             ArrayList<String> questions = new ArrayList<>();
 
@@ -94,8 +91,6 @@ public class AdminCreateQuestions extends ServletBase {
                 String parameterName = null;
 
                 while (parameters.hasMoreElements()) {
-
-
                     parameterName = (String) parameters.nextElement();
                     if (!parameterName.equals("title") && !parameterName.equals("date"))
                         questions.add(StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
@@ -105,16 +100,11 @@ public class AdminCreateQuestions extends ServletBase {
                 e.printStackTrace();
             }
 
-
             questionnaireService.createQuestionnaire(questions, questionnaireDate, title, imageData);
 
         }
 
-        String path = getServletContext().getContextPath() + "/AdminHome?";
-        if (message != null)
-            path += "message="+message+"&";
-        if (error != null)
-            path += "error="+error+"&";
+        String path = getServletContext().getContextPath() + "/AdminHome?message=Questionnaire correctly created";
         response.sendRedirect(path);
     }
 

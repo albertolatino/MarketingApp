@@ -18,7 +18,7 @@
 <div>
     <p class="message" th:if="${message != null}" th:text="${message}"></p>
     <p class="error" th:if="${error != null}" th:text="${error}"></p>
-    <form action="#" th:action="@{/AdminCreate}" method="GET">
+    <form action="#" th:action="@{/CreateQuestionnaire}" method="GET">
         <input type="submit" value="New Questionnaire">
     </form>
     <form action="#" th:action="@{/AdminHistory}" method="GET">
