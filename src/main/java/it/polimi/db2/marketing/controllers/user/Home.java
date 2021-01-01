@@ -48,8 +48,8 @@ public class Home extends ServletBase {
         Map<String, Object> variables = new HashMap<>();
         variables.put("today", qst != null);
         variables.put("message", message);
-        variables.put("hasSubmitted", uqService.hasSubmitted(user, qst));
         if (qst != null) {
+            variables.put("hasSubmitted", uqService.hasSubmitted(user, qst));
             byte[] imageData = qst.getImage();
             String encoded = new String(Base64.getEncoder().encode(imageData));
             variables.put("image", encoded);
