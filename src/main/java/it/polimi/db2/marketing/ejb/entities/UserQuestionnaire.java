@@ -10,8 +10,6 @@ import java.util.Objects;
 @Table(name = "user_questionnaire", schema = "db_marketing")
 @Cacheable(false)
 @NamedQueries({
-        @NamedQuery(name = "UserQuestionnaire.getUsersWhoSubmitted", query = "SELECT u FROM User u, UserQuestionnaire uq WHERE u = uq.user AND uq.date = ?1 AND uq.has_submitted = true"),
-        @NamedQuery(name = "UserQuestionnaire.getUsersWhoCanceled", query = "SELECT u FROM User u, UserQuestionnaire uq WHERE u = uq.user AND uq.date = ?1 AND uq.has_submitted = false"),
         @NamedQuery(name = "UserQuestionnaire.getReviewsByQst", query = "SELECT uq FROM UserQuestionnaire uq WHERE uq.date = ?1")
 })
 @IdClass(UserQuestionnaire.Key.class)
@@ -25,7 +23,7 @@ public class UserQuestionnaire implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    private boolean has_submitted;
+    private boolean is_submitted;
 
     private String review;
 
@@ -44,7 +42,7 @@ public class UserQuestionnaire implements Serializable {
     public UserQuestionnaire(Integer user_id, Date date) {
         this.user_id = user_id;
         this.date = date;
-        this.has_submitted = false;
+        this.is_submitted = false;
     }
 
     public Integer getUserId() {
@@ -63,12 +61,12 @@ public class UserQuestionnaire implements Serializable {
         this.date = date;
     }
 
-    public boolean getHasSubmitted() {
-        return has_submitted;
+    public boolean getIsSubmitted() {
+        return is_submitted;
     }
 
-    public void setHasSubmitted(boolean has_submitted) {
-        this.has_submitted = has_submitted;
+    public void setIsSubmitted(boolean is_submitted) {
+        this.is_submitted = is_submitted;
     }
 
     public String getReview() {

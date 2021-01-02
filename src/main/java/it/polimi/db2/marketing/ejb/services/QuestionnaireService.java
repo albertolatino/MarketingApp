@@ -124,7 +124,7 @@ public class QuestionnaireService {
         return false;
     }
 
-
+    /*
     public AnsweredList getAllAnswers(Questionnaire q) {
         q = em.merge(q);
         List<Question> questions = q.getQuestions();
@@ -139,6 +139,8 @@ public class QuestionnaireService {
 
         return toRet;
     }
+
+     */
 
     public List<Question> getQuestions(Questionnaire q) {
         q = em.merge(q);

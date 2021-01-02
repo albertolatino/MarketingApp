@@ -49,7 +49,7 @@ public class Home extends ServletBase {
         variables.put("today", qst != null);
         variables.put("message", message);
         if (qst != null) {
-            variables.put("hasSubmitted", uqService.hasSubmitted(user, qst));
+            variables.put("hasSubmitted", uqService.isSubmitted(user, qst));
             byte[] imageData = qst.getImage();
             String encoded = new String(Base64.getEncoder().encode(imageData));
             variables.put("image", encoded);

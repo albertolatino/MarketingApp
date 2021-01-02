@@ -54,7 +54,7 @@ public class TodaysQuestionnaire extends ServletBase {
             return;
         }
 
-        if (uqService.hasSubmitted(user, qst)) {
+        if (uqService.isSubmitted(user, qst)) {
             String path = getServletContext().getContextPath() + "/Home";
             response.sendRedirect(path);
             return;
@@ -101,7 +101,7 @@ public class TodaysQuestionnaire extends ServletBase {
             return;
         }
 
-        if (!uqService.checkAlreadyExists(user, qst)) {
+        if (uqService.checkNotStartedNorFinished(user, qst)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad action sequence!");
             return;
         }

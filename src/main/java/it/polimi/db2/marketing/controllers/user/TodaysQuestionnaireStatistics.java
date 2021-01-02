@@ -64,13 +64,13 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
             return;
         }
 
-        if (uqService.hasSubmitted(user, qst)) {
+        if (uqService.isSubmitted(user, qst)) {
             String path = getServletContext().getContextPath() + "/Home?message=Already submitted!";
             response.sendRedirect(path);
             return;
         }
 
-        if (!uqService.checkAlreadyExists(user, qst)) {
+        if (uqService.checkNotStartedNorFinished(user, qst)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad action sequence!");
             return;
         }
@@ -93,26 +93,30 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
         String sex = StringEscapeUtils.escapeJava(request.getParameter("sex"));
         String expertise = StringEscapeUtils.escapeJava(request.getParameter("expertise"));
 
-        try {
-            age = Integer.parseInt(unparsedAge);
-        } catch (NumberFormatException e) {
-            isBadRequest = true;
+        if (unparsedAge != null && !unparsedAge.isEmpty()) {
+            try {
+                age = Integer.parseInt(unparsedAge);
+                if (age <= 0) {
+                    isBadRequest = true;
+                }
+            } catch (NumberFormatException e) {
+                isBadRequest = true;
+            }
         }
-        if (sex.isEmpty())
+
+        if (sex.isEmpty()) {
             sex = null;
-        else if(!(sex.equals("M") || sex.equals("F") || sex.equals("N")))
-            isBadRequest = true;
-
-        if (expertise.isEmpty())
-            expertise = null;
-        else if(!(expertise.equals("H") || expertise.equals("M") || expertise.equals("L")))
-            isBadRequest = true;
-
-        if (age == null || age <= 0) {
+        } else if (!(sex.equals("M") || sex.equals("F") || sex.equals("N"))) {
             isBadRequest = true;
         }
 
-        if(isBadRequest) {
+        if (expertise.isEmpty()) {
+            expertise = null;
+        } else if (!(expertise.equals("H") || expertise.equals("M") || expertise.equals("L"))) {
+            isBadRequest = true;
+        }
+
+        if (isBadRequest) {
             String path = getServletContext().getContextPath() + "/Home?message=Some fields of your questionnaire are wrong or incomplete!";
             response.sendRedirect(path);
             return;
@@ -125,26 +129,24 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
         for (Answer a : answers)
             answersString.add(a.getAnswer().toLowerCase());
 
-
-        //answersString.add("DICK11 is bad word");
-        //answersString.add("PENIS is bad word");
-        //answersString.add("CHICKEN is not bad word");
-
-        ArrayList<String> reviews = new ArrayList<>();
-        reviews.add(review);
-        boolean ReviewContainsProfanity = qstService.containsOffensiveWords(reviews);
-        boolean containsProfanity = qstService.containsOffensiveWords(answersString);
-        if (containsProfanity || ReviewContainsProfanity) {
-            //block user, display blocked page
-            uService.blockUser(user);
-            session.removeAttribute("user");
-            renderPage(request, response, "/WEB-INF/blocked-user.html");
-            return;
+        if (review != null) {
+            ArrayList<String> reviews = new ArrayList<>();
+            reviews.add(review);
+            boolean reviewContainsProfanity = qstService.containsOffensiveWords(reviews);
+            boolean containsProfanity = qstService.containsOffensiveWords(answersString);
+            if (containsProfanity || reviewContainsProfanity) {
+                //block user, display blocked page
+                uService.blockUser(user);
+                session.removeAttribute("user");
+                renderPage(request, response, "/WEB-INF/blocked-user.html");
+                return;
+            }
         }
 
 
         qstService.addAnswers(answers);
-        uqService.addReview(review, user, qst);
+        if (review != null)
+            uqService.addReview(review, user, qst);
         qstService.addStatAnswers(statAnswers);
         uqService.submitQuestionnaire(user, qst);
 

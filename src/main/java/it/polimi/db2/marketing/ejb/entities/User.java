@@ -3,6 +3,8 @@ package it.polimi.db2.marketing.ejb.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * The persistent class for the usertable database table.
@@ -11,6 +13,9 @@ import java.util.Collection;
 @Table(name = "usertable", schema = "db_marketing")
 @Cacheable(false)
 @NamedQueries({
+        @NamedQuery(name = "User.getReviewsByQst", query = "SELECT a FROM User u JOIN u.reviews a WHERE KEY(a) = ?1"),
+        @NamedQuery(name = "User.getUsersWhoSubmitted", query = "SELECT u FROM User u JOIN u.isSubmitted s WHERE KEY(s) = ?1 AND s = true"),
+        @NamedQuery(name = "User.getUsersWhoCanceled", query = "SELECT u FROM User u JOIN u.isSubmitted s WHERE KEY(s) = ?1 AND s = false"),
         @NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"),
         @NamedQuery(name = "User.getNonAdminUsers", query = "SELECT r FROM User r WHERE r.is_admin = FALSE"),
         @NamedQuery(name = "User.checkUnique", query = "SELECT r FROM User r WHERE r.username = ?1 or r.email = ?2"),
@@ -50,6 +55,17 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     private Collection<UserQuestionnaire> questionnaires;
 
+    @ElementCollection
+    @CollectionTable(name="user_questionnaire_submitted", schema="db_marketing", joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
+    @MapKeyColumn(name="date")
+    @Column(name="is_submitted")
+    private Map<Date, Boolean> isSubmitted;
+
+    @ElementCollection
+    @CollectionTable(name="user_questionnaire_review", schema="db_marketing", joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
+    @MapKeyColumn(name="date")
+    @Column(name="review")
+    private Map<Date, String> reviews;
 
     public User() {
     }
@@ -151,5 +167,29 @@ public class User implements Serializable {
 
     public void setStatAnswers(Collection<StatAnswers> statAnswers) {
         this.statAnswers = statAnswers;
+    }
+
+    public Map<Date, Boolean> getIsSubmitted() {
+        return isSubmitted;
+    }
+
+    public void setIsSubmitted(Map<Date, Boolean> isSubmitted) {
+        this.isSubmitted = isSubmitted;
+    }
+
+    public Map<Date, String> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Map<Date, String> reviews) {
+        this.reviews = reviews;
+    }
+
+    public Collection<UserQuestionnaire> getQuestionnaires() {
+        return questionnaires;
+    }
+
+    public void setQuestionnaires(Collection<UserQuestionnaire> questionnaires) {
+        this.questionnaires = questionnaires;
     }
 }

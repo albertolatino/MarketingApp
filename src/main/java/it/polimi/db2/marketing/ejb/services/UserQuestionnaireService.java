@@ -1,15 +1,11 @@
 package it.polimi.db2.marketing.ejb.services;
 
 import it.polimi.db2.marketing.ejb.entities.*;
-import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
-import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Stateless
 public class UserQuestionnaireService {
@@ -21,33 +17,31 @@ public class UserQuestionnaireService {
 
     public List<User> getUsersWhoSubmitted(Date date) {
         List<User> users;
-        users = em.createNamedQuery("UserQuestionnaire.getUsersWhoSubmitted", User.class)
+        users = em.createNamedQuery("User.getUsersWhoSubmitted", User.class)
                 .setParameter(1, date).getResultList();
         return users;
-
     }
 
     public List<User> getUsersWhoCanceled(Date date) {
         List<User> users;
-        users = em.createNamedQuery("UserQuestionnaire.getUsersWhoCanceled", User.class)
+        users = em.createNamedQuery("User.getUsersWhoCanceled", User.class)
                 .setParameter(1, date).getResultList();
         return users;
     }
 
-    public boolean checkAlreadyExists(User u, Questionnaire qst) {
-        UserQuestionnaire uq = find(u, qst);
+    public boolean checkNotStartedNorFinished(User u, Questionnaire qst) {
+        u = em.merge(u);
 
-        return uq != null;
+        return !u.getIsSubmitted().containsKey(qst.getDate());
     }
 
     public void beginQuestionnaire(User u, Questionnaire qst) {
-        UserQuestionnaire uqToDelete = find(u, qst);
-        if (uqToDelete == null) {
-            UserQuestionnaire uq = new UserQuestionnaire(u.getId(), qst.getDate());
-            em.persist(uq);
-        }
+        u = em.merge(u);
+
+        u.getIsSubmitted().put(qst.getDate(), Boolean.FALSE);
     }
 
+    /*
     public boolean checkRespondedToMarketingQuestions(User u, Questionnaire qst) {
         for (Question q : qst.getQuestions()) {
             Answer.Key key = new Answer.Key(q.getId(), u.getId());
@@ -58,43 +52,37 @@ public class UserQuestionnaireService {
 
         return true;
     }
+    */
 
     public void submitQuestionnaire(User u, Questionnaire qst) {
-        UserQuestionnaire uq = find(u, qst);
+        u = em.merge(u);
 
-        uq.setHasSubmitted(true);
+        u.getIsSubmitted().put(qst.getDate(), true);
     }
 
-    public boolean hasSubmitted(User u, Questionnaire qst) {
-        UserQuestionnaire uq = find(u, qst);
+    public boolean isSubmitted(User u, Questionnaire qst) {
+        u = em.merge(u);
 
-        return uq != null && uq.getHasSubmitted();
+        return u.getIsSubmitted().getOrDefault(qst.getDate(), false);
     }
 
+    /*
     private UserQuestionnaire find(User u, Questionnaire qst) {
         UserQuestionnaire.Key key = new UserQuestionnaire.Key(u.getId(), qst.getDate());
 
         return em.find(UserQuestionnaire.class, key);
     }
+     */
 
-    public void addReview(String text, User user, Questionnaire qst){
+    public void addReview(String text, User u, Questionnaire qst){
+        u = em.merge(u);
 
-        UserQuestionnaire uqst = find(user, qst);
-        uqst.setReview(text);
+        u.getReviews().put(qst.getDate(), text);
     }
 
-    public List<String> getAllReviews(Questionnaire q){
+    public List<String> getAllReviews(Questionnaire q) {
 
-       Date date = q.getDate();
-       List<String> reviews = new ArrayList<>();
-
-       List<UserQuestionnaire> userQuestionnaires = em.createNamedQuery("UserQuestionnaire.getReviewsByQst", UserQuestionnaire.class)
-                .setParameter(1, date).getResultList();
-
-       for(UserQuestionnaire uq : userQuestionnaires){
-           reviews.add(uq.getReview());
-       }
-
-       return reviews;
+        return em.createNamedQuery("User.getReviewsByQst", String.class)
+                 .setParameter(1, q.getDate()).getResultList();
     }
 }
