@@ -12,10 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @WebServlet("/Home")
 public class Home extends ServletBase {
@@ -54,7 +51,7 @@ public class Home extends ServletBase {
             String encoded = new String(Base64.getEncoder().encode(imageData));
             variables.put("image", encoded);
            // AnsweredList answers = qstService.getAllAnswers(qst);
-            List<String> reviews = uqService.getAllReviews(qst);
+            Set<String> reviews = uqService.getAllReviews(qst);
             //System.out.println(answers);
             variables.put("reviews", reviews);
 

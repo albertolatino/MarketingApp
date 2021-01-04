@@ -66,15 +66,15 @@ public class UserQuestionnaireService {
         return u.getIsSubmitted().getOrDefault(qst.getDate(), false);
     }
 
-    public void addReview(String text, User u, Questionnaire qst){
-        u = em.merge(u);
+    public void addReview(String text, Questionnaire qst){
+        qst = em.merge(qst);
 
-        u.getReviews().put(qst.getDate(), text);
+        qst.getReviews().add(text);
     }
 
-    public List<String> getAllReviews(Questionnaire q) {
+    public Set<String> getAllReviews(Questionnaire q) {
+        q = em.merge(q);
 
-        return em.createNamedQuery("User.getReviewsByQst", String.class)
-                 .setParameter(1, q.getDate()).getResultList();
+        return q.getReviews();
     }
 }

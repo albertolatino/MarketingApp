@@ -13,7 +13,6 @@ import java.util.Set;
 @Entity
 @Table(name = "usertable", schema = "db_marketing")
 @NamedQueries({
-        @NamedQuery(name = "User.getReviewsByQst", query = "SELECT a FROM User u JOIN u.reviews a WHERE KEY(a) = ?1"),
         @NamedQuery(name = "User.getUsersWhoSubmitted", query = "SELECT u FROM User u JOIN u.isSubmitted s WHERE KEY(s) = ?1 AND s = true"),
         @NamedQuery(name = "User.getUsersWhoCanceled", query = "SELECT u FROM User u JOIN u.isSubmitted s WHERE KEY(s) = ?1 AND s = false"),
         @NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"),
@@ -57,12 +56,6 @@ public class User implements Serializable {
     @MapKeyColumn(name="date")
     @Column(name="is_submitted")
     private Map<Date, Boolean> isSubmitted;
-
-    @ElementCollection
-    @CollectionTable(name="user_questionnaire_review", schema="db_marketing", joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
-    @MapKeyColumn(name="date")
-    @Column(name="review")
-    private Map<Date, String> reviews;
 
     @ElementCollection
     @CollectionTable(name="log", schema="db_marketing", joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
@@ -177,14 +170,6 @@ public class User implements Serializable {
 
     public void setIsSubmitted(Map<Date, Boolean> isSubmitted) {
         this.isSubmitted = isSubmitted;
-    }
-
-    public Map<Date, String> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(Map<Date, String> reviews) {
-        this.reviews = reviews;
     }
 
     public Set<Date> getLogs() {

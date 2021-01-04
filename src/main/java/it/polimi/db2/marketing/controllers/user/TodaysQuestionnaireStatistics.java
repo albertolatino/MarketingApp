@@ -148,7 +148,7 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 
         qstService.addAnswers(answers);
         if (review != null)
-            uqService.addReview(review, user, qst);
+            uqService.addReview(review, qst);
         qstService.addStatAnswers(statAnswers);
         uqService.submitQuestionnaire(user, qst);
 

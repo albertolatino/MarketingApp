@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -35,6 +36,11 @@ public class Questionnaire implements Serializable {
 
     @OneToMany(mappedBy="questionnaire", cascade=CascadeType.ALL)
     private Collection<StatAnswers> statAnswers;
+
+    @ElementCollection
+    @CollectionTable(name="reviews", schema="db_marketing", joinColumns=@JoinColumn(name="date"))
+    @Column(name="review")
+    private Set<String> reviews;
 
     public Questionnaire() {
     }
@@ -92,5 +98,11 @@ public class Questionnaire implements Serializable {
         this.image = image;
     }
 
+    public Set<String> getReviews() {
+        return reviews;
+    }
 
+    public void setReviews(Set<String> reviews) {
+        this.reviews = reviews;
+    }
 }
