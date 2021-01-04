@@ -1,6 +1,5 @@
 package it.polimi.db2.marketing.ejb.services;
 
-import it.polimi.db2.marketing.ejb.entities.Log;
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.exceptions.CredentialsException;
 
@@ -63,9 +62,10 @@ public class UserService {
         em.persist(user);
     }
 
-    public void registerAccess(User user) {
-        Log log = new Log(user);
-        em.persist(log);
+    public void registerAccess(User u) {
+        u = em.merge(u);
+
+        u.logAccess();
     }
 
     public void blockUser(User user) {

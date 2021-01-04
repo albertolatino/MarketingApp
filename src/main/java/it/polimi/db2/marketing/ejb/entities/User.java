@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The persistent class for the usertable database table.
@@ -62,6 +63,11 @@ public class User implements Serializable {
     @MapKeyColumn(name="date")
     @Column(name="review")
     private Map<Date, String> reviews;
+
+    @ElementCollection
+    @CollectionTable(name="log", schema="db_marketing", joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
+    @Column(name="datetime")
+    private Set<Date> logs;
 
     public User() {
     }
@@ -181,4 +187,15 @@ public class User implements Serializable {
         this.reviews = reviews;
     }
 
+    public Set<Date> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(Set<Date> logs) {
+        this.logs = logs;
+    }
+
+    public void logAccess() {
+        this.logs.add(new Date());
+    }
 }
