@@ -49,8 +49,13 @@ public class UserService {
         return uList.isEmpty();
     }
 
-    public List<User> getNonAdminUsers() {
-        return em.createNamedQuery("User.getNonAdminUsers", User.class).getResultList();
+    public List<User> getNonAdminUsersRefreshed() {
+        List<User> userList = em.createNamedQuery("User.getNonAdminUsers", User.class).getResultList();
+        for (User u : userList) {
+            em.refresh(u);
+        }
+
+        return userList;
     }
 
     public void addUser(String usrn, String name, String surname, String pwd, String mail) {

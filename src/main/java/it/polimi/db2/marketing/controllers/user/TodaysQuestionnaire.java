@@ -115,10 +115,8 @@ public class TodaysQuestionnaire extends ServletBase {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect or missing param values");
             return;
         }
-        String review = StringEscapeUtils.escapeJava(request.getParameter("review"));
 
         request.getSession().setAttribute("answers", answers);
-        request.getSession().setAttribute("review", review);
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("questionnaireName", qst.getTitle());

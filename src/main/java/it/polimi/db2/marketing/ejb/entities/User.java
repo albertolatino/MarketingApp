@@ -11,7 +11,6 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "usertable", schema = "db_marketing")
-@Cacheable(false)
 @NamedQueries({
         @NamedQuery(name = "User.getReviewsByQst", query = "SELECT a FROM User u JOIN u.reviews a WHERE KEY(a) = ?1"),
         @NamedQuery(name = "User.getUsersWhoSubmitted", query = "SELECT u FROM User u JOIN u.isSubmitted s WHERE KEY(s) = ?1 AND s = true"),

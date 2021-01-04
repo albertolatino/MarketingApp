@@ -85,13 +85,15 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 
         boolean isBadRequest = false;
 
-        String review = (String) session.getAttribute("review");
-
         // insert statistical questions
         Integer age = null;
         String unparsedAge = StringEscapeUtils.escapeJava(request.getParameter("age"));
         String sex = StringEscapeUtils.escapeJava(request.getParameter("sex"));
         String expertise = StringEscapeUtils.escapeJava(request.getParameter("expertise"));
+        String review = StringEscapeUtils.escapeJava(request.getParameter("review"));
+
+        if (review.isEmpty())
+            review = null;
 
         if (unparsedAge != null && !unparsedAge.isEmpty()) {
             try {
