@@ -66,14 +66,6 @@ public class UserQuestionnaireService {
         return u.getIsSubmitted().getOrDefault(qst.getDate(), false);
     }
 
-    /*
-    private UserQuestionnaire find(User u, Questionnaire qst) {
-        UserQuestionnaire.Key key = new UserQuestionnaire.Key(u.getId(), qst.getDate());
-
-        return em.find(UserQuestionnaire.class, key);
-    }
-     */
-
     public void addReview(String text, User u, Questionnaire qst){
         u = em.merge(u);
 

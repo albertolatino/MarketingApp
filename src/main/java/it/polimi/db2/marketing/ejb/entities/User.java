@@ -51,9 +51,6 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     private Collection<StatAnswers> statAnswers;
 
-    @OneToMany(mappedBy = "user")
-    private Collection<UserQuestionnaire> questionnaires;
-
     @ElementCollection
     @CollectionTable(name="user_questionnaire_submitted", schema="db_marketing", joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
     @MapKeyColumn(name="date")
@@ -184,11 +181,4 @@ public class User implements Serializable {
         this.reviews = reviews;
     }
 
-    public Collection<UserQuestionnaire> getQuestionnaires() {
-        return questionnaires;
-    }
-
-    public void setQuestionnaires(Collection<UserQuestionnaire> questionnaires) {
-        this.questionnaires = questionnaires;
-    }
 }

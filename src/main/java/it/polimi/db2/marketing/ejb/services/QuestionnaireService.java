@@ -3,7 +3,6 @@ package it.polimi.db2.marketing.ejb.services;
 import it.polimi.db2.marketing.ejb.entities.*;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
 import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
-import it.polimi.db2.marketing.utils.AnsweredList;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

@@ -36,11 +36,6 @@ public class Questionnaire implements Serializable {
     @OneToMany(mappedBy="questionnaire", cascade=CascadeType.ALL)
     private Collection<StatAnswers> statAnswers;
 
-
-    @OneToMany(mappedBy="questionnaire", cascade=CascadeType.ALL)
-    private Collection<UserQuestionnaire> userQuestionnaires;
-
-
     public Questionnaire() {
     }
 
@@ -95,10 +90,6 @@ public class Questionnaire implements Serializable {
 
     public void setImage(byte[] image) {
         this.image = image;
-    }
-
-    public Collection<UserQuestionnaire> getUserQuestionnaires() {
-        return userQuestionnaires;
     }
 
 

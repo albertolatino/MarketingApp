@@ -3,7 +3,6 @@ package it.polimi.db2.marketing.controllers.admin;
 import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.exceptions.DateException;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
-import it.polimi.db2.marketing.utils.AnsweredList;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.ejb.EJB;
