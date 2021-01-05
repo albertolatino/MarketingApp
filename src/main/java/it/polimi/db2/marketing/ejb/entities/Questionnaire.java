@@ -12,9 +12,6 @@ import java.util.Set;
 @Table(name = "questionnaire", schema = "db_marketing")
 @NamedQueries({
         @NamedQuery(name = "Questionnaire.getAll", query = "SELECT q FROM Questionnaire q"),
-        @NamedQuery(name = "Questionnaire.getByDate", query = "SELECT q FROM Questionnaire q WHERE q.date = ?1"),
-        @NamedQuery(name = "Questionnaire.getToday", query = "SELECT q FROM Questionnaire q WHERE q.date = CURRENT_DATE"),
-        @NamedQuery(name = "Questionnaire.deleteByDate", query = "DELETE FROM Questionnaire q WHERE q.date = ?1"),
 
 })
 

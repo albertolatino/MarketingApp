@@ -40,16 +40,11 @@ public class TodaysQuestionnaire extends ServletBase {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        Questionnaire qst;
-        try {
-            qst = qstService.getToday();
-        } catch (QuestionnaireNotFoundException e) {
+        Questionnaire qst = qstService.getToday();
+
+        if (qst == null) {
             String path = getServletContext().getContextPath() + "/Home";
             response.sendRedirect(path);
-            return;
-        } catch (QuestionnaireException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
             return;
         }
 
@@ -81,16 +76,11 @@ public class TodaysQuestionnaire extends ServletBase {
 
         User user = (User) session.getAttribute("user");
 
-        Questionnaire qst;
-        try {
-            qst = qstService.getToday();
-        } catch (QuestionnaireNotFoundException e) {
+        Questionnaire qst = qstService.getToday();
+
+        if (qst == null) {
             String path = getServletContext().getContextPath() + "/Home";
             response.sendRedirect(path);
-            return;
-        } catch (QuestionnaireException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
             return;
         }
 

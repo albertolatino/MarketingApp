@@ -2,7 +2,6 @@ package it.polimi.db2.marketing.ejb.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 

@@ -55,27 +55,17 @@ public class QuestionnaireService {
     }
 
     public boolean questionnaireAlreadyExist(Date plannedDate) {
-        List<Questionnaire> qList = null;
-        qList = em.createNamedQuery("Questionnaire.getByDate", Questionnaire.class).setParameter(1, plannedDate).getResultList();
+        Questionnaire q = em.find(Questionnaire.class, plannedDate);
 
-        return qList.size() > 0;
+        return q != null;
     }
 
     public Questionnaire findByDate(Date date) {
         return em.find(Questionnaire.class, date);
     }
 
-    public Questionnaire getToday() throws QuestionnaireNotFoundException, QuestionnaireException {
-        Questionnaire questionnaire;
-        try {
-            questionnaire = em.createNamedQuery("Questionnaire.getToday", Questionnaire.class).getSingleResult();
-        } catch (NoResultException e) {
-            throw new QuestionnaireNotFoundException();
-        } catch (PersistenceException e) {
-            throw new QuestionnaireException("Could not get Questionnaire");
-        }
-
-        return questionnaire;
+    public Questionnaire getToday() {
+        return em.find(Questionnaire.class, new Date());
     }
 
     public void addAnswers(User u, Map<Integer, String> answers) {

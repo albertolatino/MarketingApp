@@ -33,12 +33,7 @@ public class Home extends ServletBase {
 
         User user = (User) request.getSession().getAttribute("user");
 
-        Questionnaire qst;
-        try {
-            qst = qstService.getToday();
-        } catch (Exception e) {
-            qst = null;
-        }
+        Questionnaire qst = qstService.getToday();
 
         String message = StringEscapeUtils.escapeJava(request.getParameter("message"));
 
