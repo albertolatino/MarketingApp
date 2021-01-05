@@ -28,8 +28,8 @@ public class Questionnaire implements Serializable {
     @Column(columnDefinition="LONGBLOB")
     private byte[] image;
 
-    @OneToMany(mappedBy="questionnaire", cascade=CascadeType.ALL)
-    private Collection<Question> questions;
+    @OneToMany(mappedBy="questionnaire")
+    private List<Question> questions;
 
     @ElementCollection
     @CollectionTable(name="reviews", schema="db_marketing", joinColumns=@JoinColumn(name="date"))
@@ -39,7 +39,7 @@ public class Questionnaire implements Serializable {
     public Questionnaire() {
     }
 
-    public Questionnaire(Collection<Question> questions, Date date, String title, byte[] image){
+    public Questionnaire(List<Question> questions, Date date, String title, byte[] image){
         this.questions = questions;
         this.date = date;
         this.title = title;

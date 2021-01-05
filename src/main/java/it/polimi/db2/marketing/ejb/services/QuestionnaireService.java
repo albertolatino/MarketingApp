@@ -34,16 +34,13 @@ public class QuestionnaireService {
 
     public void createQuestionnaire(ArrayList<String> questions, Date date, String title, byte[] imageData) {
         Questionnaire questionnaire = new Questionnaire(date, title, imageData);
-
-        ArrayList<Question> qs = new ArrayList<>();
+        em.persist(questionnaire);
 
         for (String s : questions) {
-            Question q = new Question(date, s);
-            qs.add(q);
+            Question q = new Question(s);
+            em.persist(q);
+            q.setQuestionnaire(questionnaire);
         }
-
-        questionnaire.setQuestions(qs);
-        em.persist(questionnaire);//questions are persisted with cascading
     }
 
     public void deleteQuestionnaire(Date deletionDate) {

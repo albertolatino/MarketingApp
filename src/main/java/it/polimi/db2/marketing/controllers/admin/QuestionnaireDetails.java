@@ -40,7 +40,6 @@ public class QuestionnaireDetails extends ServletBase {
             if (getToday().before(date)) {
                 throw new Exception("Missing or empty credential value");
             }
-
         } catch (ParseException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Date inserted has wrong format");
         } catch (Exception e) {

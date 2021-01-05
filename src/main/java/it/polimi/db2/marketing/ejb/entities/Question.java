@@ -17,22 +17,17 @@ public class Question implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Temporal(TemporalType.DATE)
-    private Date date;
-
     private String text;
 
     @ManyToOne
-    @JoinColumn(name = "date", insertable = false, updatable = false)
+    @JoinColumn(name = "date", referencedColumnName="date")
     private Questionnaire questionnaire;
 
-    public Question(Date date, String text) {
-        this.date = date;
+    public Question(String text) {
         this.text = text;
     }
 
     public Question() {
-
     }
 
     public Questionnaire getQuestionnaire() {
@@ -49,14 +44,6 @@ public class Question implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public String getText() {
