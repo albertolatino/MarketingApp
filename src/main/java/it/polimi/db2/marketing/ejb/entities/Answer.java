@@ -19,14 +19,6 @@ public class Answer implements Serializable {
 
     private String answer;
 
-    @ManyToOne
-    @JoinColumn(name = "question_id", insertable = false, updatable = false)
-    private Question question;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User user;
-
     public Answer() {
     }
 

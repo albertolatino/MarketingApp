@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * The persistent class for the question database table.
@@ -26,8 +27,11 @@ public class Question implements Serializable {
     @JoinColumn(name = "date", insertable = false, updatable = false)
     private Questionnaire questionnaire;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    private Collection<Answer> answers;
+    @ElementCollection
+    @CollectionTable(name="answer", schema="db_marketing", joinColumns=@JoinColumn(name="question_id", referencedColumnName="id"))
+    @MapKeyColumn(name="user_id")
+    @Column(name="answer")
+    private Map<Integer, String> answers;
 
     public Question(Date date, String text) {
         this.date = date;
@@ -70,11 +74,11 @@ public class Question implements Serializable {
         this.text = text;
     }
 
-    public Collection<Answer> getAnswers() {
+    public Map<Integer, String> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(Collection<Answer> answers) {
+    public void setAnswers(Map<Integer, String> answers) {
         this.answers = answers;
     }
 }

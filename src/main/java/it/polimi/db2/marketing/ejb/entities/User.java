@@ -46,9 +46,6 @@ public class User implements Serializable {
     private Integer score;
 
     @OneToMany(mappedBy = "user")
-    private Collection<Answer> answers;
-
-    @OneToMany(mappedBy = "user")
     private Collection<StatAnswers> statAnswers;
 
     @ElementCollection
@@ -146,14 +143,6 @@ public class User implements Serializable {
 
     public Integer getScore() {
         return this.score;
-    }
-
-    public Collection<Answer> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(Collection<Answer> answers) {
-        this.answers = answers;
     }
 
     public Collection<StatAnswers> getStatAnswers() {
