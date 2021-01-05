@@ -26,12 +26,6 @@ public class Question implements Serializable {
     @JoinColumn(name = "date", insertable = false, updatable = false)
     private Questionnaire questionnaire;
 
-    @ElementCollection
-    @CollectionTable(name="answer", schema="db_marketing", joinColumns=@JoinColumn(name="question_id", referencedColumnName="id"))
-    @MapKeyColumn(name="user_id")
-    @Column(name="answer")
-    private Map<Integer, String> answers;
-
     public Question(Date date, String text) {
         this.date = date;
         this.text = text;
@@ -71,13 +65,5 @@ public class Question implements Serializable {
 
     public void setText(String text) {
         this.text = text;
-    }
-
-    public Map<Integer, String> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(Map<Integer, String> answers) {
-        this.answers = answers;
     }
 }

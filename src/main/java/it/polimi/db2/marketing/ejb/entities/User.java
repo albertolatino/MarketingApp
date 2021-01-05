@@ -42,9 +42,6 @@ public class User implements Serializable {
 
     private Integer score;
 
-    @OneToMany(mappedBy = "user")
-    private Collection<StatAnswers> statAnswers;
-
     @ElementCollection
     @CollectionTable(name="user_questionnaire_submitted", schema="db_marketing", joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
     @MapKeyColumn(name="date")
@@ -146,14 +143,6 @@ public class User implements Serializable {
 
     public Integer getScore() {
         return this.score;
-    }
-
-    public Collection<StatAnswers> getStatAnswers() {
-        return statAnswers;
-    }
-
-    public void setStatAnswers(Collection<StatAnswers> statAnswers) {
-        this.statAnswers = statAnswers;
     }
 
     public Map<Date, Boolean> getIsSubmitted() {

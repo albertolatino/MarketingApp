@@ -23,14 +23,6 @@ public class StatAnswers implements Serializable {
 
     private String expertise;
 
-    @ManyToOne
-    @JoinColumn(name = "date", insertable = false, updatable = false)
-    private Questionnaire questionnaire;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User user;
-
     public StatAnswers() {
     }
 
@@ -86,7 +78,6 @@ public class StatAnswers implements Serializable {
         public int hashCode() {
             return Objects.hash(date, user_id);
         }
-
     }
 
     public Date getDate() {

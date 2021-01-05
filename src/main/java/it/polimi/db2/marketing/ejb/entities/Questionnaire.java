@@ -31,9 +31,6 @@ public class Questionnaire implements Serializable {
     @OneToMany(mappedBy="questionnaire", cascade=CascadeType.ALL)
     private Collection<Question> questions;
 
-    @OneToMany(mappedBy="questionnaire", cascade=CascadeType.ALL)
-    private Collection<StatAnswers> statAnswers;
-
     @ElementCollection
     @CollectionTable(name="reviews", schema="db_marketing", joinColumns=@JoinColumn(name="date"))
     @Column(name="review")
@@ -77,14 +74,6 @@ public class Questionnaire implements Serializable {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
-    }
-
-    public Collection<StatAnswers> getStatAnswers() {
-        return statAnswers;
-    }
-
-    public void setStatAnswers(Collection<StatAnswers> statAnswers) {
-        this.statAnswers = statAnswers;
     }
 
     public byte[] getImage() {
