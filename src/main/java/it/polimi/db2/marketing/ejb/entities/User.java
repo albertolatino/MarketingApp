@@ -17,10 +17,7 @@ import java.util.Set;
         @NamedQuery(name = "User.getUsersWhoCanceled", query = "SELECT u FROM User u JOIN u.isSubmitted s WHERE KEY(s) = ?1 AND s = false"),
         @NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"),
         @NamedQuery(name = "User.getNonAdminUsers", query = "SELECT r FROM User r WHERE r.is_admin = FALSE"),
-        @NamedQuery(name = "User.checkUnique", query = "SELECT r FROM User r WHERE r.username = ?1 or r.email = ?2"),
-        @NamedQuery(name = "User.usersWhoRespondedToQuestionnaire",
-                query = "SELECT u, a FROM User u, Answer a WHERE a.user_id = u.id AND " +
-                        "a.question_id IN (SELECT q.id FROM Question q WHERE q.questionnaire.date = ?1)")
+        @NamedQuery(name = "User.checkUnique", query = "SELECT r FROM User r WHERE r.username = ?1 or r.email = ?2")
 })
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -58,6 +55,12 @@ public class User implements Serializable {
     @CollectionTable(name="log", schema="db_marketing", joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
     @Column(name="datetime")
     private Set<Date> logs;
+
+    @ElementCollection
+    @CollectionTable(name="answer", schema="db_marketing", joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
+    @MapKeyColumn(name="question_id")
+    @Column(name="answer")
+    private Map<Integer, String> answers;
 
     public User() {
     }
@@ -171,5 +174,13 @@ public class User implements Serializable {
 
     public void logAccess() {
         this.logs.add(new Date());
+    }
+
+    public Map<Integer, String> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(Map<Integer, String> answers) {
+        this.answers = answers;
     }
 }

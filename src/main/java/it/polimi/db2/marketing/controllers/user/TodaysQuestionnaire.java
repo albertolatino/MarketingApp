@@ -1,7 +1,6 @@
 package it.polimi.db2.marketing.controllers.user;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
-import it.polimi.db2.marketing.ejb.entities.Answer;
 import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.entities.User;
@@ -62,13 +61,7 @@ public class TodaysQuestionnaire extends ServletBase {
 
         uqService.beginQuestionnaire(user, qst);
 
-        ArrayList<Answer> answers = (ArrayList<Answer>) session.getAttribute("answers");
-        Map<Integer, String> answersMap = null;
-        if (answers != null) {
-            answersMap = new HashMap<>();
-            for (Answer a : answers)
-                answersMap.put(a.getQuestionId(), a.getAnswer());
-        }
+        Map<Integer, String> answersMap = (Map<Integer, String>) session.getAttribute("answers");
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("questionnaireName", qst.getTitle());
@@ -107,7 +100,7 @@ public class TodaysQuestionnaire extends ServletBase {
         }
 
         // contains all indices of all questions in the current questionnaire
-        List<Answer> answers;
+        Map<Integer, String> answers;
         try {
             answers = getAnswers(request, user, qst);
         } catch (NumberFormatException | NullPointerException | FormException e) {
@@ -123,10 +116,10 @@ public class TodaysQuestionnaire extends ServletBase {
         renderPage(request, response, "/WEB-INF/TodaysQuestionnaireStatistics.html", variables);
     }
 
-    private List<Answer> getAnswers(HttpServletRequest request, User user, Questionnaire qst) throws FormException {
+    private Map<Integer, String> getAnswers(HttpServletRequest request, User user, Questionnaire qst) throws FormException {
         List<Integer> allQuestionnaireNumbers = qst.getQuestions().stream().map(Question::getId).collect(Collectors.toList());
 
-        ArrayList<Answer> answers = new ArrayList<>();
+        Map<Integer, String> answers = new HashMap<>();
 
         Enumeration<String> parameters = request.getParameterNames();
         String parameterName;
@@ -136,13 +129,11 @@ public class TodaysQuestionnaire extends ServletBase {
             parameterName = parameters.nextElement();
             if(!parameterName.equals("review")) {
                 int questionNumber = Integer.parseInt(parameterName);
-                String strAnswer = (StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
-                if (strAnswer == null || strAnswer.length() == 0)
+                String answerString = (StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
+                if (answerString == null || answerString.length() == 0)
                     throw new FormException();
 
-                answers.add(new Answer(
-                        Integer.parseInt(parameterName), user.getId(), strAnswer
-                ));
+                answers.put(Integer.parseInt(parameterName), answerString);
 
                 // removes the id of the answered question from the list, indicating that the question has been answered
                 allQuestionnaireNumbers.remove(Integer.valueOf(questionNumber));

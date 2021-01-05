@@ -27,7 +27,7 @@
     <!-- iterate over the indices and use the index to access the list -->
     <tr th:each="q, iterStat : ${questions}">
         <td th:text="${q.text}">ID</td>
-        <td th:text="${answers[iterStat.index].answer}">Emp Account</td>
+        <td th:text="${answers[iterStat.index]}">Emp Account</td>
     </tr>
 
     </tbody>

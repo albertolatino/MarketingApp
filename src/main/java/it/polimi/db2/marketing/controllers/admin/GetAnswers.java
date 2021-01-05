@@ -1,7 +1,6 @@
 package it.polimi.db2.marketing.controllers.admin;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
-import it.polimi.db2.marketing.ejb.entities.Answer;
 import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.entities.User;
@@ -57,15 +56,15 @@ public class GetAnswers extends ServletBase {
         // show questionnaire answers of each user
         // get questions and answers of user for questionnaire of date
         List<Question> questions;
-        List<Answer> answers;
+        List<String> answers;
         Questionnaire questionnaire;
         User user;
 
         try {
             questionnaire = qnnaireService.findByDate(date);
             questions = qnnaireService.getQuestions(questionnaire);
-            answers = qnnaireService.getAnswersToQuestions(questions, userid);
             user = userService.getUser(userid);
+            answers = qnnaireService.getAnswersToQuestions(user, questions);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
             return;

@@ -9,9 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Stateless
 public class QuestionnaireService {
@@ -80,16 +78,10 @@ public class QuestionnaireService {
         return questionnaire;
     }
 
-    public void addAnswers(List<Answer> answers) {
-        for (Answer a : answers) {
-            Answer.Key key = new Answer.Key(a.getQuestionId(), a.getUserId());
-            Answer currentAnswer = em.find(Answer.class, key);
-            if (currentAnswer == null) {
-                em.persist(a);
-            } else {
-                currentAnswer.setAnswer(a.getAnswer());
-            }
-        }
+    public void addAnswers(User u, Map<Integer, String> answers) {
+        u = em.merge(u);
+
+        u.getAnswers().putAll(answers);
     }
 
 
@@ -98,19 +90,19 @@ public class QuestionnaireService {
         em.persist(statAnswers);
     }
 
-    public List<Answer> getAnswersToQuestions(List<Question> questions, Integer userId) {
-        List<Answer> answers = new ArrayList<>();
-        Answer answer;
-        Answer.Key answerKey;
+    public List<String> getAnswersToQuestions(User u, List<Question> questions) {
+        List<String> answers = new ArrayList<>();
+
+        u = em.merge(u);
+
         for (Question q : questions) {
-            answerKey = new Answer.Key(q.getId(), userId);
-            answer = em.find(Answer.class, answerKey);
-            answers.add(answer);
+            answers.add(u.getAnswers().get(q.getId()));
         }
+
         return answers;
     }
 
-    public boolean containsOffensiveWords(ArrayList<String> answers) {
+    public boolean containsOffensiveWords(Collection<String> answers) {
         Long num;
         for (String a : answers) {
             num = em.createNamedQuery("OffensiveWord.containsWord", Long.class).setParameter(1, a).getSingleResult();

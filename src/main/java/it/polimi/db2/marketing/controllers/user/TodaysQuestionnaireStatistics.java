@@ -1,7 +1,6 @@
 package it.polimi.db2.marketing.controllers.user;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
-import it.polimi.db2.marketing.ejb.entities.Answer;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.entities.StatAnswers;
 import it.polimi.db2.marketing.ejb.entities.User;
@@ -19,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 @WebServlet("/TodaysQuestionnaireStatistics")
 public class TodaysQuestionnaireStatistics extends ServletBase {
@@ -75,7 +75,7 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
             return;
         }
 
-        ArrayList<Answer> answers = (ArrayList<Answer>) session.getAttribute("answers");
+        Map<Integer, String> answers = (Map<Integer, String>) session.getAttribute("answers");
         session.removeAttribute("answers");
         if (answers == null) {
             String questionnairePath = getServletContext().getContextPath() + "/index.html";
@@ -126,16 +126,12 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 
         StatAnswers statAnswers = new StatAnswers(qst.getDate(), user.getId(), age, sex, expertise);
 
-        //convert to list of answers to strings
-        ArrayList<String> answersString = new ArrayList<>();
-        for (Answer a : answers)
-            answersString.add(a.getAnswer().toLowerCase());
 
         if (review != null) {
             ArrayList<String> reviews = new ArrayList<>();
             reviews.add(review);
             boolean reviewContainsProfanity = qstService.containsOffensiveWords(reviews);
-            boolean containsProfanity = qstService.containsOffensiveWords(answersString);
+            boolean containsProfanity = qstService.containsOffensiveWords(answers.values());
             if (containsProfanity || reviewContainsProfanity) {
                 //block user, display blocked page
                 uService.blockUser(user);
@@ -145,8 +141,7 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
             }
         }
 
-
-        qstService.addAnswers(answers);
+        qstService.addAnswers(user, answers);
         if (review != null)
             uqService.addReview(review, qst);
         qstService.addStatAnswers(statAnswers);
