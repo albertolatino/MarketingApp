@@ -2,7 +2,7 @@ package it.polimi.db2.marketing.controllers.admin;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.User;
-import it.polimi.db2.marketing.ejb.services.UserQuestionnaireService;
+import it.polimi.db2.marketing.ejb.services.QuestionnaireOperationsService;
 
 import javax.ejb.EJB;
 import javax.servlet.annotation.WebServlet;
@@ -20,8 +20,8 @@ import java.util.Map;
 @WebServlet("/QuestionnaireDetails")
 public class QuestionnaireDetails extends ServletBase {
     private static final long serialVersionUID = 1L;
-    @EJB(name = "it.polimi.db2.marketing.ejb.services/UserQuestionnaireService")
-    private UserQuestionnaireService uqService;
+    @EJB(name = "it.polimi.db2.marketing.ejb.services/QuestionnaireOperationsService")
+    private QuestionnaireOperationsService qopService;
 
     public QuestionnaireDetails() {
         super();
@@ -51,8 +51,8 @@ public class QuestionnaireDetails extends ServletBase {
         List<User> usersSubmitted, usersCanceled;
 
         try {
-            usersSubmitted = uqService.getUsersWhoSubmitted(date);
-            usersCanceled = uqService.getUsersWhoCanceled(date);
+            usersSubmitted = qopService.getUsersWhoSubmitted(date);
+            usersCanceled = qopService.getUsersWhoCanceled(date);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
             return;

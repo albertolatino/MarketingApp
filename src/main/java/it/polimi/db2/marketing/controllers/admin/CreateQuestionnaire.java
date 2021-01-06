@@ -2,7 +2,7 @@ package it.polimi.db2.marketing.controllers.admin;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.exceptions.DateException;
-import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
+import it.polimi.db2.marketing.ejb.services.QuestionnaireManagerService;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.ejb.EJB;
@@ -24,8 +24,8 @@ import java.util.*;
 @MultipartConfig
 public class CreateQuestionnaire extends ServletBase {
     private static final long serialVersionUID = 1L;
-    @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
-    private QuestionnaireService questionnaireService;
+    @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireManagerService")
+    private QuestionnaireManagerService qmService;
 
     public CreateQuestionnaire() {
         super();
@@ -65,7 +65,7 @@ public class CreateQuestionnaire extends ServletBase {
             if (isBeforeToday(questionnaireDate)) {
                 throw new DateException("Questionnaire date must not be in the past!");
             }
-            if (questionnaireService.questionnaireAlreadyExist(questionnaireDate)) {
+            if (qmService.questionnaireAlreadyExist(questionnaireDate)) {
                 throw new DateException("A questionnaire for that date already exists!");
             }
         } catch (NumberFormatException | NullPointerException | ParseException | DateException e) {
@@ -93,7 +93,7 @@ public class CreateQuestionnaire extends ServletBase {
             e.printStackTrace();
         }
 
-        questionnaireService.createQuestionnaire(questions, questionnaireDate, title, imageData);
+        qmService.createQuestionnaire(questions, questionnaireDate, title, imageData);
 
 
         String path = getServletContext().getContextPath() + "/AdminHome?message=Questionnaire correctly created";

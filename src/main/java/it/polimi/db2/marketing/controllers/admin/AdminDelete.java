@@ -1,7 +1,7 @@
 package it.polimi.db2.marketing.controllers.admin;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
-import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
+import it.polimi.db2.marketing.ejb.services.QuestionnaireManagerService;
 
 import javax.ejb.EJB;
 import javax.servlet.annotation.WebServlet;
@@ -12,15 +12,13 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @WebServlet("/AdminDelete")
 public class AdminDelete extends ServletBase {
     private static final long serialVersionUID = 1L;
-    @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
-    private QuestionnaireService questionnaireService;
+    @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireManagerService")
+    private QuestionnaireManagerService qmService;
 
     public AdminDelete() {
         super();
@@ -44,13 +42,12 @@ public class AdminDelete extends ServletBase {
         if (redirectIfNotAdmin(request, response)) return;
 
         Date deletionDate = null;
-        String message;
         boolean isBadRequest = false;
 
 
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            deletionDate = (Date) sdf.parse(request.getParameter("date"));
+            deletionDate = sdf.parse(request.getParameter("date"));
             isBadRequest = !isBeforeToday(deletionDate);
 
         } catch (NumberFormatException | NullPointerException | ParseException e) {
@@ -64,9 +61,9 @@ public class AdminDelete extends ServletBase {
 
         String path = getServletContext().getContextPath() + "/AdminHome?";
 
-        if (questionnaireService.questionnaireAlreadyExist(deletionDate)) {
+        if (qmService.questionnaireAlreadyExist(deletionDate)) {
             path += "message=Questionnaire correctly deleted";
-            questionnaireService.deleteQuestionnaire(deletionDate);
+            qmService.deleteQuestionnaire(deletionDate);
         } else {
             path += "error=Cannot retrieve questionnaire for this date";
         }

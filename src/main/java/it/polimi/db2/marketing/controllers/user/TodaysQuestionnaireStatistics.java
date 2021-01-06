@@ -2,12 +2,9 @@ package it.polimi.db2.marketing.controllers.user;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
-import it.polimi.db2.marketing.ejb.entities.StatAnswers;
 import it.polimi.db2.marketing.ejb.entities.User;
-import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
-import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
-import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
-import it.polimi.db2.marketing.ejb.services.UserQuestionnaireService;
+import it.polimi.db2.marketing.ejb.services.QuestionnaireManagerService;
+import it.polimi.db2.marketing.ejb.services.QuestionnaireOperationsService;
 import it.polimi.db2.marketing.ejb.services.UserService;
 import org.apache.commons.lang.StringEscapeUtils;
 
@@ -23,10 +20,10 @@ import java.util.Map;
 @WebServlet("/TodaysQuestionnaireStatistics")
 public class TodaysQuestionnaireStatistics extends ServletBase {
     private static final long serialVersionUID = 1L;
-    @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
-    private QuestionnaireService qstService;
-    @EJB(name = "it.polimi.db2.marketing.services/UserQuestionnaireService")
-    private UserQuestionnaireService uqService;
+    @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireManagerService")
+    private QuestionnaireManagerService qmService;
+    @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireOperationsService")
+    private QuestionnaireOperationsService qopService;
     @EJB(name = "it.polimi.db2.marketing.services/UserService")
     private UserService uService;
 
@@ -51,7 +48,7 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
 
         User user = (User) session.getAttribute("user");
 
-        Questionnaire qst = qstService.getToday();
+        Questionnaire qst = qmService.getToday();
 
         if (qst == null) {
             String path = getServletContext().getContextPath() + "/Home?message=Error fetching the questionnaire.";
@@ -59,13 +56,13 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
             return;
         }
 
-        if (uqService.isSubmitted(user, qst)) {
+        if (qopService.isSubmitted(user, qst)) {
             String path = getServletContext().getContextPath() + "/Home?message=Already submitted!";
             response.sendRedirect(path);
             return;
         }
 
-        if (uqService.checkNotStartedNorFinished(user, qst)) {
+        if (qopService.checkNotStartedNorFinished(user, qst)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad action sequence!");
             return;
         }
@@ -119,14 +116,11 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
             return;
         }
 
-        StatAnswers statAnswers = new StatAnswers(qst.getDate(), user.getId(), age, sex, expertise);
-
-
         if (review != null) {
             ArrayList<String> reviews = new ArrayList<>();
             reviews.add(review);
-            boolean reviewContainsProfanity = qstService.containsOffensiveWords(reviews);
-            boolean containsProfanity = qstService.containsOffensiveWords(answers.values());
+            boolean reviewContainsProfanity = qmService.containsOffensiveWords(reviews);
+            boolean containsProfanity = qmService.containsOffensiveWords(answers.values());
             if (containsProfanity || reviewContainsProfanity) {
                 //block user, display blocked page
                 uService.blockUser(user);
@@ -136,11 +130,11 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
             }
         }
 
-        qstService.addAnswers(user, answers);
+        qmService.addAnswers(user, answers);
         if (review != null)
-            uqService.addReview(review, qst);
-        qstService.addStatAnswers(statAnswers);
-        uqService.submitQuestionnaire(user, qst);
+            qopService.addReview(review, qst);
+        qmService.addStatAnswers(qst, user, age, sex, expertise);
+        qopService.submitQuestionnaire(user, qst);
 
         String path = getServletContext().getContextPath() + "/Home?message=Questionnaire responses successfully submitted!";
         response.sendRedirect(path);

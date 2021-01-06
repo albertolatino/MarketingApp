@@ -8,11 +8,11 @@ import javax.persistence.PersistenceContext;
 import java.util.*;
 
 @Stateless
-public class UserQuestionnaireService {
+public class QuestionnaireOperationsService {
     @PersistenceContext(unitName = "MarketingEJB")
     private EntityManager em;
 
-    public UserQuestionnaireService() {
+    public QuestionnaireOperationsService() {
     }
 
     public List<User> getUsersWhoSubmitted(Date date) {
@@ -40,19 +40,6 @@ public class UserQuestionnaireService {
 
         u.getIsSubmitted().put(qst.getDate(), Boolean.FALSE);
     }
-
-    /*
-    public boolean checkRespondedToMarketingQuestions(User u, Questionnaire qst) {
-        for (Question q : qst.getQuestions()) {
-            Answer.Key key = new Answer.Key(q.getId(), u.getId());
-            if (em.find(Answer.class, key) == null) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-    */
 
     public void submitQuestionnaire(User u, Questionnaire qst) {
         u = em.merge(u);

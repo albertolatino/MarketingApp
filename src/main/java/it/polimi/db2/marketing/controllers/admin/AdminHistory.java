@@ -2,7 +2,7 @@ package it.polimi.db2.marketing.controllers.admin;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
-import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
+import it.polimi.db2.marketing.ejb.services.QuestionnaireManagerService;
 
 import javax.ejb.EJB;
 import javax.servlet.annotation.WebServlet;
@@ -18,8 +18,8 @@ import java.util.Map;
 @WebServlet("/AdminHistory")
 public class AdminHistory extends ServletBase {
     private static final long serialVersionUID = 1L;
-    @EJB(name = "it.polimi.db2.marketing.ejb.services/QuestionnaireService")
-    private QuestionnaireService qService;
+    @EJB(name = "it.polimi.db2.marketing.ejb.services/QuestionnaireManagerService")
+    private QuestionnaireManagerService qmService;
 
     public AdminHistory() {
         super();
@@ -35,7 +35,7 @@ public class AdminHistory extends ServletBase {
         //retrieve all questionnaires
         List<Questionnaire> questionnaires;
         try {
-            questionnaires = qService.getAll();
+            questionnaires = qmService.getAll();
         } catch (Exception e) {
             String path = getServletContext().getContextPath() + "/AdminHome?error=Error fetching questionnaires data";
             response.sendRedirect(path);

@@ -5,7 +5,7 @@ import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.exceptions.DateException;
-import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
+import it.polimi.db2.marketing.ejb.services.QuestionnaireManagerService;
 import it.polimi.db2.marketing.ejb.services.UserService;
 
 import javax.ejb.EJB;
@@ -22,10 +22,10 @@ import java.util.*;
 public class GetAnswers extends ServletBase {
     private static final long serialVersionUID = 1L;
 
-    @EJB(name = "it.polimi.db2.marketing.ejb.services/QuestionnaireService")
-    private QuestionnaireService qnnaireService;
+    @EJB(name = "it.polimi.db2.marketing.ejb.services/QuestionnaireManagerService")
+    private QuestionnaireManagerService qmService;
     @EJB(name = "it.polimi.db2.marketing.ejb.services/UserService")
-    private UserService userService;
+    private UserService uService;
 
     public GetAnswers() {
         super();
@@ -61,10 +61,10 @@ public class GetAnswers extends ServletBase {
         User user;
 
         try {
-            questionnaire = qnnaireService.findByDate(date);
-            questions = qnnaireService.getQuestions(questionnaire);
-            user = userService.getUser(userid);
-            answers = qnnaireService.getAnswersToQuestions(user, questions);
+            questionnaire = qmService.findByDate(date);
+            questions = qmService.getQuestions(questionnaire);
+            user = uService.getUser(userid);
+            answers = qmService.getAnswersToQuestions(user, questions);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
             return;

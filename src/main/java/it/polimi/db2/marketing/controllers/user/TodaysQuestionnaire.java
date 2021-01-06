@@ -5,10 +5,8 @@ import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.exceptions.FormException;
-import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
-import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
-import it.polimi.db2.marketing.ejb.services.QuestionnaireService;
-import it.polimi.db2.marketing.ejb.services.UserQuestionnaireService;
+import it.polimi.db2.marketing.ejb.services.QuestionnaireManagerService;
+import it.polimi.db2.marketing.ejb.services.QuestionnaireOperationsService;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.ejb.EJB;
@@ -23,10 +21,10 @@ import java.util.stream.Collectors;
 @WebServlet("/TodaysQuestionnaire")
 public class TodaysQuestionnaire extends ServletBase {
     private static final long serialVersionUID = 1L;
-    @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireService")
-    private QuestionnaireService qstService;
-    @EJB(name = "it.polimi.db2.marketing.services/UserQuestionnaireService")
-    private UserQuestionnaireService uqService;
+    @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireManagerService")
+    private QuestionnaireManagerService qmService;
+    @EJB(name = "it.polimi.db2.marketing.services/QuestionnaireOperationsService")
+    private QuestionnaireOperationsService qopService;
 
     public TodaysQuestionnaire() {
         super();
@@ -40,7 +38,7 @@ public class TodaysQuestionnaire extends ServletBase {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
-        Questionnaire qst = qstService.getToday();
+        Questionnaire qst = qmService.getToday();
 
         if (qst == null) {
             String path = getServletContext().getContextPath() + "/Home";
@@ -48,13 +46,13 @@ public class TodaysQuestionnaire extends ServletBase {
             return;
         }
 
-        if (uqService.isSubmitted(user, qst)) {
+        if (qopService.isSubmitted(user, qst)) {
             String path = getServletContext().getContextPath() + "/Home";
             response.sendRedirect(path);
             return;
         }
 
-        uqService.beginQuestionnaire(user, qst);
+        qopService.beginQuestionnaire(user, qst);
 
         Map<Integer, String> answersMap = (Map<Integer, String>) session.getAttribute("answers");
 
@@ -76,7 +74,7 @@ public class TodaysQuestionnaire extends ServletBase {
 
         User user = (User) session.getAttribute("user");
 
-        Questionnaire qst = qstService.getToday();
+        Questionnaire qst = qmService.getToday();
 
         if (qst == null) {
             String path = getServletContext().getContextPath() + "/Home";
@@ -84,7 +82,7 @@ public class TodaysQuestionnaire extends ServletBase {
             return;
         }
 
-        if (uqService.checkNotStartedNorFinished(user, qst)) {
+        if (qopService.checkNotStartedNorFinished(user, qst)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad action sequence!");
             return;
         }

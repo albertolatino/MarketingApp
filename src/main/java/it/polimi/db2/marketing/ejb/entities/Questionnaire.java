@@ -24,6 +24,7 @@ public class Questionnaire implements Serializable {
 
     private String title;
 
+    @Basic(fetch=FetchType.LAZY)
     @Lob
     @Column(columnDefinition="LONGBLOB")
     private byte[] image;

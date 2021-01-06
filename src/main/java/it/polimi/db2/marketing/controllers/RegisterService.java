@@ -1,7 +1,6 @@
 package it.polimi.db2.marketing.controllers;
 
 import it.polimi.db2.marketing.ejb.exceptions.CredentialsException;
-import it.polimi.db2.marketing.ejb.exceptions.FormException;
 import it.polimi.db2.marketing.ejb.services.UserService;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.context.WebContext;
@@ -21,7 +20,7 @@ import java.util.regex.Pattern;
 public class RegisterService extends ServletBase {
     private static final long serialVersionUID = 1L;
     @EJB(name = "it.polimi.db2.marketing.services/UserService")
-    private UserService usrService;
+    private UserService uService;
 
     public RegisterService() {
         super();
@@ -71,7 +70,7 @@ public class RegisterService extends ServletBase {
         }
 
         try {
-            if (!usrService.checkUnique(usrn, mail)) {
+            if (!uService.checkUnique(usrn, mail)) {
                 Map<String, Object> variables = new HashMap<>();
                 variables.put("errorMsg", "User already exists!");
                 renderPage(request, response, "/WEB-INF/Register.html", variables);
@@ -82,7 +81,7 @@ public class RegisterService extends ServletBase {
             return;
         }
 
-        usrService.addUser(usrn, name, surname, pwd, mail);
+        uService.addUser(usrn, name, surname, pwd, mail);
 
         String path = getServletContext().getContextPath() + "/Home";
         response.sendRedirect(path);

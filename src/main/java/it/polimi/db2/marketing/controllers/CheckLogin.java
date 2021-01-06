@@ -18,7 +18,7 @@ import java.util.Map;
 public class CheckLogin extends ServletBase {
     private static final long serialVersionUID = 1L;
     @EJB(name = "it.polimi.db2.marketing.services/UserService")
-    private UserService usrService;
+    private UserService uService;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -40,7 +40,7 @@ public class CheckLogin extends ServletBase {
         User user;
         try {
             // query db to authenticate for user
-            user = usrService.checkCredentials(usrn, pwd);
+            user = uService.checkCredentials(usrn, pwd);
         } catch (CredentialsException | NonUniqueResultException e) {
             //e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Could not check credentials");
@@ -56,7 +56,7 @@ public class CheckLogin extends ServletBase {
         } else if (user.isBlocked()) {
             renderPage(request, response, "/WEB-INF/blocked-user.html");
         } else {
-            usrService.registerAccess(user);
+            uService.registerAccess(user);
             request.getSession().setAttribute("user", user);
 
             String path = user.isAdmin() ? "/AdminHome" : "/Home";

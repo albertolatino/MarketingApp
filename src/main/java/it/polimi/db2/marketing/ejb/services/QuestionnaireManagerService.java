@@ -12,11 +12,11 @@ import javax.persistence.PersistenceException;
 import java.util.*;
 
 @Stateless
-public class QuestionnaireService {
+public class QuestionnaireManagerService {
     @PersistenceContext(unitName = "MarketingEJB")
     private EntityManager em;
 
-    public QuestionnaireService() {
+    public QuestionnaireManagerService() {
     }
 
     public List<Questionnaire> getAll() throws QuestionnaireException {
@@ -73,8 +73,10 @@ public class QuestionnaireService {
 
 
 
-    public void addStatAnswers(StatAnswers statAnswers) {
-        em.persist(statAnswers);
+    public void addStatAnswers(Questionnaire q, User u, Integer age, String sex, String expertise) {
+        StatAnswers sa = new StatAnswers(q.getDate(), u.getId(), age, sex, expertise);
+
+        em.persist(sa);
     }
 
     public List<String> getAnswersToQuestions(User u, List<Question> questions) {
@@ -94,31 +96,11 @@ public class QuestionnaireService {
         for (String a : answers) {
             num = em.createNamedQuery("OffensiveWord.containsWord", Long.class).setParameter(1, a).getSingleResult();
             if (num != 0) {
-                System.out.println(a + " contains a bad word");
                 return true;
-            } else
-                System.out.println(a + " DOES NOT contain a bad word");
+            }
         }
         return false;
     }
-
-    /*
-    public AnsweredList getAllAnswers(Questionnaire q) {
-        q = em.merge(q);
-        List<Question> questions = q.getQuestions();
-        AnsweredList toRet = new AnsweredList(questions);
-
-        List<Object[]> users = em.createNamedQuery("User.usersWhoRespondedToQuestionnaire").setParameter(1, q.getDate()).getResultList();
-        for (Object[] arr : users) {
-            User u = (User) arr[0];
-            Answer a = (Answer) arr[1];
-            toRet.addAnswer(u.getName(), a.getQuestionId(), a.getAnswer());
-        }
-
-        return toRet;
-    }
-
-     */
 
     public List<Question> getQuestions(Questionnaire q) {
         q = em.merge(q);
@@ -126,4 +108,9 @@ public class QuestionnaireService {
         return q.getQuestions();
     }
 
+    public byte[] getQuestionnaireImage(Questionnaire q) {
+        q = em.merge(q);
+
+        return q.getImage();
+    }
 }
