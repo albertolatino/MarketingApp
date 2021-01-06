@@ -1,14 +1,10 @@
 package it.polimi.db2.marketing.ejb.services;
 
 import it.polimi.db2.marketing.ejb.entities.*;
-import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireException;
-import it.polimi.db2.marketing.ejb.exceptions.QuestionnaireNotFoundException;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import java.util.*;
 
 @Stateless
@@ -19,13 +15,8 @@ public class QuestionnaireManagerService {
     public QuestionnaireManagerService() {
     }
 
-    public List<Questionnaire> getAll() throws QuestionnaireException {
-        List<Questionnaire> questionnaires;
-        try {
-            questionnaires = em.createNamedQuery("Questionnaire.getAll", Questionnaire.class).getResultList();
-        } catch (PersistenceException e) {
-            throw new QuestionnaireException("Could not verify credentials");
-        }
+    public List<Questionnaire> getAll() {
+        List<Questionnaire> questionnaires = em.createNamedQuery("Questionnaire.getAll", Questionnaire.class).getResultList();
         if (questionnaires.isEmpty())
             return null;
 
@@ -44,11 +35,10 @@ public class QuestionnaireManagerService {
     }
 
     public void deleteQuestionnaire(Date deletionDate) {
-
         Questionnaire q = em.find(Questionnaire.class, deletionDate);
-        System.out.println("DATA DEL QUESTIONARIO" + q.getDate());
+
         em.remove(q);
-        em.flush();
+        em.flush(); //needed because of triggers
     }
 
     public boolean questionnaireAlreadyExist(Date plannedDate) {
