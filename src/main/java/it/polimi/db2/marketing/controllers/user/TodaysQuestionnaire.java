@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @WebServlet("/TodaysQuestionnaire")
@@ -65,13 +68,10 @@ public class TodaysQuestionnaire extends ServletBase {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        String loginpath = getServletContext().getContextPath() + "/index.html";
-        HttpSession session = request.getSession();
-        if (session.isNew() || session.getAttribute("user") == null) {
-            response.sendRedirect(loginpath);
-            return;
-        }
 
+        if (redirectIfNotLogged(request, response)) return;
+
+        HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
         Questionnaire qst = qmService.getToday();
@@ -90,7 +90,7 @@ public class TodaysQuestionnaire extends ServletBase {
         // contains all indices of all questions in the current questionnaire
         Map<Integer, String> answers;
         try {
-            answers = getAnswers(request, user, qst);
+            answers = getAnswers(request, qst);
         } catch (NumberFormatException | NullPointerException | FormException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect or missing param values");
@@ -104,7 +104,7 @@ public class TodaysQuestionnaire extends ServletBase {
         renderPage(request, response, "/WEB-INF/TodaysQuestionnaireStatistics.html", variables);
     }
 
-    private Map<Integer, String> getAnswers(HttpServletRequest request, User user, Questionnaire qst) throws FormException {
+    private Map<Integer, String> getAnswers(HttpServletRequest request, Questionnaire qst) throws FormException {
         List<Integer> allQuestionnaireNumbers = qst.getQuestions().stream().map(Question::getId).collect(Collectors.toList());
 
         Map<Integer, String> answers = new HashMap<>();
@@ -115,7 +115,7 @@ public class TodaysQuestionnaire extends ServletBase {
         while (parameters.hasMoreElements()) {
 
             parameterName = parameters.nextElement();
-            if(!parameterName.equals("review")) {
+            if (!parameterName.equals("review")) {
                 int questionNumber = Integer.parseInt(parameterName);
                 String answerString = (StringEscapeUtils.escapeJava(request.getParameter(parameterName)));
                 if (answerString == null || answerString.length() == 0)

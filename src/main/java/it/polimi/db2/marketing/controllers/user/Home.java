@@ -12,7 +12,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @WebServlet("/Home")
 public class Home extends ServletBase {
@@ -45,7 +48,7 @@ public class Home extends ServletBase {
             byte[] imageData = qmService.getQuestionnaireImage(qst);
             String encoded = new String(Base64.getEncoder().encode(imageData));
             variables.put("image", encoded);
-           // AnsweredList answers = qstService.getAllAnswers(qst);
+            // AnsweredList answers = qstService.getAllAnswers(qst);
             Set<String> reviews = qopService.getAllReviews(qst);
             //System.out.println(answers);
             variables.put("reviews", reviews);

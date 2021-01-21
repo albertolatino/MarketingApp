@@ -61,7 +61,7 @@ public class QuestionnaireDetails extends ServletBase {
         Map<String, Object> variables = new HashMap<>();
         variables.put("usersSubmitted", usersSubmitted);
         variables.put("usersCanceled", usersCanceled);
-        renderPage(request, response, "/WEB-INF/questionnaire-details.html", variables);
+        renderPage(request, response, "/WEB-INF/QuestionnaireDetails.html", variables);
     }
 
     private Date getToday() {

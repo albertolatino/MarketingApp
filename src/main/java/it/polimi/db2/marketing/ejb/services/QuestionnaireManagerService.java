@@ -1,6 +1,9 @@
 package it.polimi.db2.marketing.ejb.services;
 
-import it.polimi.db2.marketing.ejb.entities.*;
+import it.polimi.db2.marketing.ejb.entities.Question;
+import it.polimi.db2.marketing.ejb.entities.Questionnaire;
+import it.polimi.db2.marketing.ejb.entities.StatAnswers;
+import it.polimi.db2.marketing.ejb.entities.User;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -60,7 +63,6 @@ public class QuestionnaireManagerService {
 
         u.getAnswers().putAll(answers);
     }
-
 
 
     public void addStatAnswers(Questionnaire q, User u, Integer age, String sex, String expertise) {

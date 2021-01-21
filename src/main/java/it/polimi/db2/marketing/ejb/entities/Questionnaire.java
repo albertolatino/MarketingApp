@@ -1,10 +1,7 @@
 package it.polimi.db2.marketing.ejb.entities;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -26,30 +23,30 @@ public class Questionnaire implements Serializable {
 
     private String title;
 
-    @Basic(fetch=FetchType.LAZY)
+    @Basic(fetch = FetchType.LAZY)
     @Lob
-    @Column(columnDefinition="LONGBLOB")
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] image;
 
-    @OneToMany(mappedBy="questionnaire")
+    @OneToMany(mappedBy = "questionnaire")
     private List<Question> questions;
 
     @ElementCollection
-    @CollectionTable(name="reviews", schema="db_marketing", joinColumns=@JoinColumn(name="date"))
-    @Column(name="review")
+    @CollectionTable(name = "reviews", schema = "db_marketing", joinColumns = @JoinColumn(name = "date"))
+    @Column(name = "review")
     private Set<String> reviews;
 
     public Questionnaire() {
     }
 
-    public Questionnaire(List<Question> questions, Date date, String title, byte[] image){
+    public Questionnaire(List<Question> questions, Date date, String title, byte[] image) {
         this.questions = questions;
         this.date = date;
         this.title = title;
         this.image = image;
     }
 
-    public  Questionnaire(Date date, String title, byte[] image){
+    public Questionnaire(Date date, String title, byte[] image) {
         this.date = date;
         this.title = title;
         this.image = image;
@@ -72,7 +69,7 @@ public class Questionnaire implements Serializable {
     }
 
     public List<Question> getQuestions() {
-        return (List<Question>) questions;
+        return questions;
     }
 
     public void setQuestions(List<Question> questions) {

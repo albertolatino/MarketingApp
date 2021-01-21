@@ -1,11 +1,14 @@
 package it.polimi.db2.marketing.ejb.services;
 
-import it.polimi.db2.marketing.ejb.entities.*;
+import it.polimi.db2.marketing.ejb.entities.Questionnaire;
+import it.polimi.db2.marketing.ejb.entities.User;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @Stateless
 public class QuestionnaireOperationsService {
@@ -53,7 +56,7 @@ public class QuestionnaireOperationsService {
         return u.getIsSubmitted().getOrDefault(qst.getDate(), false);
     }
 
-    public void addReview(String text, Questionnaire qst){
+    public void addReview(String text, Questionnaire qst) {
         qst = em.merge(qst);
 
         qst.getReviews().add(text);

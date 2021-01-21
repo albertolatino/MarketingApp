@@ -42,7 +42,7 @@ public class AdminDelete extends ServletBase {
         if (redirectIfNotAdmin(request, response)) return;
 
         Date deletionDate = null;
-        boolean isBadRequest = false;
+        boolean isBadRequest;
 
 
         try {

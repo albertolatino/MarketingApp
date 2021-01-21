@@ -47,6 +47,6 @@ public class AdminHistory extends ServletBase {
         Map<String, Object> variables = new HashMap<>();
         variables.put("questionnaires", questionnaires);
         variables.put("today", new Date());
-        renderPage(request, response, "/WEB-INF/history.html", variables);
+        renderPage(request, response, "/WEB-INF/History.html", variables);
     }
 }

@@ -23,8 +23,8 @@ public class CheckLogin extends ServletBase {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         // obtain and escape params
-        String usrn = null;
-        String pwd = null;
+        String usrn;
+        String pwd;
         try {
             usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
             pwd = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
@@ -54,7 +54,7 @@ public class CheckLogin extends ServletBase {
             variables.put("errorMsg", "Incorrect username or password");
             renderPage(request, response, "/index.html", variables);
         } else if (user.isBlocked()) {
-            renderPage(request, response, "/WEB-INF/blocked-user.html");
+            renderPage(request, response, "/WEB-INF/BlockedUser.html");
         } else {
             uService.registerAccess(user);
             request.getSession().setAttribute("user", user);

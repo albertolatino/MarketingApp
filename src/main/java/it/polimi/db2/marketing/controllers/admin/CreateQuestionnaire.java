@@ -47,18 +47,16 @@ public class CreateQuestionnaire extends ServletBase {
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
 
-        Date questionnaireDate = null;
-        String title = null;
-        Part filePart = null;
-        String filename = null;
-        byte[] imageData = null;
+        Date questionnaireDate;
+        String title;
+        Part filePart;
+        byte[] imageData;
 
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             questionnaireDate = sdf.parse(request.getParameter("date"));
-            title = (String) StringEscapeUtils.escapeJava(request.getParameter("title"));
+            title = StringEscapeUtils.escapeJava(request.getParameter("title"));
             filePart = request.getPart("file");
-            filename = filePart.getName();
             InputStream fileStream = filePart.getInputStream();
             imageData = new byte[fileStream.available()];
             fileStream.read(imageData);

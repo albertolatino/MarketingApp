@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public boolean checkUnique(String usrn, String mail) throws CredentialsException {
-        List<User> uList = null;
+        List<User> uList;
         try {
             uList = em.createNamedQuery("User.checkUnique", User.class).setParameter(1, usrn).setParameter(2, mail)
                     .getResultList();

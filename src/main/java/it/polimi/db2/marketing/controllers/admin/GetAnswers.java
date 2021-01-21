@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @WebServlet("/GetAnswers")
@@ -74,7 +77,7 @@ public class GetAnswers extends ServletBase {
         variables.put("questions", questions);
         variables.put("answers", answers);
         variables.put("user", user);
-        renderPage(request, response, "/WEB-INF/answers.html", variables);
+        renderPage(request, response, "/WEB-INF/Answers.html", variables);
     }
 
     private Date getToday() {

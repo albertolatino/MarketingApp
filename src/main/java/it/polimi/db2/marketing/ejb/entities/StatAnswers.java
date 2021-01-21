@@ -1,6 +1,9 @@
 package it.polimi.db2.marketing.ejb.entities;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -62,8 +65,6 @@ public class StatAnswers implements Serializable {
 
         public Key() {
         }
-
-        ;
 
         @Override
         public boolean equals(Object o) {

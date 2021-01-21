@@ -5,5 +5,6 @@ public class FormException extends Exception {
         super(s);
     }
 
-    public FormException() {}
+    public FormException() {
+    }
 }

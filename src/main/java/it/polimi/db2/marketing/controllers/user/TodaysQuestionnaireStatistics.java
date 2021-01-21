@@ -125,7 +125,7 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
                 //block user, display blocked page
                 uService.blockUser(user);
                 session.removeAttribute("user");
-                renderPage(request, response, "/WEB-INF/blocked-user.html");
+                renderPage(request, response, "/WEB-INF/BlockedUser.html");
                 return;
             }
         }

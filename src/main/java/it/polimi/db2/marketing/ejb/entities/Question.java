@@ -2,8 +2,6 @@ package it.polimi.db2.marketing.ejb.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Map;
 
 /**
  * The persistent class for the question database table.
@@ -20,7 +18,7 @@ public class Question implements Serializable {
     private String text;
 
     @ManyToOne
-    @JoinColumn(name = "date", referencedColumnName="date")
+    @JoinColumn(name = "date", referencedColumnName = "date")
     private Questionnaire questionnaire;
 
     public Question(String text) {

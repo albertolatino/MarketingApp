@@ -2,7 +2,6 @@ package it.polimi.db2.marketing.ejb.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -43,20 +42,20 @@ public class User implements Serializable {
     private Integer score;
 
     @ElementCollection
-    @CollectionTable(name="user_questionnaire_submitted", schema="db_marketing", joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
-    @MapKeyColumn(name="date")
-    @Column(name="is_submitted")
+    @CollectionTable(name = "user_questionnaire_submitted", schema = "db_marketing", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @MapKeyColumn(name = "date")
+    @Column(name = "is_submitted")
     private Map<Date, Boolean> isSubmitted;
 
     @ElementCollection
-    @CollectionTable(name="log", schema="db_marketing", joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
-    @Column(name="datetime")
+    @CollectionTable(name = "log", schema = "db_marketing", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @Column(name = "datetime")
     private Set<Date> logs;
 
     @ElementCollection
-    @CollectionTable(name="answer", schema="db_marketing", joinColumns=@JoinColumn(name="user_id", referencedColumnName="id"))
-    @MapKeyColumn(name="question_id")
-    @Column(name="answer")
+    @CollectionTable(name = "answer", schema = "db_marketing", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @MapKeyColumn(name = "question_id")
+    @Column(name = "answer")
     private Map<Integer, String> answers;
 
     public User() {
