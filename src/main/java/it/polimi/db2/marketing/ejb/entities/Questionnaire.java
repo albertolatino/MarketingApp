@@ -32,7 +32,7 @@ public class Questionnaire implements Serializable {
     private List<Question> questions;
 
     @ElementCollection
-    @CollectionTable(name = "reviews", schema = "db_marketing", joinColumns = @JoinColumn(name = "date"))
+    @CollectionTable(name = "review", schema = "db_marketing", joinColumns = @JoinColumn(name = "date"))
     @Column(name = "review")
     private Set<String> reviews;
 
