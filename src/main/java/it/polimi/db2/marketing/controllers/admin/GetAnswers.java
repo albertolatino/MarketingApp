@@ -3,6 +3,7 @@ package it.polimi.db2.marketing.controllers.admin;
 import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
+import it.polimi.db2.marketing.ejb.entities.StatAnswers;
 import it.polimi.db2.marketing.ejb.entities.User;
 import it.polimi.db2.marketing.ejb.exceptions.DateException;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireManagerService;
@@ -62,12 +63,14 @@ public class GetAnswers extends ServletBase {
         List<String> answers;
         Questionnaire questionnaire;
         User user;
+        StatAnswers statAnswers;
 
         try {
             questionnaire = qmService.findByDate(date);
             questions = qmService.getQuestions(questionnaire);
             user = uService.getUser(userid);
             answers = qmService.getAnswersToQuestions(user, questions);
+            statAnswers = qmService.getStatAnswers(user, questionnaire);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to get questionnaires data");
             return;
@@ -76,6 +79,7 @@ public class GetAnswers extends ServletBase {
         Map<String, Object> variables = new HashMap<>();
         variables.put("questions", questions);
         variables.put("answers", answers);
+        variables.put("statAnswers", statAnswers);
         variables.put("user", user);
         renderPage(request, response, "/WEB-INF/Answers.html", variables);
     }

@@ -58,6 +58,10 @@ public class User implements Serializable {
     @Column(name = "answer")
     private Map<Integer, String> answers;
 
+    @OneToMany(mappedBy="user")
+    @MapKey(name="date")
+    private Map<Date, StatAnswers> statAnswers;
+
     public User() {
     }
 
@@ -170,5 +174,13 @@ public class User implements Serializable {
 
     public void setAnswers(Map<Integer, String> answers) {
         this.answers = answers;
+    }
+
+    public Map<Date, StatAnswers> getStatAnswers() {
+        return statAnswers;
+    }
+
+    public void setStatAnswers(Map<Date, StatAnswers> statAnswers) {
+        this.statAnswers = statAnswers;
     }
 }

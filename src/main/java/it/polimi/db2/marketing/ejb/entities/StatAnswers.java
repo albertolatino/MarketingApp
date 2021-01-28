@@ -1,9 +1,6 @@
 package it.polimi.db2.marketing.ejb.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -25,6 +22,10 @@ public class StatAnswers implements Serializable {
     private String sex;
 
     private String expertise;
+
+    @ManyToOne
+    @JoinColumn(name="user_id", updatable = false, insertable = false)
+    private User user;
 
     public StatAnswers() {
     }
@@ -119,6 +120,14 @@ public class StatAnswers implements Serializable {
 
     public void setExpertise(String expertise) {
         this.expertise = expertise;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 

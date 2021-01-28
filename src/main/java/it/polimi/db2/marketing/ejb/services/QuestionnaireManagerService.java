@@ -105,4 +105,10 @@ public class QuestionnaireManagerService {
 
         return q.getImage();
     }
+
+    public StatAnswers getStatAnswers(User user, Questionnaire questionnaire) {
+        user = em.merge(user);
+
+        return user.getStatAnswers().get(questionnaire.getDate());
+    }
 }
