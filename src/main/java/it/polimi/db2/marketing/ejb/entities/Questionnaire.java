@@ -11,9 +11,7 @@ import java.util.Set;
 @Table(name = "questionnaire", schema = "db_marketing")
 @NamedQueries({
         @NamedQuery(name = "Questionnaire.getAll", query = "SELECT q FROM Questionnaire q"),
-
 })
-
 public class Questionnaire implements Serializable {
     private static final long serialVersionUID = 1L;
 
