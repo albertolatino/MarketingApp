@@ -10,12 +10,12 @@ import java.util.Set;
  * The persistent class for the usertable database table.
  */
 @Entity
-@Table(name = "usertable", schema = "db_marketing")
+@Table(name = "user", schema = "db_marketing")
 @NamedQueries({
         @NamedQuery(name = "User.getUsersWhoSubmitted", query = "SELECT u FROM User u JOIN u.isSubmitted s WHERE KEY(s) = ?1 AND s = true"),
         @NamedQuery(name = "User.getUsersWhoCanceled", query = "SELECT u FROM User u JOIN u.isSubmitted s WHERE KEY(s) = ?1 AND s = false"),
         @NamedQuery(name = "User.checkCredentials", query = "SELECT r FROM User r  WHERE r.username = ?1 and r.password = ?2"),
-        @NamedQuery(name = "User.getNonAdminUsers", query = "SELECT r FROM User r WHERE r.is_admin = FALSE"),
+        @NamedQuery(name = "User.getNonAdminUsers", query = "SELECT r FROM User r WHERE r.is_admin = FALSE ORDER BY r.score DESC"),
         @NamedQuery(name = "User.checkUnique", query = "SELECT r FROM User r WHERE r.username = ?1 or r.email = ?2")
 })
 public class User implements Serializable {
@@ -47,7 +47,7 @@ public class User implements Serializable {
     @Column(name = "is_submitted")
     private Map<Date, Boolean> isSubmitted;
 
-    @ElementCollection
+    @ElementCollection(fetch=FetchType.LAZY)
     @CollectionTable(name = "log", schema = "db_marketing", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     @Column(name = "datetime")
     private Set<Date> logs;

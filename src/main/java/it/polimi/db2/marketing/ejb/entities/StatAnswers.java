@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "stat_answers", schema = "db_marketing")
+@Table(name = "stat_answer", schema = "db_marketing")
 @IdClass(StatAnswers.Key.class)
 public class StatAnswers implements Serializable {
     private static final long serialVersionUID = 1L;

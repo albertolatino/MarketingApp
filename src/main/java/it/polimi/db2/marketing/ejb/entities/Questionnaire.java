@@ -11,9 +11,7 @@ import java.util.Set;
 @Table(name = "questionnaire", schema = "db_marketing")
 @NamedQueries({
         @NamedQuery(name = "Questionnaire.getAll", query = "SELECT q FROM Questionnaire q"),
-
 })
-
 public class Questionnaire implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -32,7 +30,7 @@ public class Questionnaire implements Serializable {
     private List<Question> questions;
 
     @ElementCollection
-    @CollectionTable(name = "reviews", schema = "db_marketing", joinColumns = @JoinColumn(name = "date"))
+    @CollectionTable(name = "review", schema = "db_marketing", joinColumns = @JoinColumn(name = "date"))
     @Column(name = "review")
     private Set<String> reviews;
 
