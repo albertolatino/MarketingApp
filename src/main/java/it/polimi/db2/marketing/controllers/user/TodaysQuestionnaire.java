@@ -61,7 +61,7 @@ public class TodaysQuestionnaire extends ServletBase {
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("questionnaireName", qst.getTitle());
-        variables.put("questions", qst.getQuestions());
+        variables.put("questions", qmService.getQuestions(qst));
         variables.put("answers", answersMap);
         renderPage(request, response, "/WEB-INF/TodaysQuestionnaire.html", variables);
     }
