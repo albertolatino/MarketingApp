@@ -60,7 +60,7 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy="user")
     @MapKey(name="date")
-    private Map<Date, StatAnswers> statAnswers;
+    private Map<Date, StatAnswer> statAnswers;
 
     public User() {
     }
@@ -176,11 +176,11 @@ public class User implements Serializable {
         this.answers = answers;
     }
 
-    public Map<Date, StatAnswers> getStatAnswers() {
+    public Map<Date, StatAnswer> getStatAnswers() {
         return statAnswers;
     }
 
-    public void setStatAnswers(Map<Date, StatAnswers> statAnswers) {
+    public void setStatAnswers(Map<Date, StatAnswer> statAnswers) {
         this.statAnswers = statAnswers;
     }
 }

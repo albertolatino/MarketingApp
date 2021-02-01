@@ -2,7 +2,7 @@ package it.polimi.db2.marketing.ejb.services;
 
 import it.polimi.db2.marketing.ejb.entities.Question;
 import it.polimi.db2.marketing.ejb.entities.Questionnaire;
-import it.polimi.db2.marketing.ejb.entities.StatAnswers;
+import it.polimi.db2.marketing.ejb.entities.StatAnswer;
 import it.polimi.db2.marketing.ejb.entities.User;
 
 import javax.ejb.Stateless;
@@ -66,7 +66,7 @@ public class QuestionnaireManagerService {
 
 
     public void addStatAnswers(Questionnaire q, User u, Integer age, String sex, String expertise) {
-        StatAnswers sa = new StatAnswers(q.getDate(), u.getId(), age, sex, expertise);
+        StatAnswer sa = new StatAnswer(q.getDate(), u.getId(), age, sex, expertise);
 
         em.persist(sa);
     }
@@ -106,7 +106,7 @@ public class QuestionnaireManagerService {
         return q.getImage();
     }
 
-    public StatAnswers getStatAnswers(User user, Questionnaire questionnaire) {
+    public StatAnswer getStatAnswer(User user, Questionnaire questionnaire) {
         user = em.merge(user);
 
         return user.getStatAnswers().get(questionnaire.getDate());

@@ -7,11 +7,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "stat_answer", schema = "db_marketing")
-@IdClass(StatAnswers.Key.class)
-public class StatAnswers implements Serializable {
+@IdClass(StatAnswer.Key.class)
+public class StatAnswer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     @Id
@@ -27,10 +28,10 @@ public class StatAnswers implements Serializable {
     @JoinColumn(name="user_id", updatable = false, insertable = false)
     private User user;
 
-    public StatAnswers() {
+    public StatAnswer() {
     }
 
-    public StatAnswers(Date date, Integer user_id, Integer age, String sex, String expertise) {
+    public StatAnswer(Date date, Integer user_id, Integer age, String sex, String expertise) {
         this.date = date;
         this.user_id = user_id;
         this.age = age;
@@ -72,7 +73,7 @@ public class StatAnswers implements Serializable {
             if (this == o) return true;
             if (o == null || o.getClass() != getClass()) return false;
 
-            StatAnswers.Key qk = (StatAnswers.Key) o;
+            StatAnswer.Key qk = (StatAnswer.Key) o;
             return qk.date.equals(date) && qk.user_id.equals(user_id);
         }
 
