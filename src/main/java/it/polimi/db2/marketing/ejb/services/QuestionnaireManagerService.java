@@ -34,6 +34,7 @@ public class QuestionnaireManagerService {
             Question q = new Question(s);
             em.persist(q);
             q.setQuestionnaire(questionnaire);
+            questionnaire.getQuestions().add(q);
         }
     }
 

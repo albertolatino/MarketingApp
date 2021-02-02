@@ -2,6 +2,7 @@ package it.polimi.db2.marketing.ejb.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class Questionnaire implements Serializable {
     private byte[] image;
 
     @OneToMany(mappedBy = "questionnaire")
-    private List<Question> questions;
+    private List<Question> questions = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "review", schema = "db_marketing", joinColumns = @JoinColumn(name = "date"))
