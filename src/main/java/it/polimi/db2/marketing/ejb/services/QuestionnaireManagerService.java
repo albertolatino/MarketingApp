@@ -42,7 +42,7 @@ public class QuestionnaireManagerService {
         Questionnaire q = em.find(Questionnaire.class, deletionDate);
 
         em.remove(q);
-        em.flush(); //needed because of triggers
+        //em.flush(); //needed because of triggers
     }
 
     public boolean questionnaireAlreadyExist(Date plannedDate) {

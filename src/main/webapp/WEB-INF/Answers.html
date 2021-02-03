@@ -41,9 +41,9 @@
         <th>Expertise (H/M/L)</th>
     </tr>
     <tr>
-        <td th:text="${statAnswers.age}"></td>
-        <td th:text="${statAnswers.sex}"></td>
-        <td th:text="${statAnswers.expertise}"></td>
+        <td th:text="${statAnswer.age != null} ? ${statAnswer.age} : 'Not provided'"></td>
+        <td th:text="${statAnswer.sex != null} ? ${statAnswer.sex} : 'Not provided'"></td>
+        <td th:text="${statAnswer.expertise != null} ? ${statAnswer.expertise} : 'Not provided'"></td>
     </tr>
 </table>
 
