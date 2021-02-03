@@ -31,7 +31,6 @@ public class AdminHistory extends ServletBase {
         if (redirectIfNotLogged(request, response)) return;
         if (redirectIfNotAdmin(request, response)) return;
 
-
         //retrieve all questionnaires
         List<Questionnaire> questionnaires;
         try {
@@ -41,8 +40,6 @@ public class AdminHistory extends ServletBase {
             response.sendRedirect(path);
             return;
         }
-
-        //TODO em.create questionnaire, but how to get date and title that are in another servlet?
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("questionnaires", questionnaires);

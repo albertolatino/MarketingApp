@@ -123,11 +123,11 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
             reviewContainsProfanity = qmService.containsOffensiveWords(reviews);
         }
 
-        boolean containsProfanity = qmService.containsOffensiveWords(answers.values());
-        if (containsProfanity || reviewContainsProfanity) {
+        boolean answersContainProfanity = qmService.containsOffensiveWords(answers.values());
+        if (answersContainProfanity || reviewContainsProfanity) {
             //block user, display blocked page
             uService.blockUser(user);
-            session.removeAttribute("user");
+            session.invalidate();
             renderPage(request, response, "/WEB-INF/BlockedUser.html");
             return;
         }
