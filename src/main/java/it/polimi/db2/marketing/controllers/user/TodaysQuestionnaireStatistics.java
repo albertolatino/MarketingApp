@@ -116,18 +116,20 @@ public class TodaysQuestionnaireStatistics extends ServletBase {
             return;
         }
 
+        boolean reviewContainsProfanity = false;
         if (review != null) {
             ArrayList<String> reviews = new ArrayList<>();
             reviews.add(review);
-            boolean reviewContainsProfanity = qmService.containsOffensiveWords(reviews);
-            boolean containsProfanity = qmService.containsOffensiveWords(answers.values());
-            if (containsProfanity || reviewContainsProfanity) {
-                //block user, display blocked page
-                uService.blockUser(user);
-                session.removeAttribute("user");
-                renderPage(request, response, "/WEB-INF/BlockedUser.html");
-                return;
-            }
+            reviewContainsProfanity = qmService.containsOffensiveWords(reviews);
+        }
+
+        boolean containsProfanity = qmService.containsOffensiveWords(answers.values());
+        if (containsProfanity || reviewContainsProfanity) {
+            //block user, display blocked page
+            uService.blockUser(user);
+            session.removeAttribute("user");
+            renderPage(request, response, "/WEB-INF/BlockedUser.html");
+            return;
         }
 
         qmService.addAnswers(user, answers);
