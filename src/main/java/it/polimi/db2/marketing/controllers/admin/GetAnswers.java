@@ -48,12 +48,13 @@ public class GetAnswers extends ServletBase {
             date = sdf.parse(request.getParameter("date"));
             userid = Integer.parseInt(request.getParameter("userid"));
             if (getToday().before(date)) {
-                throw new DateException("Missing or empty credential value");
+                throw new DateException("Questionnaire is planned for the future, no answers yet");
             }
         } catch (ParseException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Date inserted has wrong format");
         } catch (DateException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
+            System.out.println("MESSAGE" + e.getMessage());
             return;
         }
 

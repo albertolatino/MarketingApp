@@ -2,6 +2,7 @@ package it.polimi.db2.marketing.controllers.admin;
 
 import it.polimi.db2.marketing.controllers.ServletBase;
 import it.polimi.db2.marketing.ejb.entities.User;
+import it.polimi.db2.marketing.ejb.exceptions.DateException;
 import it.polimi.db2.marketing.ejb.services.QuestionnaireOperationsService;
 
 import javax.ejb.EJB;
@@ -38,12 +39,12 @@ public class QuestionnaireDetails extends ServletBase {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             date = sdf.parse(request.getParameter("date"));
             if (getToday().before(date)) {
-                throw new Exception("Missing or empty credential value");
+                throw new DateException("Questionnaire is planned for the future, no answers yet");
             }
         } catch (ParseException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Date inserted has wrong format");
-        } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing credential value");
+        } catch (DateException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
             return;
         }
 
