@@ -63,7 +63,7 @@ public class UserService {
     }
 
     public void registerAccess(User u) {
-        u = em.merge(u);
+        u = em.find(User.class, u.getId());
 
         u.logAccess();
     }

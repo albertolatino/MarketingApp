@@ -42,7 +42,7 @@ public class QuestionnaireManagerService {
         Questionnaire q = em.find(Questionnaire.class, deletionDate);
 
         em.remove(q);
-        //em.flush(); //needed because of triggers
+        //em.flush();
     }
 
     public boolean questionnaireAlreadyExist(Date plannedDate) {
@@ -60,7 +60,7 @@ public class QuestionnaireManagerService {
     }
 
     public void addAnswers(User u, Map<Integer, String> answers) {
-        u = em.merge(u);
+        u = em.find(User.class, u.getId());
 
         u.getAnswers().putAll(answers);
     }
@@ -75,7 +75,7 @@ public class QuestionnaireManagerService {
     public List<String> getAnswersToQuestions(User u, List<Question> questions) {
         List<String> answers = new ArrayList<>();
 
-        u = em.merge(u);
+        u = em.find(User.class, u.getId());
 
         for (Question q : questions) {
             answers.add(u.getAnswers().get(q.getId()));
@@ -96,20 +96,20 @@ public class QuestionnaireManagerService {
     }
 
     public List<Question> getQuestions(Questionnaire q) {
-        q = em.merge(q);
+        q = em.find(Questionnaire.class, q.getDate());
 
         return q.getQuestions();
     }
 
     public byte[] getQuestionnaireImage(Questionnaire q) {
-        q = em.merge(q);
+        q = em.find(Questionnaire.class, q.getDate());
 
         return q.getImage();
     }
 
-    public StatAnswer getStatAnswer(User user, Questionnaire questionnaire) {
-        user = em.merge(user);
+    public StatAnswer getStatAnswer(User u, Questionnaire questionnaire) {
+        u = em.find(User.class, u.getId());
 
-        return user.getStatAnswers().get(questionnaire.getDate());
+        return u.getStatAnswers().get(questionnaire.getDate());
     }
 }

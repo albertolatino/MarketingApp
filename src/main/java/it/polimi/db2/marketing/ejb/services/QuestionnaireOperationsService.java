@@ -33,37 +33,38 @@ public class QuestionnaireOperationsService {
     }
 
     public boolean checkNotStartedNorFinished(User u, Questionnaire qst) {
-        u = em.merge(u);
+        u = em.find(User.class, u.getId());
 
         return !u.getIsSubmitted().containsKey(qst.getDate());
     }
 
     public void beginQuestionnaire(User u, Questionnaire qst) {
-        u = em.merge(u);
+        u = em.find(User.class, u.getId());
 
         u.getIsSubmitted().put(qst.getDate(), Boolean.FALSE);
     }
 
     public void submitQuestionnaire(User u, Questionnaire qst) {
-        u = em.merge(u);
+        u = em.find(User.class, u.getId());
 
         u.getIsSubmitted().put(qst.getDate(), true);
+        //em.flush();
     }
 
     public boolean isSubmitted(User u, Questionnaire qst) {
-        u = em.merge(u);
+        u = em.find(User.class, u.getId());
 
         return u.getIsSubmitted().getOrDefault(qst.getDate(), false);
     }
 
-    public void addReview(String text, Questionnaire qst) {
-        qst = em.merge(qst);
+    public void addReview(String text, Questionnaire q) {
+        q = em.find(Questionnaire.class, q.getDate());
 
-        qst.getReviews().add(text);
+        q.getReviews().add(text);
     }
 
     public Set<String> getAllReviews(Questionnaire q) {
-        q = em.merge(q);
+        q = em.find(Questionnaire.class, q.getDate());
 
         return q.getReviews();
     }
